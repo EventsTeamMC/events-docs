@@ -1,0 +1,227 @@
+---
+title: "Guía completa"
+description: "Del setup a una política de moderación que funcione, paso a paso"
+---
+
+Esta guía recorre el bot entero: primero lo pones en marcha, luego decides **cómo de estricto**
+quieres ser, y por último lo integras en el día a día de tu equipo. Si solo quieres arrancar, ve
+a [Primeros pasos](/blacklist/quickstart).
+
+---
+
+## Paso 0 · Entiende el trato
+
+Events Blacklist es una red: funciona porque todos aportan.
+
+<Warning>
+  **Todos los baneos que hagas se comparten automáticamente.** No hay opt-out. A cambio, recibes
+  los de todas las demás comunidades. Si eso no encaja con tu servidor, este bot no es para ti.
+</Warning>
+
+Lo que **no** ocurre:
+
+- Nadie ve qué servidor baneó a quién — ni tu comunidad ni las demás. Ver [Privacidad](/blacklist/privacy).
+- El bot no banea a nadie por su cuenta salvo que actives el [auto-ban](/blacklist/auto-ban).
+- No se guarda nada de tus canales, mensajes ni miembros más allá de lo necesario.
+
+---
+
+## Paso 1 · Instalación
+
+<Steps>
+  <Step title="Invita el bot">
+    [Enlace de invitación](https://discord.com/oauth2/authorize?client_id=1528203943367151706).
+    Necesita **Banear miembros** y **Ver el registro de auditoría**.
+  </Step>
+  <Step title="Crea el canal de alertas">
+    Privado, solo para el staff: las alertas incluyen IDs de usuario y motivos de baneo.
+  </Step>
+  <Step title="Ejecuta el asistente">
+    ```
+    /blacklist config setup canal_alertas:#alertas-baneos importar_baneos:true
+    ```
+    Configura el canal, importa tus baneos previos y escanea a tus miembros actuales, todo de una
+    vez.
+  </Step>
+  <Step title="Prueba que llega">
+    ```
+    /blacklist config alert-test
+    ```
+  </Step>
+</Steps>
+
+<Note>
+  **¿Por qué importar los baneos antiguos?** Porque tu historial de moderación es probablemente
+  la mejor información que puedes aportar a la red — y porque hace que el sistema funcione mejor
+  para ti también. Solo hace falta hacerlo una vez.
+</Note>
+
+---
+
+## Paso 2 · Elige tu umbral de alerta
+
+El umbral es **cuántos baneos** debe acumular alguien en otras comunidades para que tu staff sea
+avisado.
+
+```
+/blacklist config alert-threshold baneos:2
+```
+
+| Umbral | Cuándo tiene sentido |
+|---|---|
+| **1** (por defecto) | Comunidades pequeñas o muy cuidadas, donde prefieres verlo todo aunque sea ruido. |
+| **2–3** | El punto dulce para la mayoría: filtra baneos aislados o discutibles sin perder los casos serios. |
+| **4+** | Servidores muy grandes, donde solo quieres saber de reincidentes claros. |
+
+<Tip>
+  Empieza en 1 durante unos días para ver el volumen real, y súbelo si el canal se llena. Bajar
+  el umbral después no reenvía las alertas que ya te perdiste, así que es mejor empezar estricto
+  y relajar.
+</Tip>
+
+Los [baneos sospechosos](/blacklist/privacy#baneos-sospechosos) — los que vienen de servidores muy pequeños
+— **no cuentan** para el umbral, así que no tienes que inflarlo para protegerte de ellos.
+
+---
+
+## Paso 3 · Decide si quieres auto-ban
+
+<AccordionGroup>
+  <Accordion title="Cuándo NO activarlo" icon="circle-xmark">
+    - Si tu comunidad da segundas oportunidades o modera caso por caso.
+    - Si tienes staff activo que puede revisar las alertas en poco tiempo.
+    - Si es tu primera semana con el bot: primero mira qué alertas llegan.
+  </Accordion>
+  <Accordion title="Cuándo SÍ activarlo" icon="circle-check">
+    - Servidores grandes donde el staff no da abasto.
+    - Durante eventos o *raids*, cuando la velocidad importa más que el matiz.
+    - Con un umbral **claramente por encima** del de alerta (por ejemplo: avisar con 2, banear
+      con 6).
+  </Accordion>
+</AccordionGroup>
+
+```
+/blacklist config auto-ban activar:true umbral:6
+```
+
+Todo el detalle, incluidos los casos en que el auto-ban no puede aplicarse, en
+[Auto-ban](/blacklist/auto-ban).
+
+---
+
+## Paso 4 · El día a día del staff
+
+<AccordionGroup>
+  <Accordion title="Consultar a alguien antes de decidir" icon="magnifying-glass">
+    ```
+    /lookup usuario:@sospechoso
+    ```
+    Devuelve cuántos baneos acumula, cuántos son sospechosos y los motivos más recientes. Nunca
+    dice de dónde vienen.
+  </Accordion>
+  <Accordion title="Revisar a todos tus miembros de golpe" icon="users-viewfinder">
+    ```
+    /blacklist config scan
+    ```
+    Recorre el servidor y te devuelve un ranking de los miembros con baneos registrados. Con
+    `avisar:true` envía además una alerta al canal por cada uno.
+
+    Útil al instalar el bot, tras una oleada de entradas, o cada cierto tiempo como repaso.
+  </Accordion>
+  <Accordion title="Cambiar el canal de alertas" icon="right-left">
+    ```
+    /blacklist config alert-channel canal:#nuevo-canal
+    ```
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Paso 5 · Convierte las alertas en decisiones
+
+Una alerta no es una orden. Es información para que tu staff decida más rápido y mejor. Un
+criterio que funciona:
+
+<Steps>
+  <Step title="Mira el número, no solo el hecho">
+    Un baneo suelto puede ser cualquier cosa. Cinco baneos en comunidades distintas ya es un
+    patrón.
+  </Step>
+  <Step title="Lee los motivos">
+    La alerta trae hasta tres. "Spam" y "raid" no pesan lo mismo que "discusión con el staff".
+  </Step>
+  <Step title="Ignora los sospechosos">
+    Vienen de servidores diminutos y ya están descontados del recuento — pero el bot te dice
+    cuántos hay, por si el patrón te interesa.
+  </Step>
+  <Step title="Decide y documenta">
+    Si baneas, pon el motivo en el baneo de Discord: ese motivo viaja con el baneo al resto de la
+    red y ayuda al siguiente staff que se lo encuentre.
+  </Step>
+</Steps>
+
+<Tip>
+  **Escribe siempre el motivo al banear.** Es lo único que verán las demás comunidades, y es la
+  diferencia entre una alerta útil y un "Sin razón" que no ayuda a nadie.
+</Tip>
+
+---
+
+## Paso 6 · Da acceso a tu equipo
+
+Por defecto solo el dueño y quien tenga Administrador o Gestionar servidor pueden usar los
+comandos. Para dar acceso a tus moderadores sin darles permisos de Discord:
+
+```
+/blacklist config staff-role-add rol:@Moderador
+```
+
+Ver [Permisos](/blacklist/permissions).
+
+---
+
+## Dos configuraciones que funcionan
+
+<Tabs>
+  <Tab title="Comunidad pequeña o mediana">
+    Ver todo, decidir a mano.
+
+    ```
+    /blacklist config setup canal_alertas:#staff-alertas importar_baneos:true
+    /blacklist config alert-threshold baneos:1
+    ```
+
+    Sin auto-ban: el staff revisa cada alerta. Con poco volumen de entradas es perfectamente
+    llevadero y no te comes ningún falso positivo.
+  </Tab>
+  <Tab title="Servidor grande o en evento">
+    Filtrar ruido y cortar lo evidente sin intervención.
+
+    ```
+    /blacklist config setup canal_alertas:#alertas-baneos importar_baneos:true
+    /blacklist config alert-threshold baneos:2
+    /blacklist config auto-ban activar:true umbral:6
+    ```
+
+    Avisa con 2 baneos, banea solo con 6. El staff sigue viendo todo lo que hay entre medias.
+  </Tab>
+</Tabs>
+
+---
+
+## Siguiente parada
+
+<CardGroup cols={2}>
+  <Card title="Cómo funciona por dentro" icon="diagram-project" href="/how-it-works">
+    Qué pasa exactamente cuando baneas a alguien.
+  </Card>
+  <Card title="Privacidad" icon="user-secret" href="/privacy">
+    Cómo se protege el origen de cada baneo.
+  </Card>
+  <Card title="Preguntas frecuentes" icon="circle-question" href="/faq">
+    Las dudas que más nos llegan.
+  </Card>
+  <Card title="Soporte de EventsMC" icon="discord" href="https://discord.eventsmc.xyz/">
+    Te ayudamos con tu configuración concreta.
+  </Card>
+</CardGroup>

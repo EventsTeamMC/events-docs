@@ -1,0 +1,90 @@
+---
+title: "Permisos"
+description: "Quién puede usar cada comando y qué permisos necesita el bot en tu servidor"
+---
+
+## Quién puede usar los comandos
+
+Cada comando tiene un nivel de acceso:
+
+<CardGroup cols={2}>
+  <Card title="Público" icon="users">
+    `/info`, `/support` y `/mis-nicks`. Cualquier miembro del servidor.
+  </Card>
+  <Card title="Staff" icon="user-shield">
+    Todo `/whitelist ...`. Quien cumpla **al menos una** de las condiciones de abajo.
+  </Card>
+</CardGroup>
+
+Eres staff del bot si:
+
+- eres el **dueño** del servidor, **o**
+- tienes el permiso de Discord **Administrador**, **o**
+- tienes el permiso de Discord **Gestionar servidor**, **o**
+- tienes alguno de los roles añadidos con `/whitelist config staff-role-add`.
+
+```
+/whitelist config staff-role-add rol:@Ayudante
+/whitelist config staff-role-remove rol:@Ayudante
+```
+
+<Tip>
+  Los roles de staff son la forma de dar acceso al bot **sin** dar permisos de Discord. Un
+  `@Ayudante` con rol de staff del bot puede gestionar whitelists sin poder tocar canales, roles
+  ni ajustes del servidor.
+</Tip>
+
+Consulta en cualquier momento quién tiene acceso con `/whitelist config show`.
+
+<Note>
+  El **programa de afiliados** es más estricto: `/whitelist afiliado verify` exige rol de staff
+  del bot o **Administrador**. Ser dueño del servidor o tener "Gestionar servidor" no basta ahí
+  — ver [Programa de afiliados](/afiliados).
+</Note>
+
+## Qué permisos necesita el bot
+
+### Mínimos, en el canal de registro
+
+| Permiso | Para qué |
+|---|---|
+| Ver el canal | Leer los nicks que escriben los jugadores |
+| Enviar mensajes | Publicar el embed, el panel y las confirmaciones |
+| Insertar enlaces | Los embeds y el render del skin |
+| Añadir reacciones | Las marcas ✅ ⚠️ ❌ 🚫 en los mensajes |
+| Gestionar mensajes | Limpiar sus propios mensajes temporales del flujo de registro |
+
+### En el canal de logs
+
+Ver el canal y enviar mensajes. Si le falta, los eventos **no se publican** — pero los registros
+sí se guardan igual.
+
+### Si usas roles automáticos
+
+| Permiso | Para qué |
+|---|---|
+| Gestionar roles | Conceder y retirar los roles configurados |
+
+<Warning>
+  Además del permiso, el **rol del bot tiene que estar por encima** en la lista de roles del
+  servidor que los roles que quieras conceder o retirar. Discord no deja tocar roles iguales o
+  superiores al propio, y en ese caso el cambio falla en silencio: el nick se registra, pero los
+  roles no se mueven.
+</Warning>
+
+## Comprobación rápida
+
+<Steps>
+  <Step title="Revisa la configuración del bot">
+    `/whitelist config show` y `/whitelist show whitelist:"..."`.
+  </Step>
+  <Step title="Prueba el canal">
+    Crea la whitelist. Si al bot le falta permiso en el canal, el propio comando te lo dice antes
+    de crear nada.
+  </Step>
+  <Step title="Prueba los roles">
+    Regístrate con una cuenta secundaria y comprueba que los roles se mueven como esperabas.
+  </Step>
+</Steps>
+
+¿Sigue sin funcionar? Mira [Solución de problemas](/whitelist/troubleshooting).

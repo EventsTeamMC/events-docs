@@ -1,0 +1,81 @@
+---
+title: "Permisos"
+description: "Quién puede usar cada comando y qué permisos necesita el bot"
+---
+
+## Quién puede usar los comandos
+
+<CardGroup cols={2}>
+  <Card title="Público" icon="users">
+    `/support`. Cualquier miembro del servidor.
+  </Card>
+  <Card title="Staff" icon="user-shield">
+    Todo lo demás: `/lookup`, `/info` y `/blacklist ...`.
+  </Card>
+</CardGroup>
+
+Eres staff del bot si:
+
+- eres el **dueño** del servidor, **o**
+- tienes el permiso de Discord **Administrador**, **o**
+- tienes el permiso de Discord **Gestionar servidor**, **o**
+- tienes alguno de los roles añadidos con `/blacklist config staff-role-add`.
+
+```
+/blacklist config staff-role-add rol:@Moderador
+/blacklist config staff-role-remove rol:@Moderador
+```
+
+<Tip>
+  Los roles de staff son la forma de dar acceso al bot **sin** repartir permisos de Discord. Un
+  `@Moderador` con rol de staff puede consultar `/lookup` y ajustar la configuración sin poder
+  tocar nada más del servidor.
+</Tip>
+
+Consulta quién tiene acceso con `/blacklist config show`.
+
+<Note>
+  `/lookup` es de staff a propósito: el historial de baneos de una persona no es información
+  para publicar en un canal general.
+</Note>
+
+<Note>
+  El **programa de afiliados** es más estricto: `/blacklist afiliado verify` exige rol de staff
+  del bot o **Administrador**. Ser dueño del servidor o tener "Gestionar servidor" no basta ahí —
+  ver [Programa de afiliados](/afiliados).
+</Note>
+
+## Qué permisos necesita el bot
+
+| Permiso | Para qué | ¿Imprescindible? |
+|---|---|---|
+| Banear miembros | Importar tus baneos con `import-bans` y aplicar el [auto-ban](/blacklist/auto-ban) | Sí para esas dos cosas |
+| Ver el registro de auditoría | Recuperar el **motivo** real de cada baneo y quién lo hizo | Muy recomendable |
+| Ver el canal + Enviar mensajes + Insertar enlaces (en el canal de alertas) | Publicar las [alertas](/blacklist/alerts) | Sí |
+
+<Warning>
+  Sin **Ver el registro de auditoría**, los baneos se siguen sincronizando pero muchos llegarán
+  como "Sin razón" — y el motivo es lo más útil que verá el staff de las demás comunidades.
+</Warning>
+
+## Jerarquía de roles
+
+Para que el auto-ban funcione, el rol del bot debe estar **por encima** del de la persona a
+banear. Discord no permite banear a alguien con un rol igual o superior al propio. Si pasa, el
+bot lo avisa en el canal de alertas y la alerta se envía igualmente.
+
+## Comprobación rápida
+
+<Steps>
+  <Step title="Revisa la configuración">
+    `/blacklist config show`.
+  </Step>
+  <Step title="Prueba el canal de alertas">
+    `/blacklist config alert-test`. Si no llega, son permisos del canal.
+  </Step>
+  <Step title="Sube el rol del bot">
+    Por encima de tus roles de miembro, para que el auto-ban pueda actuar.
+  </Step>
+</Steps>
+
+¿Sigue algo sin funcionar? Mira [Solución de problemas](/blacklist/troubleshooting).

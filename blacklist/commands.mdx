@@ -1,0 +1,68 @@
+---
+title: "Comandos"
+description: "Referencia completa de los comandos de Events Blacklist"
+---
+
+<Note>
+  Las opciones entre `<>` son obligatorias y las de `[]` opcionales. Todas las respuestas del bot
+  son **efímeras**: solo las ves tú, no llenan el canal.
+</Note>
+
+## Para cualquier miembro
+
+| Comando | Qué hace |
+|---|---|
+| `/support` | Enlace al servidor de soporte de EventsMC. |
+
+## Para el staff
+
+<Note>
+  Requieren ser dueño del servidor, tener **Administrador** o **Gestionar servidor**, o un rol al
+  que se lo hayas dado con `/blacklist config staff-role-add`. Ver [Permisos](/blacklist/permissions).
+</Note>
+
+### Consulta
+
+| Comando | Qué hace |
+|---|---|
+| `/lookup <usuario>` | Historial de riesgo de un usuario: baneos que cuentan, sospechosos y los motivos más recientes. Nunca dice de dónde vienen. |
+| `/info` | Qué es Events Blacklist y cómo protege la privacidad. |
+
+### Configuración — `/blacklist config ...`
+
+| Comando | Qué hace |
+|---|---|
+| `/blacklist config setup <canal_alertas> [importar_baneos]` | Asistente inicial: fija el canal de alertas, opcionalmente importa tus baneos previos y escanea a tus miembros actuales. |
+| `/blacklist config show` | Configuración actual: estado, canal, umbral, auto-ban y roles de staff. |
+| `/blacklist config alert-channel <canal>` | Cambia el canal de alertas. |
+| `/blacklist config alert-threshold <baneos>` | Con cuántos baneos se avisa de un usuario (1–50; por defecto 1) — ver [Alertas](/blacklist/alerts). |
+| `/blacklist config auto-ban <activar> <umbral>` | Banea automáticamente a partir de cierto número de baneos (1–50). Desactivado por defecto — ver [Auto-ban](/blacklist/auto-ban). |
+| `/blacklist config alert-test` | Envía una alerta de prueba al canal configurado. |
+| `/blacklist config import-bans` | Sube a la base compartida todos los baneos que ya tuvieras antes de instalar el bot. |
+| `/blacklist config scan [avisar]` | Revisa a todos tus miembros y lista quién tiene baneos registrados. Con `avisar:true` manda además una alerta por cada uno. Nunca aplica auto-ban. |
+| `/blacklist config staff-role-add <rol>` | Da permisos de staff del bot a un rol. |
+| `/blacklist config staff-role-remove <rol>` | Se los quita. |
+
+### Programa de afiliados
+
+| Comando | Qué hace |
+|---|---|
+| `/blacklist afiliado verify` | Obtén el rol de afiliado en el Discord de EventsMC — ver [Programa de afiliados](/afiliados). |
+
+## Chuleta
+
+```
+# Puesta en marcha
+/blacklist config setup canal_alertas:#alertas-baneos importar_baneos:true
+/blacklist config alert-test
+
+# Ajustes
+/blacklist config alert-threshold baneos:2
+/blacklist config auto-ban activar:true umbral:6
+/blacklist config staff-role-add rol:@Moderador
+
+# Día a día
+/lookup usuario:@sospechoso
+/blacklist config scan
+/blacklist config show
+```

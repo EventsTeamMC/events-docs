@@ -1,0 +1,115 @@
+---
+title: "Cómo funciona el registro"
+description: "La experiencia de un jugador al registrarse, paso a paso, en los dos modos"
+---
+
+Cada whitelist funciona en uno de dos **modos de registro**, que eliges al crearla o cambias
+después con `/whitelist set-mode`.
+
+| | Modo Mensajes | Modo Botones |
+|---|---|---|
+| Cómo se registra | Escribiendo el nick en el canal | Pulsando **Registrar** en el panel |
+| Visibilidad | Público en el canal | Privado (solo lo ve el jugador) |
+| Estado del canal | Se llena de mensajes | Solo el panel |
+| Comprobación de roles | Al escribir el nick | **Antes** de abrir el formulario |
+| Gestionar los propios nicks | `/mis-nicks` | Botón **Mis nicks** o `/mis-nicks` |
+
+<Tabs>
+  <Tab title="Modo Mensajes">
+    El flujo clásico: el jugador escribe su nick como un mensaje normal en el canal.
+
+    <Steps>
+      <Step title="El jugador escribe su nick">
+        Tal cual, sin comandos — por ejemplo `Notch` — en el canal de registro de esa whitelist.
+      </Step>
+      <Step title="El bot valida el formato y los roles">
+        Si el nick no es válido reacciona con ❌; si no cumple las reglas de
+        [roles](/whitelist/roles), con 🚫 y le dice qué rol le falta.
+      </Step>
+      <Step title="Comprueba si es una cuenta Premium">
+        Si lo es, pregunta con dos botones (**Premium** / **No Premium**) cómo quiere
+        registrarlo — hay quien prefiere entrar como No Premium aunque tenga cuenta. Si no
+        existe en Mojang, se registra directamente como No Premium.
+      </Step>
+      <Step title="Si ya alcanzó su límite de nicks">
+        En vez de rechazarlo, el bot le ofrece **reemplazar** uno de sus nicks existentes por el
+        nuevo, o cancelar y no tocar nada.
+      </Step>
+      <Step title="Confirmación">
+        El bot reacciona con ✅ en el mensaje y publica un embed de confirmación (con el render
+        3D del skin, si la cuenta es Premium).
+      </Step>
+    </Steps>
+
+    <Note>
+      Solo la persona que escribió el nick puede pulsar esos botones. Si otro lo intenta, el bot
+      se lo dice y no pasa nada.
+    </Note>
+  </Tab>
+  <Tab title="Modo Botones">
+    El canal solo muestra un **panel** con botones — nada de mensajes sueltos, queda limpio.
+
+    <Steps>
+      <Step title="El jugador pulsa Registrar">
+        Si la whitelist exige roles, se comprueba **aquí**, antes de abrir nada: quien no cumpla
+        recibe el aviso sin haber escrito su nick en balde.
+      </Step>
+      <Step title="Rellena el formulario">
+        Se abre un formulario privado (efímero, solo lo ve él) donde escribe su nick.
+      </Step>
+      <Step title="Mismo flujo, pero en privado">
+        Comprobación Premium/No Premium, límite de nicks y confirmación funcionan igual que en
+        modo Mensajes, sin publicar nada en el canal.
+      </Step>
+      <Step title="Gestiona sus nicks">
+        Con el botón **Mis nicks** del panel ve y elimina sus propios registros sin salir del
+        panel.
+      </Step>
+    </Steps>
+
+    Publica o vuelve a publicar el panel con `/whitelist panel`. Si la whitelist no estaba en
+    modo Botones, ese comando la cambia.
+  </Tab>
+</Tabs>
+
+## Qué nicks se admiten
+
+El nick debe tener entre **3 y 16 caracteres**, usando solo letras, números y guion bajo
+(`A-Z`, `a-z`, `0-9`, `_`) — el mismo formato que exige Minecraft. Cualquier otra cosa se
+rechaza al momento.
+
+Además, según el tipo de cuenta de la whitelist:
+
+| Tipo de cuenta | Nick con cuenta en Mojang | Nick sin cuenta en Mojang |
+|---|---|---|
+| Premium y No Premium | Pregunta cómo registrarlo | Se registra como No Premium |
+| Solo Premium | Se registra como Premium | ❌ Rechazado |
+| Solo No Premium | ❌ Rechazado | Se registra como No Premium |
+
+## Nicks repetidos
+
+Un mismo nick no puede estar dos veces en la misma whitelist:
+
+- Si ya lo tienes registrado tú, el bot reacciona con ⚠️ y te lo recuerda.
+- Si lo tiene otra persona, reacciona con ❌ y no lo registra.
+
+Entre whitelists distintas no hay conflicto: el mismo nick puede estar en **Evento** y en
+**Beta** a la vez.
+
+## Confirmaciones que caducan
+
+Cuando el bot te hace una pregunta (Premium/No Premium, o qué nick reemplazar), esa solicitud
+vive **3 minutos**. Si nadie responde, se cancela sola: el bot borra su mensaje y marca el
+original con ❌. Basta con volver a escribir el nick.
+
+## Consultar o quitar tus propios nicks
+
+Cualquier jugador puede usar `/mis-nicks` para ver y quitar los nicks que tiene registrados en
+ese servidor, sin pedírselo al staff. En modo Botones tiene además el botón **Mis nicks** en el
+panel.
+
+<Info>
+  Si la whitelist tiene [canal de logs](/whitelist/logs) o [roles que se conceden o retiran](/whitelist/roles) al
+  verificarse, ambas cosas ocurren automáticamente en cualquiera de los dos modos — y también
+  cuando el alta la hace el staff a mano.
+</Info>

@@ -1,0 +1,104 @@
+---
+title: "Logs"
+description: "Un canal de logs para todo el servidor y, si lo necesitas, uno propio por whitelist"
+---
+
+Hay **dos niveles** de canal de logs, y puedes usar el que te encaje (o los dos a la vez):
+
+<CardGroup cols={2}>
+  <Card title="Canal del servidor" icon="server">
+    Un único canal que recibe la actividad de **todas** las whitelists. Se configura una vez y
+    ya está.
+  </Card>
+  <Card title="Canal por whitelist" icon="list-check">
+    Una whitelist concreta puede tener el suyo, y entonces **sus** eventos van ahí en vez de al
+    canal del servidor.
+  </Card>
+</CardGroup>
+
+## Canal de logs del servidor
+
+```
+/whitelist config set-log-channel canal:#logs-whitelist
+```
+
+A partir de ese momento, todas las whitelists que no tengan canal propio publican ahí sus altas,
+bajas y rechazos. Deja `canal` vacío para quitarlo.
+
+## Canal de logs de una whitelist concreta
+
+Útil cuando gestionas varios eventos en el mismo servidor y quieres que cada equipo vea solo los
+movimientos de su whitelist:
+
+```
+/whitelist set-log-channel whitelist:"Survival" canal:#logs-survival
+```
+
+Deja `canal` vacío para quitarlo: esa whitelist vuelve a publicar en el canal del servidor (si
+lo hay). El bot te confirma explícitamente a dónde pasan a ir los eventos.
+
+<Note>
+  El orden es siempre el mismo: **canal de la whitelist** → si no tiene, **canal del servidor** →
+  si tampoco hay, no se publica nada. Compruébalo con `/whitelist show` (te dice qué canal está
+  usando esa whitelist y por qué) o con `/whitelist config show`.
+</Note>
+
+## Qué se registra
+
+<AccordionGroup>
+  <Accordion title="✅ Nick registrado">
+    Un jugador se ha registrado por su cuenta, por mensaje o por el panel de botones.
+  </Accordion>
+  <Accordion title="➕ Nick añadido manualmente por staff">
+    Alta con `/whitelist nick add`. Incluye quién la hizo.
+  </Accordion>
+  <Accordion title="➖ Nick eliminado manualmente por staff">
+    Baja con `/whitelist nick remove`. Incluye quién la hizo.
+  </Accordion>
+  <Accordion title="🔌 Nick eliminado desde el servidor de Minecraft">
+    Alguien salió de la whitelist desde el propio servidor conectado por el
+    [plugin](/whitelist/minecraft-plugin) o por la [API](/whitelist/api). Indica qué vínculo lo hizo.
+  </Accordion>
+  <Accordion title="🗑️ El usuario eliminó su propio nick">
+    Con `/mis-nicks` o con el botón **Mis nicks** del panel.
+  </Accordion>
+  <Accordion title="🚫 Registro rechazado">
+    Alguien intentó registrarse sin cumplir las reglas de [roles](/whitelist/roles). El motivo dice qué
+    rol le faltaba o cuál le bloqueaba.
+  </Accordion>
+</AccordionGroup>
+
+## Qué trae cada evento
+
+| Campo | Detalle |
+|---|---|
+| Usuario | Mención + ID de Discord |
+| Whitelist | Nombre, canal de registro, e ID en el pie del embed |
+| Nick | El nick afectado |
+| Tipo de cuenta | 💎 Premium o 🧱 No Premium |
+| UUID de Mojang | Cuando la cuenta es Premium |
+| Origen | 💬 mensaje · 🔘 panel de botones · ⌨️ comando de staff · 🔌 API/plugin |
+| Ejecutado por | Quien lo hizo, si no fue el propio jugador |
+| Motivo | Cuando aplica (rol que falta, quién dio el alta, servidor de origen…) |
+
+<Tip>
+  Los logs son completamente opcionales: si no configuras ningún canal, el resto del bot
+  funciona exactamente igual. Pero son lo primero que te van a pedir en soporte cuando algo no
+  cuadre — merece la pena tener uno.
+</Tip>
+
+## Buenas prácticas
+
+- Pon el canal de logs **privado para el staff**: incluye IDs de Discord y UUIDs.
+- Si tienes varias whitelists con equipos distintos, dale a cada una el suyo; para todo lo demás,
+  con el canal del servidor sobra.
+- Comprueba que el bot puede escribir en el canal antes de darlo por bueno: si no tiene permiso,
+  el evento se pierde silenciosamente (el registro sí se guarda).
+
+## Diferencia con el registro de auditoría global
+
+Además de estos logs, el bot mantiene un **registro de auditoría interno** (creación y borrado de
+whitelists, cambios de configuración, vínculos con servidores de Minecraft…) que se publica en el
+canal de administración de EventsMC, no en tu servidor. Los logs de esta página son un canal
+**adicional**, dentro de tu propio Discord, para que tu equipo siga la actividad del día a día
+sin depender de nadie.

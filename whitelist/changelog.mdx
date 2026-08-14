@@ -1,0 +1,63 @@
+---
+title: "Novedades"
+description: "Todo lo que va cambiando en Events Whitelist, versión a versión"
+---
+
+<Update label="v1.1.0" description="14 de agosto de 2026">
+
+## 🔒 Rol requerido al crear la whitelist
+
+Ya puedes dejar una whitelist restringida a un rol desde el primer momento, sin comandos extra:
+
+```
+/whitelist create nombre:"Beta" canal:#registro-beta rol_requerido:@Tester canal_logs:#logs-beta
+```
+
+- El rol necesario se anuncia en el **canal de registro** y en el **panel de botones**.
+- A quien no lo tenga se le dice **exactamente qué rol le falta**.
+- En modo Botones se comprueba **antes** de abrir el formulario, para que nadie escriba su nick
+  en balde.
+- Puedes seguir añadiendo más roles con `/whitelist role-add` (basta con tener uno). Todo el
+  detalle, en [Roles](/whitelist/roles).
+
+## 📓 Canal de logs para todo el servidor
+
+Antes cada whitelist necesitaba su propio canal. Ahora puedes configurar **uno solo** que recibe
+la actividad de todas:
+
+```
+/whitelist config set-log-channel canal:#logs-whitelist
+```
+
+El orden es: **canal de la whitelist → canal del servidor → nada**. Una whitelist concreta puede
+seguir teniendo el suyo con `/whitelist set-log-channel`. Más detalle en [Logs](/whitelist/logs).
+
+## 🔎 Logs con mucha más información
+
+Cada alta, baja o rechazo llega con el usuario y su ID, la whitelist (nombre, canal e ID), el
+nick, el tipo de cuenta, el **UUID de Mojang**, el **origen** (mensaje, panel de botones, comando
+de staff o tu servidor de Minecraft vía API), quién lo ejecutó si no fue el propio jugador, y el
+motivo cuando lo hay.
+
+## 🆔 IDs a la vista
+
+`/whitelist list` y `/whitelist show` muestran el **ID de cada whitelist** — útil para la API, el
+plugin y para pedir soporte — y `/whitelist show` te dice qué canal de logs está usando y por
+qué. `/whitelist config show` resume roles de staff, canal de logs del servidor y número de
+whitelists.
+
+<Card title="¿Necesitas ayuda?" icon="discord" href="https://discord.eventsmc.xyz/">
+  Soporte y servicios de EventsMC. Pásanos el ID de tu whitelist y lo revisamos al momento.
+</Card>
+
+</Update>
+
+<Update label="v1.0.0" description="Primera versión pública">
+
+Whitelists por canal, verificación Premium/No Premium contra Mojang, modo Mensajes y modo
+Botones, límite de nicks por persona, roles requeridos y bloqueados, roles que se conceden o
+retiran al verificarse, exportación (`plain`, EasyWhitelist, vanilla),
+[API REST + WebSocket](/whitelist/api) y [plugin de Minecraft](/whitelist/minecraft-plugin), y
+[programa de afiliados](/afiliados).
+
+</Update>

@@ -1,0 +1,98 @@
+---
+title: "Primeros pasos"
+description: "De cero a whitelist funcionando en cinco minutos"
+---
+
+<Note>
+  Esta página es el camino corto. Si quieres entender cada opción con calma, sigue después la
+  [Guía completa](/whitelist/guide).
+</Note>
+
+## 1. Invita el bot
+
+<Card title="Añadir Events Whitelist a mi servidor" icon="discord" href="https://discord.com/oauth2/authorize?client_id=1529559292938555405">
+  No necesita permisos de moderación. Con **ver el canal**, **enviar mensajes**, **insertar
+  enlaces**, **añadir reacciones** y **gestionar mensajes** en el canal de registro le vale.
+</Card>
+
+Si vas a usar [roles automáticos](/whitelist/roles), añade también **Gestionar roles** y coloca el rol del
+bot **por encima** de los roles que quieras conceder o retirar.
+
+## 2. Crea tu primera whitelist
+
+```
+/whitelist create nombre:"Survival" canal:#registro-survival tipo_cuenta:"Premium y No Premium" modo:"Mensajes" limite:1
+```
+
+| Opción | Obligatoria | Qué hace |
+|---|---|---|
+| `nombre` | Sí | Identificador único dentro de tu servidor. |
+| `canal` | Sí | Donde los jugadores escriben su nick (modo Mensajes) o ven el panel (modo Botones). |
+| `tipo_cuenta` | No | `Premium y No Premium` (por defecto), `Solo Premium` o `Solo No Premium`. |
+| `modo` | No | `Mensajes` (por defecto) o `Botones` — ver [Cómo funciona](/whitelist/how-it-works). |
+| `limite` | No | Nicks máximos por persona, de 1 a 50 (1 por defecto). |
+| `rol_requerido` | No | Deja la whitelist restringida a un rol desde el primer momento. |
+| `canal_logs` | No | Canal de logs propio de esta whitelist. |
+| `descripcion` | No | Texto corto que aparece en el embed del canal. |
+
+El bot publica en el canal un embed explicando qué hacer, y te responde en privado con el **ID
+de la whitelist** (guárdalo: es lo que te pedirán en soporte y lo que usa la [API](/whitelist/api)).
+
+<Tip>
+  Puedes tener varias whitelists activas a la vez en el mismo servidor — una para el evento,
+  otra para el staff — cada una con su canal y sus reglas.
+</Tip>
+
+## 3. Deja que tus jugadores se registren
+
+En modo **Mensajes** escriben su nick tal cual en el canal. En modo **Botones** pulsan
+**Registrar** en el panel y rellenan un formulario que solo ven ellos. El detalle está en
+[Cómo funciona el registro](/whitelist/how-it-works).
+
+## 4. (Opcional) Restringe quién puede registrarse
+
+```
+/whitelist role-add whitelist:"Survival" rol:@Verificado
+```
+
+También puedes bloquear roles o intercambiarlos al verificarse — ver [Roles](/whitelist/roles).
+
+## 5. (Opcional) Recibe los logs en un canal
+
+```
+/whitelist config set-log-channel canal:#logs-whitelist
+```
+
+Ese canal recoge la actividad de **todas** tus whitelists. Si quieres que una en concreto tenga
+el suyo propio, usa `/whitelist set-log-channel` — ver [Logs](/whitelist/logs).
+
+## 6. (Opcional) Conecta tu servidor de Minecraft
+
+Para que la whitelist se aplique sola, sin exportar nada a mano, sigue
+[Vincular tu servidor de Minecraft](/whitelist/minecraft-plugin).
+
+## Comprueba que todo está bien
+
+```
+/whitelist show whitelist:"Survival"
+```
+
+Te muestra estado, canal, modo, tipo de cuenta, límite, canal de logs en uso y las cuatro listas
+de roles.
+
+## Próximos pasos
+
+<CardGroup cols={2}>
+  <Card title="Guía completa" icon="book-open" href="/guide">
+    Todo el recorrido, con ejemplos de configuraciones reales.
+  </Card>
+  <Card title="Comandos" icon="terminal" href="/commands">
+    Referencia de todos los comandos disponibles.
+  </Card>
+  <Card title="Roles" icon="user-shield" href="/roles">
+    Exigir, bloquear e intercambiar roles automáticamente.
+  </Card>
+  <Card title="¿Algo no funciona?" icon="wrench" href="/troubleshooting">
+    Los fallos habituales y cómo arreglarlos.
+  </Card>
+</CardGroup>

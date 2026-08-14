@@ -1,0 +1,91 @@
+---
+title: "Exportar la whitelist"
+description: "Los tres formatos de exportación y cuál necesita tu servidor"
+---
+
+Si no usas el [plugin](/whitelist/minecraft-plugin), puedes descargar la whitelist cuando quieras y
+llevártela a tu servidor a mano:
+
+```
+/whitelist export whitelist:"Survival" formato:"Plain (un nick por línea)"
+```
+
+El bot te responde en privado con el archivo adjunto y el número de nicks exportados.
+
+## Formatos disponibles
+
+<Tabs>
+  <Tab title="Plain">
+    **Archivo:** `whitelist.txt` · **Incluye:** todos los nicks
+
+    Un nick por línea, sin nada más. El formato universal: sirve para pegarlo en cualquier
+    plugin que lea listas de texto, para procesarlo con un script, o simplemente para tenerlo a
+    la vista.
+
+    ```text
+    Notch
+    jeb_
+    Dinnerbone
+    ```
+  </Tab>
+  <Tab title="EasyWhitelist">
+    **Archivo:** `whitelist.yml` · **Incluye:** todos los nicks
+
+    El formato del plugin [EasyWhitelist](https://www.spigotmc.org/), que funciona por nombre y
+    no por UUID — por eso admite cuentas No Premium.
+
+    ```yaml
+    whitelisted:
+    - Notch
+    - jeb_
+    - Dinnerbone
+    ```
+  </Tab>
+  <Tab title="Vanilla">
+    **Archivo:** `whitelist.json` · **Incluye:** solo cuentas Premium con UUID
+
+    El `whitelist.json` nativo de Minecraft. Como el servidor identifica a los jugadores por
+    UUID de Mojang, **las cuentas No Premium no pueden aparecer aquí**: el bot te avisa en la
+    respuesta si se ha dejado alguna fuera.
+
+    ```json
+    [
+      {
+        "uuid": "069a79f4-44e9-4726-a5be-fca90e38aaf5",
+        "name": "Notch"
+      }
+    ]
+    ```
+  </Tab>
+</Tabs>
+
+## Cuál elegir
+
+| Tu situación | Formato |
+|---|---|
+| Servidor en online-mode, solo cuentas Premium | **Vanilla** |
+| Servidor offline-mode o mezcla Premium/No Premium | **EasyWhitelist** o **Plain** |
+| Usas otro plugin de whitelist | **Plain** y adáptalo |
+| Quieres los datos para un script o una web | **Plain**, o directamente la [API](/whitelist/api) |
+
+<Warning>
+  Exportar es una **foto del momento**. Todo lo que pase después (altas, bajas, cambios de nick)
+  no se refleja en el archivo que ya descargaste: tendrás que volver a exportar. Si eso te
+  supone trabajo repetido, instala el [plugin](/whitelist/minecraft-plugin) y olvídate.
+</Warning>
+
+## Alternativas a exportar a mano
+
+<CardGroup cols={2}>
+  <Card title="Plugin de Minecraft" icon="plug" href="/minecraft-plugin">
+    Sincronización en tiempo real en los dos sentidos. Cero mantenimiento.
+  </Card>
+  <Card title="API REST + WebSocket" icon="code" href="/api">
+    Para tu propia web, panel o integración. Mismos datos, en JSON.
+  </Card>
+</CardGroup>
+
+<Note>
+  La API también sirve los formatos de exportación:
+  `GET /api/v1/whitelists/:id/entries?format=vanilla` devuelve el mismo archivo que el comando.
+</Note>

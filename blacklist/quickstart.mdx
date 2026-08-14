@@ -1,0 +1,97 @@
+---
+title: "Primeros pasos"
+description: "De cero a protegido en cinco minutos"
+---
+
+<Note>
+  Esta página es el camino corto. Para entender cada decisión con calma, sigue después la
+  [Guía completa](/blacklist/guide).
+</Note>
+
+## 1. Invita el bot
+
+<Card title="Añadir Events Blacklist a mi servidor" icon="discord" href="https://discord.com/oauth2/authorize?client_id=1528203943367151706">
+  Necesita **Banear miembros** (para importar tus baneos y para el auto-ban) y **Ver el registro
+  de auditoría** (para saber el motivo de cada baneo y quién lo hizo).
+</Card>
+
+Nada más añadirlo, el bot publica un mensaje de bienvenida con los primeros pasos.
+
+## 2. Configúralo con el asistente
+
+```
+/blacklist config setup canal_alertas:#alertas-baneos importar_baneos:true
+```
+
+| Opción | Obligatoria | Qué hace |
+|---|---|---|
+| `canal_alertas` | Sí | Dónde se avisa cuando entra un usuario de riesgo. |
+| `importar_baneos` | No | Sube a la base compartida los baneos que ya tenías antes de instalar el bot. |
+
+Al terminar, el asistente **escanea automáticamente a tus miembros actuales** y te avisa (en el
+canal de alertas) de cualquiera que ya tenga baneos registrados en la red. Verás el progreso en
+tiempo real mientras trabaja.
+
+<Tip>
+  Si no importaste los baneos durante el setup, puedes hacerlo cuando quieras con
+  `/blacklist config import-bans`. Solo hace falta una vez.
+</Tip>
+
+## 3. Comprueba que las alertas llegan
+
+```
+/blacklist config alert-test
+```
+
+Envía una alerta de ejemplo al canal configurado, con el mismo formato que verás cuando entre un
+usuario real. Si no llega, el bot no tiene permiso para escribir ahí.
+
+## 4. Ajusta el umbral a tu comunidad
+
+Por defecto, el bot avisa desde el **primer baneo**. Si eso te parece demasiado ruidoso:
+
+```
+/blacklist config alert-threshold baneos:3
+```
+
+Cómo elegir el número, en [Alertas](/blacklist/alerts).
+
+## 5. (Opcional) Activa el auto-ban
+
+Para que el bot expulse solo a quien acumule demasiados baneos, sin esperar al staff:
+
+```
+/blacklist config auto-ban activar:true umbral:5
+```
+
+<Warning>
+  El auto-ban está **desactivado por defecto** y banea sin pedir confirmación. Léete
+  [Auto-ban](/blacklist/auto-ban) antes de encenderlo, y elige un umbral claramente por encima del de
+  alerta.
+</Warning>
+
+## Comprueba cómo ha quedado
+
+```
+/blacklist config show
+```
+
+Te muestra si está habilitado, el canal de alertas, el umbral, el estado del auto-ban y los roles
+de staff.
+
+## Próximos pasos
+
+<CardGroup cols={2}>
+  <Card title="Guía completa" icon="book-open" href="/guide">
+    Todo el recorrido, con criterios para elegir umbrales.
+  </Card>
+  <Card title="Cómo funciona" icon="diagram-project" href="/how-it-works">
+    El ciclo de vida de un baneo, de punta a punta.
+  </Card>
+  <Card title="Comandos" icon="terminal" href="/commands">
+    Referencia de todos los comandos.
+  </Card>
+  <Card title="Privacidad" icon="user-secret" href="/privacy">
+    Por qué nunca se sabe quién baneó a quién.
+  </Card>
+</CardGroup>

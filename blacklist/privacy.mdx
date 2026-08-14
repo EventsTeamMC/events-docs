@@ -1,0 +1,88 @@
+---
+title: "Privacidad"
+description: "Cómo se protege el origen de cada baneo y qué se guarda exactamente"
+---
+
+<Info>
+  **Ningún comando revela jamás en qué servidor fue baneado un usuario.** Ni para tu comunidad,
+  ni para el staff de otras. El origen es siempre anónimo.
+</Info>
+
+Es la pieza que hace viable compartir baneos: puedes aportar tu moderación a la red sin exponer
+a tu equipo a represalias, y sin que nadie reconstruya el mapa de qué comunidad expulsó a quién.
+
+## Cómo lo garantizamos
+
+<AccordionGroup>
+  <Accordion title="El servidor de origen se guarda de forma irreversible">
+    De cada baneo se guarda un **hash** del servidor que lo reporta. Sirve para deduplicar (para
+    saber que dos registros vienen del mismo sitio) pero **no se puede revertir** a un servidor
+    real.
+  </Accordion>
+  <Accordion title="El origen real se guarda cifrado, con acceso muy restringido">
+    Existe además una copia cifrada del origen, recuperable en un único caso: **auditar abusos**
+    — por ejemplo, un servidor que registra baneos falsos en masa para perjudicar a alguien. Ese
+    acceso está restringido al equipo de EventsMC y **queda registrado cada vez que se usa**.
+  </Accordion>
+  <Accordion title="Las consultas solo devuelven datos agregados">
+    `/lookup` y las alertas muestran número de baneos, motivos y fechas. **Nunca** de dónde
+    vienen.
+  </Accordion>
+  <Accordion title="El staff que ejecutó el baneo también se anonimiza">
+    Se guarda hasheado, nunca en claro. Ningún comando lo muestra.
+  </Accordion>
+</AccordionGroup>
+
+## Qué se guarda exactamente
+
+| Dato | Cómo |
+|---|---|
+| ID del usuario baneado | En claro — es lo que hay que poder consultar |
+| Motivo del baneo | Tal cual lo escribió el staff, o "Sin razón" |
+| Fecha | Marca de tiempo |
+| Servidor de origen | Hash irreversible + copia cifrada (solo auditoría de abusos) |
+| Staff que baneó | Hash irreversible |
+| Marca de sospechoso | Sí/no |
+| Configuración de tu servidor | Canal de alertas, umbrales, roles de staff, nombre del servidor |
+
+Lo que **no** se guarda: mensajes, contenido de canales, listas de miembros, ni ningún dato de
+usuarios que no hayan sido baneados en algún sitio.
+
+## Baneos sospechosos
+
+Si un baneo viene de un servidor con **menos de 200 miembros**, se marca automáticamente como
+sospechoso. Es la defensa contra las "granjas" de servidores desechables creados solo para inflar
+el historial de alguien.
+
+Un baneo sospechoso:
+
+- **No cuenta** para las [alertas](/blacklist/alerts).
+- **No cuenta** para el [auto-ban](/blacklist/auto-ban).
+- Se muestra aparte en `/lookup` y en las alertas, para que tu staff lo tenga en cuenta si
+  quiere.
+
+Queda registrado igualmente, para no perder la trazabilidad. Y si con el tiempo ese servidor
+crece por encima del umbral, sus baneos se **promocionan** solos y pasan a contar como cualquier
+otro; el bot lo revisa cada 6 horas.
+
+<Note>
+  Las comunidades oficiales de EventsMC están exentas de esta marca: sus baneos cuentan siempre,
+  independientemente del número de miembros.
+</Note>
+
+## Sincronización obligatoria
+
+<Warning>
+  Si tienes el bot activo, los baneos que hagas se comparten automáticamente con la red. **No
+  existe un modo de "solo recibir alertas sin aportar"**: el sistema funciona porque todos
+  aportan y todos se benefician de la protección conjunta.
+</Warning>
+
+## Corregir o borrar
+
+- **Desbanea** a alguien en tu servidor y el registro que aportaste desaparece de la base
+  compartida.
+- **Expulsa el bot** de tu servidor y se eliminan **todos** los baneos que hubieras aportado.
+- ¿Un baneo concreto que crees que no debería estar? Cuéntanoslo en el
+  [servidor de soporte](https://discord.eventsmc.xyz/): el equipo puede retirar registros
+  puntuales, y esa acción también queda auditada.

@@ -1,0 +1,69 @@
+---
+title: "Programa de afiliados"
+description: "Cómo conseguir el rol de afiliado de EventsMC y por qué puede retirarse solo"
+---
+
+El programa de afiliados da un rol especial en el Discord de EventsMC al staff de los servidores
+que cumplen unos requisitos mínimos. Es **el mismo programa en los dos bots**: da igual con cuál
+te verifiques.
+
+<CodeGroup>
+
+```text Events Whitelist
+/whitelist afiliado verify
+```
+
+```text Events Blacklist
+/blacklist afiliado verify
+```
+
+</CodeGroup>
+
+## Requisitos
+
+<Steps>
+  <Step title="Tu servidor debe ser suficientemente grande">
+    El servidor donde ejecutes el comando necesita al menos **150 miembros**.
+  </Step>
+  <Step title="Debes ser staff o administrador ahí">
+    Necesitas tener un **rol de staff configurado en el bot**
+    (`/whitelist config staff-role-add` o `/blacklist config staff-role-add`) o el permiso de
+    **Administrador** en ese servidor.
+
+    Ojo: ser dueño del servidor o tener "Gestionar servidor" **no cuenta** aquí — este requisito
+    es más estricto que el del resto de comandos de staff.
+  </Step>
+  <Step title="Debes estar en el Discord de EventsMC">
+    Si no estás, el bot te lo dirá. [Únete](https://discord.gg/eventsmc) y vuelve a ejecutar el
+    comando.
+  </Step>
+</Steps>
+
+Si cumples los tres, el bot te concede el rol automáticamente y guarda qué servidor usaste para
+verificarte: tu **servidor de origen**.
+
+## Por qué puede retirarse el rol
+
+El rol de afiliado **no es permanente**: se retira solo si dejas de cumplir los requisitos con
+los que te lo ganaste.
+
+<AccordionGroup>
+  <Accordion title="Sales del servidor de origen, o del Discord de EventsMC">
+    Se detecta al instante: se retira el rol y el vínculo guardado.
+  </Accordion>
+  <Accordion title="Pierdes el rol de staff o el Administrador en tu servidor de origen">
+    Se detecta al instante, en cuanto cambian tus roles.
+  </Accordion>
+  <Accordion title="Reconciliación periódica de seguridad">
+    Cada 30 minutos el bot revisa a todos los afiliados por si se perdió algún evento (por
+    ejemplo, porque estuvo caído en ese momento) y corrige cualquier caso que ya no cumpla.
+  </Accordion>
+</AccordionGroup>
+
+Si vuelves a cumplir los requisitos, simplemente ejecuta el comando otra vez.
+
+## Todo queda registrado
+
+Cada concesión, retirada, rechazo o error del sistema se publica en un canal de logs interno del
+equipo de EventsMC. No es visible para los servidores afiliados, pero garantiza que cualquier uso
+indebido del programa se detecte y se pueda auditar.

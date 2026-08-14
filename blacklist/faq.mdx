@@ -1,0 +1,110 @@
+---
+title: "Preguntas frecuentes"
+description: "Las dudas que más nos llegan sobre Events Blacklist"
+---
+
+## Lo básico
+
+<AccordionGroup>
+  <Accordion title="¿Tengo que instalar o alojar algo?">
+    No. El bot ya está funcionando en nuestra infraestructura: solo tienes que
+    [invitarlo](https://discord.com/oauth2/authorize?client_id=1528203943367151706) y ejecutar
+    `/blacklist config setup`.
+  </Accordion>
+  <Accordion title="¿Cuánto cuesta?">
+    Nada. Events Blacklist es gratuito para cualquier comunidad.
+  </Accordion>
+  <Accordion title="¿Tengo que aportar mis baneos para recibir alertas?">
+    Sí. El sistema funciona porque todos comparten: si baneas, se sincroniza; a cambio, te
+    avisamos cuando alguien con baneos activos entra en tu servidor. No hay modo de solo recibir.
+  </Accordion>
+  <Accordion title="¿El bot banea gente automáticamente?">
+    Solo si tú lo activas con `/blacklist config auto-ban`. Por defecto está **desactivado**:
+    únicamente recibes alertas y decide tu staff. Ver [Auto-ban](/blacklist/auto-ban).
+  </Accordion>
+  <Accordion title="Ya tenía usuarios baneados antes de añadir el bot, ¿se sincronizan?">
+    No automáticamente. Usa `/blacklist config import-bans` una vez (o marca
+    `importar_baneos:true` en el `setup`) y se añaden todos.
+  </Accordion>
+</AccordionGroup>
+
+## Privacidad
+
+<AccordionGroup>
+  <Accordion title="¿Puedo saber en qué servidor fue baneado alguien?">
+    No. Ningún comando lo revela, ni para ti ni para nadie. El origen se guarda hasheado y
+    cifrado — ver [Privacidad](/blacklist/privacy).
+  </Accordion>
+  <Accordion title="¿Se sabe quién de mi staff ejecutó un baneo?">
+    Tampoco: se guarda hasheado y ningún comando lo muestra.
+  </Accordion>
+  <Accordion title="¿Qué datos guarda el bot de mi servidor?">
+    La configuración (canal de alertas, umbrales, roles de staff, nombre del servidor) y los
+    baneos que aportas, con el origen anonimizado. Nada de mensajes, canales ni listas de
+    miembros.
+  </Accordion>
+  <Accordion title="¿Cómo borro lo que ha aportado mi servidor?">
+    Expulsa el bot: al salir, **todos** los baneos que aportó tu servidor se eliminan de la base
+    compartida. Para un baneo concreto, basta con desbanear a esa persona en tu servidor.
+  </Accordion>
+</AccordionGroup>
+
+## Alertas y baneos
+
+<AccordionGroup>
+  <Accordion title="¿Por qué solo recibo una alerta por usuario?">
+    Para no llenar el canal: de cada usuario se avisa **una sola vez** por servidor. Se vuelve a
+    avisar si sale y entra de nuevo, si se registra un baneo nuevo suyo mientras ya está dentro,
+    o si haces un escaneo con `avisar:true`.
+  </Accordion>
+  <Accordion title='¿Qué significa que un baneo sea "sospechoso"?'>
+    Que viene de un servidor con menos de 200 miembros, lo que puede indicar un intento de
+    fabricar baneos falsos. **No cuentan** para alertas ni para auto-ban, pero quedan
+    registrados. Si ese servidor crece, sus baneos pasan a contar automáticamente.
+  </Accordion>
+  <Accordion title="Baneé a alguien por error, ¿cómo lo deshago?">
+    Desbanéalo en tu servidor con normalidad: el registro que aportaste desaparece de la base
+    compartida al momento.
+  </Accordion>
+  <Accordion title="¿Puedo avisar sin banear, o banear sin avisar?">
+    El aviso y el baneo son dos umbrales independientes. Puedes tener alertas sin auto-ban (lo
+    normal), o poner el auto-ban muy por encima del umbral de alerta para que el staff siga
+    viendo la zona gris.
+  </Accordion>
+  <Accordion title="Un usuario tiene baneos pero no me llegó ninguna alerta">
+    Suele ser el umbral (`/blacklist config show`), permisos del canal, o que ya se avisó de esa
+    persona antes. Repásalo en [Solución de problemas](/blacklist/troubleshooting).
+  </Accordion>
+  <Accordion title="El auto-ban no se aplicó a alguien que superaba el umbral">
+    O al bot le falta **Banear miembros**, o esa persona tiene un rol por encima del suyo. En los
+    dos casos el bot lo avisa en el canal de alertas.
+  </Accordion>
+</AccordionGroup>
+
+## Uso diario
+
+<AccordionGroup>
+  <Accordion title="¿Cómo compruebo a alguien antes de aceptarlo?">
+    `/lookup usuario:@alguien`. Te da el número de baneos, cuántos son sospechosos y los motivos
+    más recientes.
+  </Accordion>
+  <Accordion title="¿Puedo revisar a todos mis miembros de golpe?">
+    Sí: `/blacklist config scan`. Y con `avisar:true` manda además una alerta al canal por cada
+    detectado. Nunca aplica auto-ban.
+  </Accordion>
+  <Accordion title="¿Cómo doy acceso al bot a mi equipo sin hacerles administradores?">
+    `/blacklist config staff-role-add rol:@Moderador`. Ver [Permisos](/blacklist/permissions).
+  </Accordion>
+  <Accordion title="¿Cómo funciona el programa de afiliados?">
+    Da un rol especial en el Discord de EventsMC al staff de servidores grandes y activos. Ver
+    [Programa de afiliados](/afiliados).
+  </Accordion>
+  <Accordion title="¿Cómo desinstalo o pauso el bot?">
+    Expúlsalo del servidor (recuerda: eso borra los baneos que aportaste). Si prefieres mantenerlo
+    pero en pausa, pídenoslo en el [servidor de soporte](https://discord.eventsmc.xyz/).
+  </Accordion>
+  <Accordion title="¿Dónde pido ayuda si algo no funciona?">
+    Mira primero [Solución de problemas](/blacklist/troubleshooting). Si sigue sin ir, usa `/support` o
+    entra en el [servidor de soporte](https://discord.eventsmc.xyz/).
+  </Accordion>
+</AccordionGroup>

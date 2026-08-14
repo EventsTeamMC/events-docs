@@ -1,0 +1,192 @@
+---
+title: "API"
+description: "REST + WebSocket para conectar tu propia web, panel o integración"
+---
+
+Además del [plugin oficial](/whitelist/minecraft-plugin), puedes hablar directamente con la API de Events
+Whitelist: es la misma que usa el plugin. Sirve para mostrar la whitelist en tu web, integrarla
+con tu panel de control o construir tu propia sincronización.
+
+<Info>
+  **URL base:** `https://whitelist-api.eventsmc.xyz/api/v1`
+</Info>
+
+## Autenticación
+
+Necesitas una clave de vínculo, la misma que genera el plugin:
+
+```
+/whitelist server-link create nombre:"Mi web"
+```
+
+Se envía en cada petición (y en el handshake del WebSocket) como Bearer token:
+
+```
+Authorization: Bearer evw_xxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+<Warning>
+  La clave se muestra **una sola vez** al crearla y da acceso de lectura y de baja a tus
+  whitelists. Guárdala en el servidor, nunca en código de cliente ni en un repositorio público.
+  Si se filtra, revócala con `/whitelist server-link revoke` y crea otra.
+</Warning>
+
+### Alcance de la clave
+
+Si creaste el vínculo con la opción `whitelist:`, esa clave solo puede tocar esa whitelist:
+cualquier petición a otra devuelve `403`. Sin esa opción, ve todas las whitelists de tu servidor
+de Discord.
+
+## Endpoints
+
+### Listar whitelists
+
+```http
+GET /api/v1/whitelists
+```
+
+Devuelve las whitelists visibles para la clave, con su `id`, `name`, `channelId`, `nickType`,
+`registrationMode`, `maxNicksPerUser`, `enabled` y las listas de roles.
+
+### Listar los nicks de una whitelist
+
+```http
+GET /api/v1/whitelists/{whitelistId}/entries
+```
+
+```json
+[
+  { "nick": "Notch", "uuid": "069a79f4-44e9-4726-a5be-fca90e38aaf5", "premium": true },
+  { "nick": "Steve_", "uuid": null, "premium": false }
+]
+```
+
+`uuid` es `null` en las cuentas No Premium. Si vas a aplicar la lista en un servidor
+offline-mode, genera tú el UUID offline
+(`UUID.nameUUIDFromBytes(("OfflinePlayer:" + nick).getBytes(UTF_8))`), que es exactamente el que
+usará ese jugador al entrar.
+
+**Exportaciones:** añade `?format=plain`, `?format=easywhitelist` o `?format=vanilla` y en vez de
+JSON recibirás el archivo correspondiente, igual que con `/whitelist export` — ver
+[Exportar](/whitelist/export).
+
+### Dar de baja un nick
+
+```http
+DELETE /api/v1/whitelists/{whitelistId}/entries/{nick}
+```
+
+```json
+{ "removed": true, "nick": "Notch" }
+```
+
+Es la baja que hace el plugin cuando el staff usa `/whitelist remove` en el juego. Además de
+borrar la entrada, el bot **revierte los roles** que hubiera concedido y lo publica en el
+[canal de logs](/whitelist/logs) con origen 🔌 API/plugin. Si el nick ya no estaba, devuelve `404`.
+
+<Note>
+  La API es de **lectura y baja**: no existe un endpoint para dar de alta. Las altas se hacen
+  siempre desde Discord (por el jugador o por el staff con `/whitelist nick add`), que es lo que
+  garantiza que cada nick quede asociado a una cuenta de Discord real.
+</Note>
+
+### Estado del servicio
+
+```http
+GET /health
+```
+
+Devuelve `{ "ok": true }`. Es el único endpoint que no requiere autenticación.
+
+## Eventos en tiempo real
+
+### WebSocket
+
+```http
+GET /api/v1/ws
+```
+
+Mismo `Authorization: Bearer` en el handshake. Al conectar recibes:
+
+```json
+{ "type": "connected", "guildId": "123456789012345678" }
+```
+
+y a partir de ahí, cada alta o baja de tu servidor de Discord:
+
+```json
+{
+  "type": "entry.added",
+  "guildId": "123456789012345678",
+  "whitelistId": "clx1234567890",
+  "whitelistName": "Survival",
+  "entry": { "nick": "Notch", "uuid": "069a79f4-44e9-4726-a5be-fca90e38aaf5", "premium": true },
+  "timestamp": "2026-08-14T18:30:00.000Z"
+}
+```
+
+Los tipos son `entry.added` y `entry.removed`.
+
+<Tip>
+  Reconecta con backoff exponencial y, tras cada reconexión, vuelve a pedir
+  `GET /entries` para recuperar lo que te perdieras mientras estabas desconectado. Es lo que hace
+  el plugin oficial.
+</Tip>
+
+### Webhooks
+
+Si prefieres que te llamen a ti en vez de mantener una conexión abierta:
+
+```
+/whitelist server-link webhook id:<id-del-vínculo> url:https://tu-servidor.com/webhook
+```
+
+El bot hace `POST` a esa URL con el mismo payload que el WebSocket, en JSON, con un timeout de 5
+segundos y sin reintentos.
+
+Deja `url` vacío para desactivar el webhook. El WebSocket y el webhook se pueden usar a la vez.
+
+<Tip>
+  Usa una URL difícil de adivinar (por ejemplo con un token en la ruta) y comprueba en tu
+  endpoint que el `guildId` del payload es el tuyo.
+</Tip>
+
+## Códigos de respuesta
+
+| Código | Qué significa |
+|---|---|
+| `200` | Todo bien. |
+| `401` | Falta la cabecera `Authorization`, o la clave es inválida o fue revocada. |
+| `403` | La clave está limitada a otra whitelist. |
+| `404` | La whitelist no existe (o no es de tu servidor), o el nick no estaba registrado. |
+| `429` | Has superado el límite de peticiones. |
+| `503` | Servicio temporalmente no disponible (base de datos reconectando). Reintenta. |
+
+## Límite de peticiones
+
+**60 peticiones por minuto y por IP.** Es de sobra para cualquier integración normal: si
+necesitas estar al día al segundo, usa el WebSocket en vez de consultar en bucle.
+
+## Ejemplo completo
+
+```bash
+KEY="evw_xxxxxxxxxxxxxxxxxxxxxxxx"
+BASE="https://whitelist-api.eventsmc.xyz/api/v1"
+
+# 1. Ver qué whitelists ve mi clave
+curl -H "Authorization: Bearer $KEY" "$BASE/whitelists"
+
+# 2. Sacar los nicks de una de ellas
+curl -H "Authorization: Bearer $KEY" "$BASE/whitelists/clx1234567890/entries"
+
+# 3. Descargar el whitelist.json de Minecraft
+curl -H "Authorization: Bearer $KEY" "$BASE/whitelists/clx1234567890/entries?format=vanilla" -o whitelist.json
+
+# 4. Dar de baja un nick
+curl -X DELETE -H "Authorization: Bearer $KEY" "$BASE/whitelists/clx1234567890/entries/Notch"
+```
+
+<Card title="¿Montando una integración?" icon="discord" href="https://discord.eventsmc.xyz/">
+  Cuéntanoslo en el servidor de soporte: te echamos una mano y nos ayuda a decidir qué añadir a
+  la API.
+</Card>

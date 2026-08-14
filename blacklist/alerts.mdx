@@ -1,0 +1,124 @@
+---
+title: "Alertas"
+description: "Cuándo avisa el bot a tu staff, qué trae cada aviso y cómo ajustarlo"
+---
+
+La alerta es el corazón del bot: el aviso de que alguien con historial en otras comunidades está
+en tu servidor.
+
+## Cuándo salta
+
+<CardGroup cols={2}>
+  <Card title="Al entrar un miembro" icon="door-open">
+    Se comprueba siempre, en el momento en que se une.
+  </Card>
+  <Card title="Al registrarse un baneo nuevo" icon="bolt">
+    Si esa persona ya está dentro de tu servidor, te avisamos al instante: no hay que esperar a
+    que vuelva a entrar.
+  </Card>
+  <Card title="Al cambiar sus roles" icon="user-pen">
+    Se reevalúa, pero **sin repetir** un aviso que ya diste por visto.
+  </Card>
+  <Card title="Cuando tú lo pides" icon="magnifying-glass">
+    Con `/blacklist config scan`, que revisa a todos tus miembros de golpe.
+  </Card>
+</CardGroup>
+
+En todos los casos, la condición es la misma: que el número de baneos **que cuentan** llegue a tu
+umbral de alerta.
+
+## Solo una vez por usuario
+
+De cada usuario se avisa **una sola vez en tu servidor**. Si no fuera así, cualquier cambio de
+roles volvería a llenarte el canal con la misma persona.
+
+Se vuelve a avisar cuando hay información nueva:
+
+- **Sale y vuelve a entrar** a tu servidor.
+- **Se registra un baneo nuevo** suyo mientras ya está dentro.
+- Haces un **escaneo** con `/blacklist config scan avisar:true`.
+
+<Note>
+  La marca de "ya avisado" dura **30 días** y se borra en cuanto la persona abandona tu servidor.
+</Note>
+
+## Qué trae la alerta
+
+| Campo | Detalle |
+|---|---|
+| Usuario | Mención + ID de Discord, con su avatar |
+| Baneos | Cuántos baneos **que cuentan** acumula |
+| Baneos sospechosos | Cuántos hay, marcados como "no cuentan" |
+| Motivos | Hasta tres, los más recientes |
+
+Lo que **nunca** aparece: de qué servidores vienen. Ver [Privacidad](/blacklist/privacy).
+
+## El umbral de alerta
+
+```
+/blacklist config alert-threshold baneos:3
+```
+
+Con `3`, solo se avisa de quien acumule 3 o más baneos que cuenten. Por defecto es **1**: se
+avisa desde el primer baneo.
+
+| Umbral | Para quién |
+|---|---|
+| 1 | Comunidades pequeñas o muy cuidadas. Ves todo. |
+| 2–3 | La mayoría. Filtra baneos aislados sin perder los casos serios. |
+| 4+ | Servidores grandes que solo quieren reincidentes claros. |
+
+<Tip>
+  No hace falta subir el umbral para protegerte de baneos falsos: los que vienen de servidores
+  muy pequeños ya están descontados automáticamente.
+</Tip>
+
+## Probar el canal
+
+```
+/blacklist config alert-test
+```
+
+Envía una alerta de ejemplo con el mismo formato que la real. Si no aparece nada, el bot no puede
+escribir en ese canal.
+
+## Cambiar el canal
+
+```
+/blacklist config alert-channel canal:#nuevo-canal
+```
+
+El bot comprueba antes que puede escribir ahí y te avisa si no.
+
+<Warning>
+  Ponlo en un canal **privado del staff**. Las alertas incluyen IDs de Discord y motivos de
+  baneo: no es información para publicar en un canal general.
+</Warning>
+
+## Escaneo manual
+
+```
+/blacklist config scan
+/blacklist config scan avisar:true
+```
+
+Recorre **todos** los miembros actuales y te devuelve un ranking (los 40 primeros por número de
+baneos) con cuántos tiene cada uno y cuántos son sospechosos. Con `avisar:true` envía además una
+alerta al canal por cada uno detectado.
+
+Es útil:
+
+- justo después de instalar el bot (el `setup` ya lo hace por ti),
+- tras una oleada de entradas o un *raid*,
+- cada cierto tiempo, como repaso,
+- si sospechas que te perdiste alertas durante una caída.
+
+<Note>
+  El escaneo **nunca** aplica el auto-ban, ni siquiera si lo tienes activado: solo informa. Los
+  baneos automáticos se aplican en las evaluaciones en tiempo real.
+</Note>
+
+## Si algo no llega
+
+Mira [Solución de problemas](/blacklist/troubleshooting): casi siempre son permisos del canal o el umbral
+más alto de lo que recordabas.

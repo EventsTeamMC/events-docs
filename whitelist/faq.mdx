@@ -1,0 +1,137 @@
+---
+title: "Preguntas frecuentes"
+description: "Las dudas que más nos llegan sobre Events Whitelist"
+---
+
+## Lo básico
+
+<AccordionGroup>
+  <Accordion title="¿Tengo que instalar o alojar algo?">
+    No. El bot ya está funcionando en nuestra infraestructura: solo tienes que
+    [invitarlo](https://discord.com/oauth2/authorize?client_id=1529559292938555405) y
+    configurarlo con comandos. El [plugin de Minecraft](/whitelist/minecraft-plugin) es lo único que se
+    instala, y es opcional.
+  </Accordion>
+  <Accordion title="¿Puedo tener varias whitelists en mi servidor?">
+    Sí, todas las que quieras — evento, beta, staff — cada una con su canal, tipo de cuenta,
+    modo de registro, límite de nicks y reglas de roles. Se crean con `/whitelist create`.
+  </Accordion>
+  <Accordion title="¿Funciona con cuentas No Premium?">
+    Sí. Cada whitelist decide si admite **Premium y No Premium** (por defecto), **solo Premium**
+    o **solo No Premium**. El bot comprueba contra Mojang y, si el nick tiene cuenta, deja que el
+    jugador elija cómo registrarse.
+  </Accordion>
+  <Accordion title="¿Necesito el plugin para usar el bot?">
+    No. Puedes usar solo el bot y [exportar la whitelist](/whitelist/export) cuando quieras. El plugin es
+    para quien prefiera que se sincronice sola en tiempo real.
+  </Accordion>
+  <Accordion title="¿Cuánto cuesta?">
+    Nada. Events Whitelist es gratuito para cualquier comunidad. Si te resulta útil,
+    [pásate por nuestro Discord](https://discord.eventsmc.xyz/) y cuéntanoslo.
+  </Accordion>
+</AccordionGroup>
+
+## Registro de jugadores
+
+<AccordionGroup>
+  <Accordion title="¿Qué pasa si un jugador ya tiene el máximo de nicks?">
+    El bot no le rechaza sin más: le ofrece **reemplazar** uno de sus nicks existentes por el
+    nuevo, o cancelar y no tocar nada.
+  </Accordion>
+  <Accordion title="Un jugador se ha equivocado de nick, ¿cómo lo cambia?">
+    Él mismo, con `/mis-nicks` (o el botón **Mis nicks** del panel): quita el antiguo y se
+    registra de nuevo. El staff también puede hacerlo con `/whitelist nick remove`.
+  </Accordion>
+  <Accordion title="¿Puedo registrar nicks yo, sin que el jugador escriba en el canal?">
+    Sí, con `/whitelist nick add`. El bot detecta solo si la cuenta es Premium, y puedes forzarlo
+    con la opción `tipo_cuenta`. Las altas manuales aplican también los [roles](/whitelist/roles)
+    configurados.
+  </Accordion>
+  <Accordion title="¿Dos personas pueden registrar el mismo nick?">
+    En la misma whitelist no: el bot lo rechaza y avisa de que ya está cogido. En whitelists
+    distintas sí, no hay conflicto.
+  </Accordion>
+  <Accordion title="El bot me preguntó Premium o No Premium y no contesté a tiempo">
+    Esas confirmaciones caducan a los **3 minutos** y se cancelan solas. No pasa nada: vuelve a
+    escribir el nick.
+  </Accordion>
+  <Accordion title="¿Puedo cerrar el registro sin borrar la whitelist?">
+    Sí: `/whitelist toggle whitelist:"Evento" activar:false`. Los nicks se conservan y puedes
+    reabrirlo cuando quieras.
+  </Accordion>
+</AccordionGroup>
+
+## Roles y permisos
+
+<AccordionGroup>
+  <Accordion title="¿Puedo restringir quién se registra en una whitelist?">
+    Sí. Con `/whitelist role-add` exiges un rol (basta tener **uno** de los añadidos) y con
+    `/whitelist role-block-add` bloqueas a quien tenga cierto rol. Ver [Roles](/whitelist/roles).
+  </Accordion>
+  <Accordion title="¿Puedo dar o quitar un rol automáticamente al registrarse?">
+    Sí, con `/whitelist role-grant-add` y `/whitelist role-take-add`. Es la forma habitual de
+    pasar a alguien de "Sin verificar" a "Verificado" en el mismo paso. Y si luego se quita el
+    nick, el bot revierte el cambio.
+  </Accordion>
+  <Accordion title="Configuré los roles pero no se aplican">
+    Casi siempre es jerarquía: el bot necesita **Gestionar roles** y su rol debe estar **por
+    encima** de los que quieras mover. Si no puede, el registro se completa igual pero los roles
+    no cambian. Ver [Solución de problemas](/whitelist/troubleshooting).
+  </Accordion>
+  <Accordion title="¿Cómo doy acceso al bot a mi equipo sin hacerles administradores?">
+    `/whitelist config staff-role-add rol:@Ayudante`. Ese rol podrá usar los comandos del bot sin
+    tener ningún permiso extra de Discord. Ver [Permisos](/whitelist/permissions).
+  </Accordion>
+</AccordionGroup>
+
+## Servidor de Minecraft
+
+<AccordionGroup>
+  <Accordion title="¿En qué formatos puedo exportar la whitelist?">
+    `plain` (un nick por línea), `easywhitelist` (YAML) y `vanilla` (`whitelist.json`, solo
+    cuentas Premium con UUID). Ver [Exportar](/whitelist/export).
+  </Accordion>
+  <Accordion title="¿El plugin funciona en mi versión de Minecraft?">
+    De **1.16.5 en adelante**, en Spigot, Paper, Purpur, Pufferfish y forks, con Java 8 o
+    superior. No está pensado para redes con proxy (BungeeCord/Velocity).
+  </Accordion>
+  <Accordion title="He perdido la clave de conexión del plugin">
+    No se puede recuperar: solo se muestra una vez. Genera una nueva con
+    `/whitelist server-link create` y revoca la antigua con `/whitelist server-link revoke`.
+  </Accordion>
+  <Accordion title="Si quito a alguien en el servidor, ¿se quita también de Discord?">
+    Sí. `/whitelist remove <jugador>` en el juego propaga la baja al bot. Al revés también:
+    quitarlo en Discord lo saca del servidor al instante (y lo expulsa, si está conectado y lo
+    tienes activado).
+  </Accordion>
+  <Accordion title="¿Puedo conectar el bot con mi web o mi panel?">
+    Sí, hay [API REST + WebSocket](/whitelist/api) con la misma clave que usa el plugin.
+  </Accordion>
+</AccordionGroup>
+
+## Logs, datos y cuenta
+
+<AccordionGroup>
+  <Accordion title="¿Puedo tener un canal de logs distinto por whitelist?">
+    Sí, con `/whitelist set-log-channel`. Y con `/whitelist config set-log-channel` pones uno
+    común para todo el servidor. Ver [Logs](/whitelist/logs).
+  </Accordion>
+  <Accordion title="¿Qué datos guarda el bot?">
+    Lo justo para funcionar: IDs de Discord, nicks de Minecraft, UUID de Mojang cuando la cuenta
+    es Premium, y la configuración de tus whitelists. Nada de mensajes ni de contenido de tu
+    servidor.
+  </Accordion>
+  <Accordion title="¿Qué pasa si expulso el bot del servidor?">
+    Deja de funcionar inmediatamente. Si vas a volver a añadirlo, no borres las whitelists antes:
+    `/whitelist delete` sí es irreversible.
+  </Accordion>
+  <Accordion title="¿Cómo funciona el programa de afiliados?">
+    Da un rol especial en el Discord de EventsMC al staff de servidores grandes y activos. Ver
+    [Programa de afiliados](/afiliados).
+  </Accordion>
+  <Accordion title="¿Dónde pido ayuda si algo no funciona?">
+    Mira primero [Solución de problemas](/whitelist/troubleshooting). Si sigue sin ir, usa `/support` o
+    entra directamente en el [servidor de soporte](https://discord.eventsmc.xyz/) — pásanos el
+    **ID de la whitelist** (`/whitelist show`) y lo miramos al momento.
+  </Accordion>
+</AccordionGroup>

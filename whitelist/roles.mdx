@@ -1,0 +1,139 @@
+---
+title: "Roles"
+description: "Exige roles, bloquéalos o intercámbialos automáticamente al verificarse en una whitelist"
+---
+
+Cada whitelist tiene cuatro listas de roles independientes, todas opcionales, que puedes
+combinar libremente para decidir **quién puede registrarse** y **qué le pasa a sus roles** cuando
+lo hace.
+
+<CardGroup cols={2}>
+  <Card title="Roles requeridos" icon="circle-check">
+    Hay que tener **al menos uno** de estos roles para registrarse. Lista vacía = cualquiera
+    puede.
+  </Card>
+  <Card title="Roles bloqueados" icon="ban">
+    Quien tenga **cualquiera** de estos roles **no puede** registrarse, aunque cumpla los
+    requeridos.
+  </Card>
+  <Card title="Roles que se conceden" icon="plus">
+    Se añaden automáticamente al registrarse en la whitelist.
+  </Card>
+  <Card title="Roles que se retiran" icon="minus">
+    Se quitan automáticamente al registrarse en la whitelist.
+  </Card>
+</CardGroup>
+
+## Exigir o bloquear el registro por rol
+
+```
+/whitelist role-add whitelist:"Beta" rol:@Tester
+/whitelist role-block-add whitelist:"Beta" rol:@Sancionado
+```
+
+Con este ejemplo, para registrarse en **Beta** hace falta `@Tester`, **salvo** que también se
+tenga `@Sancionado`, en cuyo caso se deniega igualmente. Las dos comprobaciones se aplican
+juntas, en cualquier modo de registro y también en las altas manuales del staff.
+
+Cuando hay roles requeridos, el bot lo indica en el embed del canal de registro y en el panel de
+botones, y a quien no los tenga le dice **exactamente qué rol le falta**. En modo Botones la
+comprobación se hace **antes** de abrir el formulario, para que nadie escriba su nick en balde.
+Cada rechazo queda registrado en el [canal de logs](/whitelist/logs).
+
+<Tip>
+  Si ya sabes de antemano que la whitelist será solo para un rol, déjalo listo al crearla con
+  `rol_requerido:`
+  — `/whitelist create nombre:"Beta" canal:#registro-beta rol_requerido:@Tester`.
+  Después puedes añadir más con `role-add`: basta con tener **uno** de ellos.
+</Tip>
+
+<Note>
+  `role-block-add` es el caso contrario a `role-add`: en vez de "solo estos roles pueden",
+  "estos roles no pueden". Puedes usar ambos a la vez o solo uno.
+</Note>
+
+## Intercambiar roles al verificarse
+
+Sirve para automatizar flujos como *"quítale el rol de Sin verificar y dale el de Verificado"*
+en el mismo paso en que se registra:
+
+```
+/whitelist role-take-add whitelist:"Survival" rol:@SinVerificar
+/whitelist role-grant-add whitelist:"Survival" rol:@Verificado
+```
+
+<Steps>
+  <Step title="El jugador se registra">
+    Por cualquiera de los tres caminos: escribiendo el nick en el canal, por el panel de
+    botones, o dado de alta a mano por el staff con `/whitelist nick add`.
+  </Step>
+  <Step title="El bot aplica el intercambio">
+    Concede los roles que le falten y retira los que tenga, en la misma operación y con el
+    motivo de auditoría "Verificado en la whitelist X".
+  </Step>
+  <Step title="Si el registro se elimina, se revierte">
+    Al quitarse un nick (por el propio jugador, por el staff, o desde el servidor de Minecraft),
+    el bot deshace el intercambio: retira lo que había concedido y devuelve lo que había
+    quitado.
+  </Step>
+</Steps>
+
+<Warning>
+  **La aplicación de roles es *best-effort*.** Si al bot le falta el permiso **Gestionar roles**,
+  o el rol a mover está por encima del suyo en la jerarquía, el nick se registra igualmente
+  (nunca se bloquea un registro por esto) pero el cambio de roles falla en silencio.
+
+  Antes de anunciarlo a tu comunidad: dale **Gestionar roles** al bot y arrastra su rol **por
+  encima** de todos los que quieras conceder o retirar. Pruébalo con una cuenta secundaria.
+</Warning>
+
+## Quitar una regla
+
+Cada lista tiene su comando `*-remove` correspondiente:
+
+| Añadir | Quitar |
+|---|---|
+| `/whitelist role-add` | `/whitelist role-remove` |
+| `/whitelist role-block-add` | `/whitelist role-block-remove` |
+| `/whitelist role-grant-add` | `/whitelist role-grant-remove` |
+| `/whitelist role-take-add` | `/whitelist role-take-remove` |
+
+Si quitas el último rol requerido, el bot te avisa: a partir de ese momento **cualquiera** puede
+registrarse.
+
+## Ver la configuración actual
+
+```
+/whitelist show whitelist:"Survival"
+```
+
+Muestra las cuatro listas de una vez, además del estado, el canal, el modo, el límite y el canal
+de logs en uso.
+
+## Recetas rápidas
+
+<AccordionGroup>
+  <Accordion title="Verificación automática de entrada al servidor">
+    ```
+    /whitelist role-take-add whitelist:"Survival" rol:@SinVerificar
+    /whitelist role-grant-add whitelist:"Survival" rol:@Miembro
+    ```
+    El registro en la whitelist hace de verificación del Discord: quien se apunta deja de ser
+    "sin verificar" y pasa a ser miembro de pleno derecho.
+  </Accordion>
+  <Accordion title="Whitelist solo para suscriptores o boosters">
+    ```
+    /whitelist role-add whitelist:"VIP" rol:@Booster
+    /whitelist role-add whitelist:"VIP" rol:@Suscriptor
+    ```
+    Basta con tener **uno** de los dos: los roles requeridos funcionan como un "o".
+  </Accordion>
+  <Accordion title="Excluir a gente sancionada de todas las whitelists">
+    Añade `@Sancionado` a la lista de bloqueados de cada whitelist:
+    ```
+    /whitelist role-block-add whitelist:"Evento" rol:@Sancionado
+    /whitelist role-block-add whitelist:"Beta" rol:@Sancionado
+    ```
+    Los bloqueos son por whitelist, así que hay que repetirlo en cada una.
+  </Accordion>
+</AccordionGroup>

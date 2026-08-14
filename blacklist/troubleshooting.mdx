@@ -1,0 +1,107 @@
+---
+title: "Solución de problemas"
+description: "Los fallos más habituales y cómo arreglarlos en un minuto"
+---
+
+<Tip>
+  Empieza siempre por `/blacklist config show`: estado, canal de alertas, umbral, auto-ban y
+  roles de staff, todo de un vistazo. La mitad de los problemas se ven ahí.
+</Tip>
+
+## No llegan las alertas
+
+<Steps>
+  <Step title="Comprueba el canal">
+    ```
+    /blacklist config alert-test
+    ```
+    Si la alerta de prueba **no** aparece, el bot no puede escribir en ese canal: dale ver el
+    canal, enviar mensajes e insertar enlaces. Si aparece, el canal está bien y el problema es
+    otro.
+  </Step>
+  <Step title="Mira el umbral">
+    `/blacklist config show`. Si está en 3 y esa persona tiene 2 baneos, es el comportamiento
+    esperado. Bájalo con `/blacklist config alert-threshold`.
+  </Step>
+  <Step title="Descarta los baneos sospechosos">
+    `/lookup usuario:@alguien` te dice cuántos cuentan y cuántos son sospechosos. Los sospechosos
+    no disparan alertas nunca.
+  </Step>
+  <Step title="Piensa si ya se avisó antes">
+    De cada usuario se avisa **una vez** por servidor. Si ya saltó la alerta hace semanas, no se
+    repite. Fuerza una revisión con `/blacklist config scan avisar:true`.
+  </Step>
+</Steps>
+
+## El auto-ban no banea
+
+| Lo que ves en el canal | Causa | Solución |
+|---|---|---|
+| ⚠️ "me falta el permiso Banear miembros" | El bot no tiene el permiso | Dáselo en los ajustes del servidor |
+| ⚠️ "su rol está por encima del mío" | Jerarquía de roles | Sube el rol del bot por encima |
+| Nada, ni alerta ni baneo | No llega a tu umbral de auto-ban | Revisa `/blacklist config show` y `/lookup` |
+| Alerta sí, baneo no | El auto-ban está desactivado | `/blacklist config auto-ban activar:true umbral:N` |
+| Detecté gente con `/scan` y no baneó a nadie | Es a propósito | El escaneo nunca aplica auto-ban; solo informa |
+
+## Los baneos no se sincronizan
+
+<AccordionGroup>
+  <Accordion title="Llegan como “Sin razón”">
+    Al bot le falta **Ver el registro de auditoría**, que es de donde saca el motivo real. El
+    baneo se guarda igual, pero sin motivo. Dale ese permiso y los siguientes ya vendrán
+    completos.
+  </Accordion>
+  <Accordion title="Baneé, desbaneé y volví a banear, y solo cuenta una vez">
+    Es la protección anti-duplicados: un mismo servidor no puede registrar dos veces a la misma
+    persona en menos de **24 horas**.
+  </Accordion>
+  <Accordion title="El bot no está habilitado en el servidor">
+    `/blacklist config show` → campo **Habilitado**. Si dice "No", ejecuta
+    `/blacklist config setup`.
+  </Accordion>
+</AccordionGroup>
+
+## La importación falla o se queda a medias
+
+<AccordionGroup>
+  <Accordion title="“al bot le falta el permiso Banear miembros”">
+    `import-bans` necesita leer la lista de baneados del servidor, y eso requiere ese permiso.
+    Dáselo y vuelve a ejecutarlo.
+  </Accordion>
+  <Accordion title="Dice que muchos “ya estaban registrados”">
+    Es normal si ya la habías ejecutado, o si otras comunidades ya habían baneado a esa gente.
+    Solo se cuentan como añadidos los registros nuevos de **tu** servidor.
+  </Accordion>
+  <Accordion title="Tarda mucho">
+    Con miles de baneos puede tardar; el bot va actualizando el mensaje con el progreso. Déjalo
+    terminar.
+  </Accordion>
+</AccordionGroup>
+
+## `/lookup` dice "Sin antecedentes" de alguien que sé que fue baneado
+
+Significa que **nadie de la red** ha registrado un baneo contra esa persona. Puede pasar si:
+
+- el servidor que lo baneó no tiene el bot,
+- lo desbanearon después (eso retira el registro),
+- o el baneo es anterior a que ese servidor instalara el bot y nunca importó su historial.
+
+## Los comandos no me aparecen
+
+<AccordionGroup>
+  <Accordion title="No tienes nivel de staff">
+    `/lookup`, `/info` y `/blacklist ...` son de staff. Necesitas ser dueño, tener
+    Administrador o Gestionar servidor, o un rol añadido con `staff-role-add` — ver
+    [Permisos](/blacklist/permissions).
+  </Accordion>
+  <Accordion title="Discord tarda en refrescar los comandos">
+    Si acabas de invitar el bot, cierra y vuelve a abrir Discord (o pulsa `Ctrl+R`).
+  </Accordion>
+</AccordionGroup>
+
+## Nada de esto lo arregla
+
+<Card title="Servidor de soporte de EventsMC" icon="discord" href="https://discord.eventsmc.xyz/">
+  Cuéntanos qué comando usaste, qué esperabas y qué pasó. Si es sobre un usuario concreto,
+  pásanos su ID.
+</Card>

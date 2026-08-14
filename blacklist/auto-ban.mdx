@@ -1,0 +1,95 @@
+---
+title: "Auto-ban"
+description: "Baneo automático: cuándo activarlo, con qué umbral y qué puede salir mal"
+---
+
+El auto-ban expulsa automáticamente a quien acumule demasiados baneos en otras comunidades, sin
+esperar a que tu staff revise la alerta.
+
+<Warning>
+  **Está desactivado por defecto y banea sin pedir confirmación.** Actívalo solo cuando entiendas
+  el umbral que estás eligiendo.
+</Warning>
+
+## Activarlo
+
+```
+/blacklist config auto-ban activar:true umbral:5
+```
+
+Ambas opciones son obligatorias: `activar` (true/false) y `umbral` (1–50).
+
+Para desactivarlo:
+
+```
+/blacklist config auto-ban activar:false umbral:5
+```
+
+## Cómo elegir el umbral
+
+El umbral del auto-ban debería estar **claramente por encima** del de alerta. La idea es que tu
+staff siga viendo la zona gris y el bot solo corte lo evidente.
+
+| Alerta | Auto-ban | Qué consigues |
+|---|---|---|
+| 1 | *(desactivado)* | Lo ves todo, decides todo. Recomendado para empezar. |
+| 2 | 6 | Avisos desde 2 baneos, corte automático solo en reincidentes claros. |
+| 3 | 8 | Canal tranquilo, auto-ban muy conservador. |
+| 1 | 2 | ⚠️ Demasiado agresivo: dos baneos pueden ser dos malentendidos. |
+
+<Tip>
+  Convive primero unos días solo con alertas. Mira qué números reales llegan a tu servidor y
+  elige el umbral con esos datos, no a ojo.
+</Tip>
+
+## Qué cuenta y qué no
+
+Solo cuentan los baneos **que cuentan**: los [sospechosos](/blacklist/privacy#baneos-sospechosos) —los que
+vienen de servidores con menos de 200 miembros— quedan fuera del recuento. Nadie puede
+auto-banearte a alguien montando servidores desechables.
+
+## Cuándo se aplica
+
+- Al **entrar** un miembro que ya supera el umbral.
+- Cuando se registra un **baneo nuevo** suyo mientras ya está en tu servidor.
+
+<Note>
+  El escaneo manual (`/blacklist config scan`) **nunca** aplica el auto-ban, aunque lo tengas
+  activado. Está pensado para informar, no para provocar una oleada de baneos con un comando.
+</Note>
+
+El baneo se ejecuta **antes** de publicar la alerta, para que el mensaje refleje ya el resultado.
+El motivo que queda registrado en Discord es:
+
+```
+Events Blacklist · Auto-ban (N baneos registrados en otras comunidades)
+```
+
+## Cuándo no puede aplicarse
+
+El bot te avisa en el canal de alertas en los dos casos:
+
+<AccordionGroup>
+  <Accordion title="Le falta el permiso Banear miembros">
+    ⚠️ *"Quería aplicar auto-ban a @usuario pero me falta el permiso Banear miembros."*
+
+    Dáselo en los ajustes del servidor.
+  </Accordion>
+  <Accordion title="El usuario está por encima del bot en la jerarquía">
+    ⚠️ *"No puedo aplicar auto-ban a @usuario: su rol está por encima del mío."*
+
+    Sube el rol del bot en la lista de roles del servidor. Discord no deja banear a alguien con
+    un rol igual o superior al propio.
+  </Accordion>
+</AccordionGroup>
+
+En ambos casos la **alerta se envía igualmente**: el staff se entera y puede actuar a mano.
+
+## Y si me equivoco
+
+Desbanea a la persona en tu servidor con normalidad. Eso, además, retira de la base compartida el
+registro que hubiera aportado tu servidor.
+
+<Card title="Ajusta también las alertas" icon="bell" href="/alerts">
+  El auto-ban y las alertas son dos umbrales distintos: configúralos juntos.
+</Card>

@@ -1,0 +1,127 @@
+---
+title: "Solución de problemas"
+description: "Los fallos más habituales y cómo arreglarlos en un minuto"
+---
+
+<Tip>
+  Antes de nada: `/whitelist show whitelist:"..."` te dice de un vistazo el estado, el canal, el
+  modo, el tipo de cuenta, el límite, el canal de logs en uso y las cuatro listas de roles. La
+  mitad de los problemas se ven ahí.
+</Tip>
+
+## El bot no responde a los nicks del canal
+
+<AccordionGroup>
+  <Accordion title="La whitelist está desactivada">
+    Compruébalo con `/whitelist show` (🔴 Desactivada). Reactívala:
+    `/whitelist toggle whitelist:"..." activar:true`.
+  </Accordion>
+  <Accordion title="Estás escribiendo en el canal equivocado">
+    Cada whitelist escucha **su** canal. `/whitelist list` te dice cuál es el de cada una.
+  </Accordion>
+  <Accordion title="La whitelist está en modo Botones">
+    En modo Botones el bot **ignora** los mensajes del canal a propósito: el registro va por el
+    panel. Publica el panel con `/whitelist panel`, o vuelve al modo Mensajes con
+    `/whitelist set-mode`.
+  </Accordion>
+  <Accordion title="Al bot le faltan permisos en el canal">
+    Necesita ver el canal, enviar mensajes, insertar enlaces, añadir reacciones y gestionar
+    mensajes. Ver [Permisos](/whitelist/permissions).
+  </Accordion>
+</AccordionGroup>
+
+## Un nick válido se rechaza
+
+| Reacción | Qué significa | Solución |
+|---|---|---|
+| ❌ + "no es un nick válido" | El nick no cumple 3–16 caracteres con `A-Z a-z 0-9 _` | Es el formato de Minecraft; no hay excepción posible. |
+| 🚫 + "no tienes el rol necesario" | Reglas de [roles](/whitelist/roles) de esa whitelist | Dale el rol requerido, o quita la restricción con `role-remove` / `role-block-remove`. |
+| ⚠️ "ya está registrado por ti" | Ese nick ya es suyo en esa whitelist | Nada que hacer: ya está dentro. |
+| ❌ "ya está registrado por otra persona" | El nick está cogido en esa whitelist | Quítalo con `/whitelist nick remove` si fue un error. |
+| ❌ "solo admite cuentas Premium" | La whitelist es `Solo Premium` y el nick no existe en Mojang | Cambia el tipo con `/whitelist set-type`, o que use su nick real. |
+| ❌ "solo admite cuentas No Premium" | La whitelist es `Solo No Premium` y el nick **sí** existe en Mojang | Igual que arriba, al revés. |
+
+## Los roles no se conceden ni se retiran
+
+Es, con diferencia, el problema más frecuente. El registro se completa igual y el fallo es
+silencioso.
+
+<Steps>
+  <Step title="Dale el permiso Gestionar roles al bot">
+    Ajustes del servidor → Roles → el rol del bot → **Gestionar roles**.
+  </Step>
+  <Step title="Sube el rol del bot en la jerarquía">
+    Tiene que estar **por encima** de todos los roles que quieras conceder o retirar. Discord no
+    permite tocar roles iguales o superiores al propio.
+  </Step>
+  <Step title="Comprueba que la lista es la correcta">
+    `/whitelist show` te enseña las cuatro listas. Confirma que el rol está donde crees.
+  </Step>
+  <Step title="Pruébalo con una cuenta secundaria">
+    Regístrate y mira si los roles se mueven. Si no, repasa los pasos 1 y 2.
+  </Step>
+</Steps>
+
+## No llegan los logs
+
+<AccordionGroup>
+  <Accordion title="No hay ningún canal configurado">
+    `/whitelist config show` te dice si hay canal de servidor, y `/whitelist show` qué canal usa
+    esa whitelist. Sin ninguno de los dos, no se publica nada.
+  </Accordion>
+  <Accordion title="El bot no puede escribir en ese canal">
+    Necesita ver el canal y enviar mensajes. Si no puede, el evento se pierde en silencio (el
+    registro sí se guarda).
+  </Accordion>
+  <Accordion title="Los logs van a otro canal del que esperas">
+    El orden es: canal de la whitelist → canal del servidor → nada. Si la whitelist tiene uno
+    propio, gana ese. Quítaselo dejando `canal` vacío en `/whitelist set-log-channel`.
+  </Accordion>
+</AccordionGroup>
+
+## El panel de botones no aparece o no funciona
+
+<AccordionGroup>
+  <Accordion title="Se borró o quedó sepultado">
+    Republícalo: `/whitelist panel whitelist:"..."`. Puedes indicar otro canal con `canal:`.
+  </Accordion>
+  <Accordion title="Los botones no hacen nada">
+    Si el panel es muy antiguo y la whitelist se borró, el bot limpia el mensaje al pulsarlo.
+    Vuelve a publicarlo con `/whitelist panel`.
+  </Accordion>
+  <Accordion title="Otro jugador no puede pulsar los botones de confirmación">
+    Es a propósito: solo la persona que escribió el nick puede responder a su propia
+    confirmación.
+  </Accordion>
+</AccordionGroup>
+
+## El plugin no sincroniza
+
+Ejecuta `/eventswhitelist status` en el juego y compara:
+
+| Lo que ves | Qué hacer |
+|---|---|
+| Api-key **sin configurar** | `/eventswhitelist apikey TU_CLAVE`. Genera una con `/whitelist server-link create` si no la tienes. |
+| WebSocket **desconectado** | Comprueba que el servidor tiene salida a internet por HTTPS (443) hacia `whitelist-api.eventsmc.xyz`. El plugin reintenta solo. |
+| Última sincronización: **nunca** | Fuerza una con `/eventswhitelist sync` y mira la consola. |
+| Sincroniza, pero faltan jugadores | ¿La clave está limitada a una whitelist? Míralo con `/whitelist server-link list` y ajusta con `/eventswhitelist whitelist all`. |
+| Entran jugadores que no deberían | Estás en modo `additive` y hay entradas puestas a mano en el servidor. Revísalas con `/whitelist list` en el juego. |
+| Desaparecen entradas manuales | Estás en modo `mirror`, que borra todo lo que no venga del bot. Cambia a `additive` en `config.yml`. |
+| Cuentas No Premium que no entran | Usa el modo `custom` en vez de `vanilla`: `whitelist.json` funciona por UUID de Mojang. |
+
+## La API devuelve error
+
+| Código | Causa | Solución |
+|---|---|---|
+| `401` | Falta la cabecera, o la clave es inválida o revocada | Revisa `Authorization: Bearer <clave>` y que el vínculo siga en `/whitelist server-link list`. |
+| `403` | La clave está limitada a otra whitelist | Crea una clave sin la opción `whitelist:`, o usa el ID correcto. |
+| `404` | Whitelist inexistente o nick no registrado | Confirma el ID con `/whitelist list`. |
+| `429` | Más de 60 peticiones por minuto | Espacia las llamadas o pásate al WebSocket. |
+| `503` | Base de datos reconectando | Reintenta en unos segundos; es temporal. |
+
+## Nada de esto lo arregla
+
+<Card title="Servidor de soporte de EventsMC" icon="discord" href="https://discord.eventsmc.xyz/">
+  Cuéntanos qué comando usaste, qué esperabas y qué pasó — y pásanos el **ID de la whitelist**
+  (sale en `/whitelist show`). Con eso lo miramos al momento.
+</Card>

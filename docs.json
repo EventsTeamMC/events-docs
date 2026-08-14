@@ -1,0 +1,116 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Events Docs",
+  "description": "Documentación de los bots y herramientas de EventsMC: Events Whitelist y Events Blacklist.",
+  "colors": {
+    "primary": "#5B8CFF",
+    "light": "#8AB0FF",
+    "dark": "#3B63C4"
+  },
+  "favicon": "/favicon.svg",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Inicio",
+        "groups": [
+          {
+            "group": "EventsMC",
+            "pages": ["index", "afiliados"]
+          }
+        ]
+      },
+      {
+        "tab": "Events Whitelist",
+        "groups": [
+          {
+            "group": "Empezar",
+            "pages": [
+              "whitelist/introduction",
+              "whitelist/quickstart",
+              "whitelist/guide"
+            ]
+          },
+          {
+            "group": "Configuración",
+            "pages": [
+              "whitelist/how-it-works",
+              "whitelist/roles",
+              "whitelist/logs",
+              "whitelist/export"
+            ]
+          },
+          {
+            "group": "Integraciones",
+            "pages": ["whitelist/minecraft-plugin", "whitelist/api"]
+          },
+          {
+            "group": "Referencia",
+            "pages": ["whitelist/commands", "whitelist/permissions"]
+          },
+          {
+            "group": "Ayuda",
+            "pages": [
+              "whitelist/faq",
+              "whitelist/troubleshooting",
+              "whitelist/changelog"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Events Blacklist",
+        "groups": [
+          {
+            "group": "Empezar",
+            "pages": [
+              "blacklist/introduction",
+              "blacklist/quickstart",
+              "blacklist/guide"
+            ]
+          },
+          {
+            "group": "Cómo funciona",
+            "pages": [
+              "blacklist/how-it-works",
+              "blacklist/alerts",
+              "blacklist/auto-ban",
+              "blacklist/privacy"
+            ]
+          },
+          {
+            "group": "Referencia",
+            "pages": ["blacklist/commands", "blacklist/permissions"]
+          },
+          {
+            "group": "Ayuda",
+            "pages": [
+              "blacklist/faq",
+              "blacklist/troubleshooting",
+              "blacklist/changelog"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Soporte",
+        "href": "https://discord.eventsmc.xyz/"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "EventsMC",
+      "href": "https://eventsmc.xyz"
+    }
+  },
+  "footer": {
+    "socials": {
+      "discord": "https://discord.eventsmc.xyz/",
+      "website": "https://eventsmc.xyz"
+    }
+  }
+}

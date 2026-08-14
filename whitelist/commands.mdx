@@ -1,0 +1,118 @@
+---
+title: "Comandos"
+description: "Referencia completa de los comandos de Events Whitelist"
+---
+
+<Note>
+  Todas las opciones entre `<>` son obligatorias y las de `[]` opcionales. La opción `whitelist`
+  tiene **autocompletado**: escribe las primeras letras y elige de la lista.
+</Note>
+
+## Para cualquier jugador
+
+| Comando | Qué hace |
+|---|---|
+| `/info` | Explica qué es el bot y cómo funciona. |
+| `/support` | Enlace al servidor de soporte de EventsMC. |
+| `/mis-nicks` | Consulta y quita tus propios nicks registrados en este servidor. |
+
+## Para el staff
+
+<Note>
+  Los comandos de staff requieren ser dueño del servidor, tener **Administrador** o **Gestionar
+  servidor**, o un rol al que se lo hayas dado con `/whitelist config staff-role-add`. Detalle en
+  [Permisos](/whitelist/permissions).
+</Note>
+
+### Crear y gestionar whitelists
+
+| Comando | Qué hace |
+|---|---|
+| `/whitelist create <nombre> <canal> [tipo_cuenta] [modo] [limite] [rol_requerido] [canal_logs] [descripcion]` | Crea una whitelist con su canal de registro. Con `rol_requerido` queda restringida a un rol desde el primer momento, y con `canal_logs` tiene su propio canal de logs. `limite` va de 1 a 50. |
+| `/whitelist list` | Lista todas las whitelists del servidor, con su ID y su número de nicks. |
+| `/whitelist show <whitelist>` | Detalle completo de una whitelist: estado, canal, modo, tipo, límite, canal de logs en uso y las cuatro listas de roles. |
+| `/whitelist delete <whitelist>` | Elimina una whitelist **y todos sus nicks**. Sin confirmación. |
+| `/whitelist set-channel <whitelist> <canal>` | Cambia el canal de registro (y publica ahí el embed). |
+| `/whitelist set-type <whitelist> <tipo_cuenta>` | Cambia qué cuentas admite: Premium y No Premium / Solo Premium / Solo No Premium. |
+| `/whitelist set-mode <whitelist> <modo>` | Cambia el modo de registro: **Mensajes** o **Botones** — ver [Cómo funciona](/whitelist/how-it-works). |
+| `/whitelist panel <whitelist> [canal]` | Publica (o vuelve a publicar) el panel de botones. Activa el modo Botones si no lo estaba. |
+| `/whitelist set-limit <whitelist> <limite>` | Cambia el máximo de nicks por persona (1–50). |
+| `/whitelist toggle <whitelist> <activar>` | Activa o desactiva el registro sin borrar nada. |
+
+### Roles
+
+Referencia rápida; la explicación completa está en [Roles](/whitelist/roles).
+
+| Comando | Qué hace |
+|---|---|
+| `/whitelist role-add <whitelist> <rol>` | Exige tener alguno de los roles añadidos para registrarse. |
+| `/whitelist role-remove <whitelist> <rol>` | Quita esa exigencia. |
+| `/whitelist role-block-add <whitelist> <rol>` | Al revés que `role-add`: quien tenga este rol **no** puede registrarse. |
+| `/whitelist role-block-remove <whitelist> <rol>` | Quita un rol de la lista negra. |
+| `/whitelist role-grant-add <whitelist> <rol>` | Al verificarse, se concede este rol automáticamente. |
+| `/whitelist role-grant-remove <whitelist> <rol>` | Deja de concederse. |
+| `/whitelist role-take-add <whitelist> <rol>` | Al verificarse, se retira este rol automáticamente. |
+| `/whitelist role-take-remove <whitelist> <rol>` | Deja de retirarse. |
+
+### Nicks
+
+| Comando | Qué hace |
+|---|---|
+| `/whitelist nick add <whitelist> <nick> <usuario> [tipo_cuenta]` | Añade un nick a mano y lo asocia a un usuario de Discord. Por defecto detecta solo si es Premium; con `tipo_cuenta` puedes forzar **Premium** o **No Premium**. Aplica también los roles configurados. |
+| `/whitelist nick remove <whitelist> <nick>` | Quita un nick. Revierte los roles concedidos. |
+| `/whitelist export <whitelist> <formato>` | Descarga la whitelist en `plain`, `easywhitelist` o `vanilla` — ver [Exportar](/whitelist/export). |
+
+### Logs
+
+| Comando | Qué hace |
+|---|---|
+| `/whitelist config set-log-channel [canal]` | Canal de logs **del servidor**: recibe la actividad de todas las whitelists sin canal propio. Vacío para quitarlo. |
+| `/whitelist set-log-channel <whitelist> [canal]` | Canal de logs **de una whitelist** concreta. Tiene prioridad sobre el del servidor; vacío para volver a usar aquel — ver [Logs](/whitelist/logs). |
+
+### Configuración del servidor
+
+| Comando | Qué hace |
+|---|---|
+| `/whitelist config show` | Roles de staff, canal de logs del servidor y número de whitelists. |
+| `/whitelist config staff-role-add <rol>` | Da permisos de staff del bot a un rol. |
+| `/whitelist config staff-role-remove <rol>` | Se los quita. |
+
+### Conectar tu servidor de Minecraft
+
+| Comando | Qué hace |
+|---|---|
+| `/whitelist server-link create <nombre> [whitelist]` | Genera la clave para conectar el plugin o tu integración. **Se muestra una sola vez.** Con `whitelist` la limitas a una sola lista — ver [Plugin](/whitelist/minecraft-plugin). |
+| `/whitelist server-link list` | Lista tus servidores vinculados con su ID, estado, alcance y si tienen webhook. |
+| `/whitelist server-link revoke <id>` | Desconecta un servidor (invalida su clave al instante). |
+| `/whitelist server-link webhook <id> [url]` | URL de webhook para recibir eventos en tiempo real, además del WebSocket. Vacío para quitarla — ver [API](/whitelist/api). |
+
+### Programa de afiliados
+
+| Comando | Qué hace |
+|---|---|
+| `/whitelist afiliado verify` | Obtén el rol de afiliado en el Discord de EventsMC — ver [Programa de afiliados](/afiliados). |
+
+## Chuleta
+
+```
+# Montar
+/whitelist create nombre:"Evento" canal:#registro modo:"Botones" limite:1
+/whitelist config set-log-channel canal:#logs-whitelist
+
+# Restringir
+/whitelist role-add whitelist:"Evento" rol:@Verificado
+/whitelist role-block-add whitelist:"Evento" rol:@Sancionado
+
+# Automatizar roles
+/whitelist role-take-add whitelist:"Evento" rol:@SinVerificar
+/whitelist role-grant-add whitelist:"Evento" rol:@Miembro
+
+# Día a día
+/whitelist list
+/whitelist show whitelist:"Evento"
+/whitelist nick add whitelist:"Evento" nick:Notch usuario:@alguien
+/whitelist export whitelist:"Evento" formato:"Plain (un nick por línea)"
+
+# Conectar el servidor
+/whitelist server-link create nombre:"Survival"
+```

@@ -1,0 +1,299 @@
+---
+title: "Guía completa"
+description: "De la primera whitelist al servidor sincronizado, paso a paso y con ejemplos reales"
+---
+
+Esta guía recorre todo el bot en orden: primero decides **qué** quieres montar, luego lo montas,
+y al final lo conectas con tu servidor de Minecraft. Si solo quieres arrancar rápido, ve a
+[Primeros pasos](/whitelist/quickstart).
+
+---
+
+## Paso 0 · Decide qué necesitas
+
+Antes de escribir ningún comando, responde estas cuatro preguntas: cada una se corresponde con
+una opción de `/whitelist create`.
+
+<AccordionGroup>
+  <Accordion title="¿Una whitelist o varias?" icon="layer-group">
+    Una whitelist = un canal de registro = un conjunto de reglas. Crea varias cuando el público
+    sea distinto: **Evento** abierto a todos, **Beta** solo para testers, **Staff** aparte.
+
+    Un mismo jugador puede estar en varias whitelists del servidor; el límite de nicks se cuenta
+    **por whitelist**, no en total.
+  </Accordion>
+  <Accordion title="¿Premium, No Premium o ambas?" icon="user-check">
+    - **Premium y No Premium** (por defecto): entra todo el mundo. Si el nick tiene cuenta de
+      Mojang, el bot pregunta al jugador cómo quiere registrarse.
+    - **Solo Premium**: se rechaza cualquier nick que no exista en Mojang.
+    - **Solo No Premium**: se rechaza cualquier nick que **sí** exista en Mojang.
+
+    Cámbialo cuando quieras con `/whitelist set-type`.
+  </Accordion>
+  <Accordion title="¿Modo Mensajes o modo Botones?" icon="comment">
+    - **Mensajes**: el jugador escribe su nick en el canal. Clásico, muy fácil de entender, pero
+      el canal se llena de mensajes.
+    - **Botones**: el canal solo tiene un panel; todo el registro ocurre en privado. Canal
+      limpio, y el jugador puede gestionar sus nicks desde el propio panel.
+
+    Comparativa completa en [Cómo funciona el registro](/whitelist/how-it-works).
+  </Accordion>
+  <Accordion title="¿Cuántos nicks por persona?" icon="hashtag">
+    De 1 a 50. Con 1 (por defecto) cada jugador registra una cuenta; súbelo si permites cuentas
+    alternativas o si un mismo Discord gestiona varias personas (familias, cibercafés, equipos).
+
+    Cuando alguien llega a su límite, el bot **no** le rechaza sin más: le ofrece sustituir uno
+    de sus nicks por el nuevo.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Paso 1 · Prepara Discord
+
+<Steps>
+  <Step title="Invita el bot">
+    [Enlace de invitación](https://discord.com/oauth2/authorize?client_id=1529559292938555405).
+  </Step>
+  <Step title="Crea los canales">
+    Uno de registro por whitelist, y (opcional) uno de logs. En el canal de registro el bot
+    necesita **ver el canal**, **enviar mensajes**, **insertar enlaces**, **añadir reacciones** y
+    **gestionar mensajes**.
+  </Step>
+  <Step title="Decide quién es staff del bot">
+    Por defecto pueden usar los comandos el dueño del servidor y quien tenga **Administrador** o
+    **Gestionar servidor**. Para dar acceso a un rol concreto sin darle permisos de Discord:
+
+    ```
+    /whitelist config staff-role-add rol:@Ayudante
+    ```
+
+    Detalle completo en [Permisos](/whitelist/permissions).
+  </Step>
+</Steps>
+
+---
+
+## Paso 2 · Crea la whitelist
+
+```
+/whitelist create nombre:"Evento" canal:#registro-evento tipo_cuenta:"Premium y No Premium" modo:"Botones" limite:1 descripcion:"Whitelist del evento de verano"
+```
+
+El bot publica el embed (o el panel, en modo Botones) en el canal y te devuelve el **ID de la
+whitelist** en un mensaje privado. Ese ID aparece también en `/whitelist list` y
+`/whitelist show`, y es lo que necesitas para la [API](/whitelist/api) y para soporte.
+
+<Tip>
+  Si ya sabes que la whitelist será solo para un rol y con logs propios, déjalo listo en el mismo
+  comando con `rol_requerido:` y `canal_logs:`. Te ahorras dos comandos.
+</Tip>
+
+### Cambiar cosas después
+
+Nada de lo que elijas al crear es definitivo:
+
+| Quiero cambiar… | Comando |
+|---|---|
+| El canal de registro | `/whitelist set-channel` |
+| El tipo de cuenta admitido | `/whitelist set-type` |
+| El modo (Mensajes ⇄ Botones) | `/whitelist set-mode` |
+| El límite de nicks | `/whitelist set-limit` |
+| El canal de logs | `/whitelist set-log-channel` |
+| Pausar el registro sin borrar nada | `/whitelist toggle activar:false` |
+
+<Warning>
+  `/whitelist delete` borra la whitelist **y todos sus nicks**, sin confirmación y sin vuelta
+  atrás. Si solo quieres cerrar el registro temporalmente, usa `/whitelist toggle`.
+</Warning>
+
+---
+
+## Paso 3 · Controla quién puede entrar
+
+Cada whitelist tiene cuatro listas de roles independientes. La página de [Roles](/whitelist/roles) las
+explica a fondo; el resumen:
+
+| Lista | Comando | Efecto |
+|---|---|---|
+| Requeridos | `role-add` | Hay que tener **al menos uno** para registrarse. |
+| Bloqueados | `role-block-add` | Quien tenga **cualquiera** no puede registrarse. |
+| Concedidos | `role-grant-add` | Se dan automáticamente al registrarse. |
+| Retirados | `role-take-add` | Se quitan automáticamente al registrarse. |
+
+**Receta habitual — verificación automática:**
+
+```
+/whitelist role-take-add whitelist:"Evento" rol:@SinVerificar
+/whitelist role-grant-add whitelist:"Evento" rol:@Verificado
+```
+
+Al registrarse, el jugador pasa de `@SinVerificar` a `@Verificado` en el mismo paso. Si más
+adelante se quita el nick (él, el staff o el servidor de Minecraft), el bot **deshace** el
+intercambio.
+
+<Warning>
+  Para que esto funcione el bot necesita **Gestionar roles** y su rol debe estar **por encima**
+  de los roles implicados. Si no puede, el nick se registra igualmente pero los roles no se
+  mueven — es un fallo silencioso. Compruébalo antes de anunciarlo a tu comunidad.
+</Warning>
+
+---
+
+## Paso 4 · Enciende los logs
+
+Sin logs el bot funciona igual, pero te quedas sin saber quién se apuntó y quién no pudo.
+
+```
+/whitelist config set-log-channel canal:#logs-whitelist
+```
+
+Ese canal recoge la actividad de todas las whitelists que no tengan uno propio. Si gestionas
+varios eventos con equipos distintos, dale a cada whitelist el suyo:
+
+```
+/whitelist set-log-channel whitelist:"Evento" canal:#logs-evento
+```
+
+El orden es siempre **canal de la whitelist → canal del servidor → nada**. Todo el detalle, en
+[Logs](/whitelist/logs).
+
+---
+
+## Paso 5 · El día a día del staff
+
+<AccordionGroup>
+  <Accordion title="Dar de alta a alguien a mano" icon="user-plus">
+    ```
+    /whitelist nick add whitelist:"Evento" nick:Notch usuario:@usuario
+    ```
+
+    El bot detecta solo si la cuenta es Premium. Si necesitas forzarlo (por ejemplo, registrar
+    como No Premium un nick que sí existe en Mojang), añade
+    `tipo_cuenta:"No Premium"`. Las altas manuales **también** aplican los roles configurados.
+  </Accordion>
+  <Accordion title="Quitar un nick" icon="user-minus">
+    ```
+    /whitelist nick remove whitelist:"Evento" nick:Notch
+    ```
+
+    Se revierte el intercambio de roles y, si tienes el plugin, el jugador sale de la whitelist
+    del servidor al instante.
+  </Accordion>
+  <Accordion title="Ver el estado de una whitelist" icon="magnifying-glass">
+    `/whitelist list` para el resumen de todas (con su ID y su número de nicks), y
+    `/whitelist show whitelist:"Evento"` para el detalle completo de una.
+  </Accordion>
+  <Accordion title="Sacar la lista para el servidor" icon="file-export">
+    ```
+    /whitelist export whitelist:"Evento" formato:"Vanilla (whitelist.json, solo Premium)"
+    ```
+
+    Qué formato elegir, en [Exportar](/whitelist/export).
+  </Accordion>
+  <Accordion title="Republicar el panel de botones" icon="rotate">
+    ```
+    /whitelist panel whitelist:"Evento"
+    ```
+
+    Útil si el panel se borró o quedó sepultado. Si la whitelist no estaba en modo Botones, el
+    comando la cambia automáticamente.
+  </Accordion>
+</AccordionGroup>
+
+Y los jugadores se autogestionan: `/mis-nicks` les deja ver y quitar sus propios registros sin
+molestar al staff.
+
+---
+
+## Paso 6 · Conecta el servidor de Minecraft
+
+Hasta aquí tienes la whitelist viviendo en Discord y la exportas cuando quieras. Con el
+[plugin oficial](/whitelist/minecraft-plugin) el ciclo se cierra solo:
+
+<Steps>
+  <Step title="Genera la clave en Discord">
+    ```
+    /whitelist server-link create nombre:"Survival"
+    ```
+
+    **La clave se muestra una sola vez.** Cópiala en ese momento.
+  </Step>
+  <Step title="Instala el plugin">
+    Copia el `.jar` en `plugins/`, arranca el servidor y ejecuta en el juego
+    `/eventswhitelist apikey TU_CLAVE`.
+  </Step>
+  <Step title="Comprueba la conexión">
+    `/eventswhitelist status` en el juego: api-key configurada, WebSocket conectado, última
+    sincronización.
+  </Step>
+</Steps>
+
+A partir de ahí, cada alta y cada baja en Discord se aplican en el servidor al instante — y al
+revés: si el staff quita a alguien con `/whitelist remove` en el juego, también desaparece de
+Discord.
+
+¿Tienes tu propio panel o backend? Puedes hablar directamente con la [API](/whitelist/api) en vez de usar
+el plugin.
+
+---
+
+## Tres configuraciones que funcionan
+
+<Tabs>
+  <Tab title="Evento abierto">
+    Máxima participación, mínima fricción.
+
+    ```
+    /whitelist create nombre:"Evento" canal:#registro tipo_cuenta:"Premium y No Premium" modo:"Botones" limite:1
+    /whitelist config set-log-channel canal:#logs-whitelist
+    ```
+
+    Canal limpio gracias al modo Botones, todo el mundo puede apuntarse y el staff ve la
+    actividad en un único canal de logs.
+  </Tab>
+  <Tab title="Beta cerrada">
+    Solo testers, y que el registro les dé acceso al resto del Discord.
+
+    ```
+    /whitelist create nombre:"Beta" canal:#registro-beta tipo_cuenta:"Solo Premium" rol_requerido:@Tester canal_logs:#logs-beta
+    /whitelist role-block-add whitelist:"Beta" rol:@Sancionado
+    /whitelist role-grant-add whitelist:"Beta" rol:@BetaActiva
+    ```
+
+    Hace falta `@Tester`, se deniega a `@Sancionado` aunque sea tester, y al registrarse se
+    concede `@BetaActiva`.
+  </Tab>
+  <Tab title="Servidor permanente">
+    Whitelist viva, sincronizada con el servidor de Minecraft.
+
+    ```
+    /whitelist create nombre:"Survival" canal:#whitelist limite:2
+    /whitelist role-take-add whitelist:"Survival" rol:@SinVerificar
+    /whitelist role-grant-add whitelist:"Survival" rol:@Miembro
+    /whitelist server-link create nombre:"Survival"
+    ```
+
+    Dos cuentas por persona, verificación automática por roles y el
+    [plugin](/whitelist/minecraft-plugin) aplicando los cambios en tiempo real.
+  </Tab>
+</Tabs>
+
+---
+
+## Siguiente parada
+
+<CardGroup cols={2}>
+  <Card title="Referencia de comandos" icon="terminal" href="/commands">
+    Todos los comandos, con sus opciones.
+  </Card>
+  <Card title="Preguntas frecuentes" icon="circle-question" href="/faq">
+    Las dudas que más nos llegan.
+  </Card>
+  <Card title="Solución de problemas" icon="wrench" href="/troubleshooting">
+    Cuando algo no sale como esperabas.
+  </Card>
+  <Card title="Soporte de EventsMC" icon="discord" href="https://discord.eventsmc.xyz/">
+    Te ayudamos con tu configuración concreta.
+  </Card>
+</CardGroup>

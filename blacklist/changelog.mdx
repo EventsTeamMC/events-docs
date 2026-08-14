@@ -1,0 +1,46 @@
+---
+title: "Novedades"
+description: "Todo lo que va cambiando en Events Blacklist"
+---
+
+<Update label="Agosto 2026" description="14 de agosto de 2026">
+
+## 🔁 Una sola alerta por usuario
+
+Hasta ahora, cada vez que a un usuario con baneos se le añadía o quitaba un rol, el aviso se
+volvía a publicar en tu canal de alertas. Se acabó: de cada usuario se avisa **una única vez**
+por servidor.
+
+Sigues recibiendo un aviso nuevo cuando hay información nueva: si esa persona **sale y vuelve a
+entrar** a tu servidor, o si le registran **un baneo nuevo** en otra comunidad mientras ya está
+dentro. Menos ruido, sin perder información. Detalle en [Alertas](/blacklist/alerts).
+
+## 🟡 Los baneos sospechosos se revisan solos
+
+Un baneo se marca como *sospechoso* cuando viene de un servidor muy pequeño. Ahora, si ese
+servidor crece y se convierte en una comunidad de confianza, **sus baneos pasan automáticamente a
+contar** para tus alertas y para el auto-ban, sin que nadie tenga que tocar nada.
+
+Además, los baneos de las comunidades oficiales de EventsMC ya nunca se marcan como sospechosos.
+Ver [Privacidad](/blacklist/privacy#baneos-sospechosos).
+
+## 🛠️ Correcciones internas
+
+Arreglados los mensajes duplicados en los logs del programa de afiliados y mejorada la
+fiabilidad del registro interno del sistema.
+
+<Card title="¿Necesitas ayuda?" icon="discord" href="https://discord.eventsmc.xyz/">
+  Soporte y servicios de EventsMC.
+</Card>
+
+</Update>
+
+<Update label="Primera versión pública">
+
+Sincronización automática y obligatoria de baneos entre comunidades, base de datos compartida con
+[origen anónimo](/blacklist/privacy), aviso instantáneo a las comunidades donde el usuario ya esté dentro,
+[alertas](/blacklist/alerts) configurables por umbral, [auto-ban](/blacklist/auto-ban) opcional, marca de baneos
+sospechosos según el tamaño del servidor de origen, importación del historial previo, escaneo de
+miembros, `/lookup` y [programa de afiliados](/afiliados).
+
+</Update>
