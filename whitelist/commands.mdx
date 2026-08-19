@@ -28,7 +28,7 @@ description: "Referencia completa de los comandos de Events Whitelist"
 
 | Comando | Qué hace |
 |---|---|
-| `/whitelist create <nombre> <canal> [tipo_cuenta] [modo] [limite] [rol_requerido] [canal_logs] [descripcion]` | Crea una whitelist con su canal de registro. Con `rol_requerido` queda restringida a un rol desde el primer momento, y con `canal_logs` tiene su propio canal de logs. `limite` va de 1 a 50. |
+| `/whitelist create <nombre> <canal> [tipo_cuenta] [modo] [limite] [rol_requerido] [canal_logs] [descripcion]` | Crea una whitelist con su canal de registro. Con `rol_requerido` queda restringida a un rol desde el primer momento, y con `canal_logs` tiene su propio canal de logs. `limite` va de 1 a 50. **Máximo 3 whitelists por propietario de servidor**, sumando todos sus Discords (ver aviso abajo). |
 | `/whitelist list` | Lista todas las whitelists del servidor, con su ID y su número de nicks. |
 | `/whitelist show <whitelist>` | Detalle completo de una whitelist: estado, canal, modo, tipo, límite, canal de logs en uso y las cuatro listas de roles. |
 | `/whitelist delete <whitelist>` | Elimina una whitelist **y todos sus nicks**. Sin confirmación. |
@@ -38,6 +38,20 @@ description: "Referencia completa de los comandos de Events Whitelist"
 | `/whitelist panel <whitelist> [canal]` | Publica (o vuelve a publicar) el panel de botones. Activa el modo Botones si no lo estaba. |
 | `/whitelist set-limit <whitelist> <limite>` | Cambia el máximo de nicks por persona (1–50). |
 | `/whitelist toggle <whitelist> <activar>` | Activa o desactiva el registro sin borrar nada. |
+
+<Warning>
+  **El cupo de whitelists es del propietario del servidor, no del servidor.**
+
+  Cada dueño de Discord puede tener **3 whitelists como máximo**, sumando **todos** sus servidores.
+  Y cuentan para él aunque las cree otra persona: si un miembro de tu staff ejecuta
+  `/whitelist create`, esa whitelist se apunta al dueño de ese Discord.
+
+  Se cuenta así a propósito. Por servidor, la forma evidente de saltárselo sería abrir tres Discords
+  más; por quien escribe el comando, bastaría con pedírselo a un compañero.
+
+  `/whitelist list` te dice en todo momento cuántas llevas de las 3 y en qué servidores están.
+  Para hacer hueco, borra una que ya no uses con `/whitelist delete`.
+</Warning>
 
 ### Roles
 

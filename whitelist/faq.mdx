@@ -13,8 +13,25 @@ description: "Las dudas que más nos llegan sobre Events Whitelist"
     instala, y es opcional.
   </Accordion>
   <Accordion title="¿Puedo tener varias whitelists en mi servidor?">
-    Sí, todas las que quieras — evento, beta, staff — cada una con su canal, tipo de cuenta,
-    modo de registro, límite de nicks y reglas de roles. Se crean con `/whitelist create`.
+    Sí — evento, beta, staff — cada una con su canal, tipo de cuenta, modo de registro, límite de
+    nicks y reglas de roles. Se crean con `/whitelist create`.
+
+    Con un tope: **3 whitelists por propietario de servidor**, sumando todos sus Discords. Mira la
+    pregunta de abajo, porque el cupo no funciona como la gente espera.
+  </Accordion>
+  <Accordion title="¿Por qué me dice que he llegado al límite si en este servidor solo tengo una?">
+    Porque el cupo es del **dueño del Discord**, no del servidor. Cada propietario tiene **3
+    whitelists** repartidas entre **todos** sus servidores: si tienes una en cada uno de tus tres
+    Discords, ya has llenado el cupo aunque en cada sitio solo veas una.
+
+    Y cuentan para el dueño aunque las cree otra persona: si un miembro de tu staff ejecuta
+    `/whitelist create`, esa whitelist se le apunta al propietario de ese servidor.
+
+    Se cuenta así porque cualquier otra forma se salta sola: por servidor, bastaría con abrir tres
+    Discords más; por quien escribe el comando, bastaría con pedírselo a un compañero de staff.
+
+    `/whitelist list` te dice cuántas llevas y dónde están. Para hacer hueco, borra una que ya no
+    uses con `/whitelist delete`.
   </Accordion>
   <Accordion title="¿Funciona con cuentas No Premium?">
     Sí. Cada whitelist decide si admite **Premium y No Premium** (por defecto), **solo Premium**
