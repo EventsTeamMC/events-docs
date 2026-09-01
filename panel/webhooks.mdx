@@ -1,0 +1,75 @@
+---
+title: "Avisos en Discord"
+description: "Webhooks de instancia y de studio: qué avisa cada uno y cómo se configuran"
+---
+
+El panel puede enviar lo que pasa a un canal de Discord. Hay **dos niveles**, y son
+independientes: los dos pueden estar activos a la vez.
+
+<CardGroup cols={2}>
+  <Card title="Por instancia" icon="cube">
+    Lo que pasa **dentro** de una instancia: entradas, salidas, cierres inesperados y códigos
+    canjeados.
+  </Card>
+  <Card title="Por studio" icon="store">
+    Lo que pasa **a nivel de studio**: instancias creadas o bloqueadas, eventos publicados y
+    accesos concedidos o retirados.
+  </Card>
+</CardGroup>
+
+## Por qué los dos
+
+El webhook de instancia solo cuenta lo suyo. Un studio con ocho instancias no tenía forma de
+enterarse de nada de nivel superior —una instancia nueva, un evento publicado, alguien con
+acceso nuevo al panel— salvo abriendo el panel y mirando. El webhook de studio es ese canal.
+
+## Conseguir la URL
+
+<Steps>
+  <Step title="En Discord, en el canal que quieras">
+    **Editar canal → Integraciones → Webhooks → Nuevo webhook**.
+  </Step>
+  <Step title="Copiar la URL">
+    Empieza por `https://discord.com/api/webhooks/`. Solo se aceptan URLs de ese tipo.
+  </Step>
+  <Step title="Pegarla en el panel">
+    En la pestaña **Avisos** de la instancia, o en la pestaña **Avisos del studio** de la ficha
+    del studio.
+  </Step>
+</Steps>
+
+<Note>
+Los webhooks se envían **desde el servidor**, nunca desde el navegador. La URL no sale del
+backend, así que no puede filtrarse a nadie que abra el panel.
+</Note>
+
+## Avisos de instancia
+
+| Aviso | Qué manda |
+| --- | --- |
+| **Alguien entra** | El nombre, el tipo de cuenta y cuánta gente hay dentro. |
+| **Alguien sale** | Incluye cuánto tiempo estuvo. |
+| **El juego se cierra de forma inesperada** | Salidas no limpias, con el motivo si se conoce. |
+| **Alguien canjea un código** | Quién ha entrado y cuántos usos quedan. |
+
+## Avisos de studio
+
+| Aviso | Cuándo salta |
+| --- | --- |
+| **Se crea una instancia** | Alguien del studio crea una. |
+| **Se elimina una instancia** | Se manda a la papelera. |
+| **Se bloquea o desbloquea una instancia** | Cambia su estado de bloqueo. |
+| **Se publica un evento** | Se crea un evento del studio. |
+| **Se da acceso a alguien** | Una cuenta nueva entra al panel. |
+| **Se retira el acceso a alguien** | Una cuenta deja de tenerlo. |
+| **Se canjea un código** | En cualquier instancia del studio. |
+| **Se banea a un jugador** | En cualquier instancia del studio. |
+
+Cada destino elige por separado qué avisos quiere, así que se puede tener un canal de staff con
+todo y un canal público con solo los eventos publicados.
+
+## Varios destinos
+
+Un studio admite hasta **5** destinos. Cada uno tiene su nombre, su URL, su interruptor de
+encendido y su propia selección de avisos, y se puede probar con un botón antes de dejarlo
+funcionando.

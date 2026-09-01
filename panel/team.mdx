@@ -1,0 +1,92 @@
+---
+title: "Equipo y studios"
+description: "Roles, permisos de acceso y qué servicios tiene contratados cada studio"
+---
+
+El acceso al panel se concede **por cuenta de Discord**. No hay contraseñas, no hay registro
+abierto: alguien con permiso da de alta un ID de Discord y esa persona ya puede entrar.
+
+## Roles
+
+| Rol | Qué puede hacer | ¿Da acceso a otros? |
+| --- | --- | --- |
+| **Administrador de Events** | Todo: la plataforma entera, todos los studios y todas las cuentas. | Sí |
+| **Administrador del studio** | Las instancias y los eventos de su studio. | Sí |
+| **Editor** | Trabaja en las instancias y los eventos de su studio. | Según el studio |
+| **Creador de contenido** | Como un editor, pensado para creadores con instancias propias. | Según el studio |
+| **Solo calendario** | Únicamente publica y edita los eventos de su studio. | No |
+
+## Quién puede dar acceso
+
+Antes esto lo decidía el rol y nada más: solo el administrador del studio podía añadir a alguien.
+Ahora un administrador de Events lo puede fijar **a mano por studio**, desde la ficha del studio:
+
+<CardGroup cols={3}>
+  <Card title="Según el rol" icon="user-gear">
+    El comportamiento de siempre: solo el administrador del studio añade cuentas.
+  </Card>
+  <Card title="Permitida" icon="user-plus">
+    Los editores y creadores también pueden añadir cuentas a su studio.
+  </Card>
+  <Card title="Bloqueada" icon="user-lock">
+    Nadie del studio añade cuentas; solo un administrador de Events.
+  </Card>
+</CardGroup>
+
+Quien no lo tenga permitido ve la sección **Equipo** con un aviso claro, en vez de un botón que
+la API rechaza.
+
+## Servicios contratados
+
+Cada studio tiene una lista de servicios que un administrador de Events enciende y apaga a mano,
+**al margen de cualquier plan**:
+
+| Servicio | Qué desbloquea |
+| --- | --- |
+| **Launcher** | Crear y gestionar instancias. |
+| **Calendario** | Publicar eventos en el calendario y en el launcher. |
+| **Events Whitelist** | Gestionar las whitelists del bot desde el panel. |
+| **Events Blacklist** | La red de baneos compartida. Gratis para todo el mundo. |
+| **Servidores de juego** | El panel de hosting en hosting.eventsmc.xyz. |
+| **Estadísticas** | Historial de jugadores y de actividad. |
+| **Avisos en Discord** | Webhooks de instancia y de studio. |
+
+Un servicio apagado sigue apareciendo en la barra lateral, atenuado y con un candado. Así se
+sabe que existe, sin que parezca que está roto.
+
+<Note>
+**Events Blacklist queda fuera de todo esto en la práctica**: es gratis para todos, en todos los
+planes, siempre. Una red de baneos solo vale algo si las comunidades pequeñas también están
+dentro.
+</Note>
+
+## Ficha de un studio
+
+Además del nombre y el logo, cada studio tiene:
+
+- **Máximo de instancias** — cuántas pueden crear sus administradores. `0` es sin límite.
+- **Discord del studio** — la invitación permanente, distinta de la de cada evento. Sale en el
+  calendario.
+- **Baneados del studio** — una lista común que las instancias pueden aplicar además de la suya.
+- **Servicios** y **gestión de accesos**, arriba.
+- **Avisos del studio** — ver [Avisos en Discord](/panel/webhooks).
+
+## Añadir a alguien
+
+<Steps>
+  <Step title="Copiar su ID de Discord">
+    En Discord: **Ajustes → Avanzado → Modo desarrollador**. Después, clic derecho sobre la
+    persona → **Copiar ID**. Son entre 17 y 20 dígitos.
+  </Step>
+  <Step title="Equipo → Añadir una cuenta">
+    Pega el ID y elige el rol. El panel explica qué puede hacer cada rol mientras lo eliges.
+  </Step>
+  <Step title="Que entre con Discord">
+    Su nombre y su foto se toman de Discord automáticamente.
+  </Step>
+</Steps>
+
+<Warning>
+El ID se comprueba contra Discord **antes** de crear la cuenta. Un ID mal copiado se rechaza en
+el momento, en lugar de quedarse en la lista para siempre como una cuenta fantasma.
+</Warning>

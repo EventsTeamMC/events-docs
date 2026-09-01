@@ -1,0 +1,134 @@
+---
+title: "Instancias"
+description: "Crear y gestionar la copia de Minecraft que reciben los jugadores"
+---
+
+Una **instancia** es la copia de Minecraft que recibe el jugador: su versión, su modloader, sus
+mods, sus archivos y su aspecto en el launcher. Es la unidad con la que trabaja todo lo demás —
+un evento apunta a una instancia, y una whitelist controla quién entra en ella.
+
+## El asistente
+
+**Instancias → Nueva instancia** abre un asistente de seis pasos. Pide solo lo imprescindible;
+todo lo demás se ajusta después desde la propia instancia.
+
+<Steps>
+  <Step title="Identidad">
+    Nombre, categoría y studio. El nombre es lo que ve el jugador en la lista del launcher.
+  </Step>
+  <Step title="Motor">
+    Versión de Minecraft, modloader y versión del loader. La versión del loader se rellena sola
+    en cuanto eliges las otras dos.
+  </Step>
+  <Step title="Aspecto">
+    Fondo, logo y color de acento, con una **vista previa en vivo** de cómo quedará la portada
+    en el launcher.
+  </Step>
+  <Step title="Acceso">
+    Si se crea un código de acceso y quién entra en la whitelist desde el principio.
+  </Step>
+  <Step title="Archivos">
+    Qué hace el launcher con los archivos que ya tenga el jugador. Ver
+    [Sincronización](#sincronización-de-archivos).
+  </Step>
+  <Step title="Resumen">
+    Un repaso de todo, y qué queda por hacer después de crearla.
+  </Step>
+</Steps>
+
+<Note>
+Pulsar **Siguiente** sin tocar nada también produce una instancia que funciona: todos los
+valores por defecto son la opción segura.
+</Note>
+
+## Las pestañas de una instancia
+
+| Pestaña | Para qué |
+| --- | --- |
+| **Resumen** | Los datos técnicos y las imágenes. Desde aquí se abre la configuración completa. |
+| **Acceso** | Whitelist, staff, códigos, quién ha entrado y quién está baneado. |
+| **Archivos** | Mods, configuración y mundos que recibe el jugador. |
+| **Jugadores** | Quién está conectado ahora mismo, y expulsarlo o banearlo. |
+| **Canales** | La copia de ensayo, separada de la que se está jugando. |
+| **Términos** | Lo que el jugador acepta antes de jugar. |
+| **Avisos** | El webhook de Discord de esta instancia. |
+
+## Quién puede entrar
+
+Una instancia **nunca es pública por sí sola**. Se entra de dos maneras, y las dos conviven:
+
+- **Whitelist manual** — se añaden nombres a mano.
+- **Código de acceso** — el jugador lo escribe en el launcher. Cada código tiene un número
+  máximo de usos y se ve quién lo ha canjeado.
+
+La pestaña **Acceso** reúne las dos, más la lista de staff, la lista de quien ya ha entrado y
+los baneos. En el panel anterior eso estaba repartido en cinco pestañas distintas.
+
+### Solo staff
+
+El interruptor **Solo staff** deja entrar únicamente a la lista de staff, para montar o ensayar
+el evento. Al activarlo se expulsa a quien no sea staff; el resto **conserva su acceso** y ve un
+aviso en el launcher hasta que se desactive.
+
+## Bloquear y ocultar
+
+Son cosas distintas y el panel las mantiene separadas:
+
+<CardGroup cols={2}>
+  <Card title="Bloquear" icon="lock">
+    Corta la entrada. La instancia sigue visible y se puede añadir, pero nadie puede jugar.
+  </Card>
+  <Card title="Ocultar" icon="eye-slash">
+    La retira del launcher y desactiva sus códigos. Quien ya la tenga deja de verla.
+  </Card>
+</CardGroup>
+
+## Sincronización de archivos
+
+Decide qué hace el launcher con lo que el jugador tenga en su equipo y no esté en el envío:
+
+| Modo | Qué hace |
+| --- | --- |
+| **Conservar** | No borra nada. El jugador puede añadir sus propios mods. |
+| **Gestionada** | Dentro de las carpetas que se envían, borra lo que sobra. Mundos y capturas no se tocan. |
+| **Reinicio total** | La instancia queda exactamente como se envía. Se borra todo lo demás. |
+
+En los tres casos se respetan las **rutas preservadas**: archivos que pertenecen al jugador y
+sobreviven entre partidas, como `options.txt` o la configuración del chat de voz.
+
+## Canales: público y desarrollo
+
+El **canal de desarrollo** es una segunda copia completa de la instancia, con sus propios
+archivos, versión y loader. Sirve para preparar la siguiente versión sin tocar la que se está
+jugando esta noche.
+
+<Warning>
+Publicar **sustituye** los archivos del canal público por los del de desarrollo, incluidas las
+eliminaciones. El canal de desarrollo se conserva tal cual para seguir trabajando.
+</Warning>
+
+Mientras se edita el canal de desarrollo, el gestor de archivos lo indica de forma bien visible.
+El canal no se recuerda entre recargas a propósito: acabar en el canal de desarrollo sin haberlo
+pedido es justo la manera de subir los mods de la semana que viene sobre la copia que la gente
+está jugando.
+
+## Archivos
+
+El gestor de archivos admite selección múltiple (con `Shift` para rangos), mover, copiar,
+comprimir, arrastrar y soltar carpetas enteras, y un editor de texto integrado.
+
+Un **`.mrpack`** se puede importar de dos maneras:
+
+- **Subiéndolo**, en trozos de 8 MB con reintentos. El tamaño se comprueba **antes** de empezar.
+- **Desde una URL**, y entonces lo descarga el servidor. No tiene tope de tamaño.
+
+Los mods de un `.mrpack` se descargan de Modrinth y no ocupan espacio en el servidor; aparecen
+en la lista marcados como tales.
+
+## La ayuda de cada ajuste
+
+Cada campo tiene una etiqueta corta y, al lado, un botón **`?`**. Dentro está lo que hace, qué
+pasa si no se toca, cuándo conviene cambiarlo y —solo cuando equivocarse rompe algo— un aviso.
+
+Está así a propósito: la explicación larga estorba cuando ya sabes lo que estás haciendo, y hace
+falta entera cuando no.

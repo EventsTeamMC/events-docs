@@ -2,7 +2,7 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "Events Docs",
-  "description": "Documentación de los bots y herramientas de EventsMC: Events Whitelist y Events Blacklist.",
+  "description": "Documentación de la plataforma EventsMC: el panel de control, Events Whitelist y Events Blacklist.",
   "colors": {
     "primary": "#5B8CFF",
     "light": "#8AB0FF",
@@ -16,7 +16,49 @@
         "groups": [
           {
             "group": "EventsMC",
-            "pages": ["index", "afiliados"]
+            "pages": [
+              "index",
+              "afiliados"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Panel de control",
+        "groups": [
+          {
+            "group": "Empezar",
+            "pages": [
+              "panel/introduction",
+              "panel/session"
+            ]
+          },
+          {
+            "group": "Launcher",
+            "pages": [
+              "panel/instances",
+              "panel/events"
+            ]
+          },
+          {
+            "group": "Plataforma",
+            "pages": [
+              "panel/team",
+              "panel/webhooks",
+              "panel/files"
+            ]
+          },
+          {
+            "group": "Integraciones",
+            "pages": [
+              "panel/bots"
+            ]
+          },
+          {
+            "group": "Ayuda",
+            "pages": [
+              "panel/changelog"
+            ]
           }
         ]
       },
@@ -42,11 +84,17 @@
           },
           {
             "group": "Integraciones",
-            "pages": ["whitelist/minecraft-plugin", "whitelist/api"]
+            "pages": [
+              "whitelist/minecraft-plugin",
+              "whitelist/api"
+            ]
           },
           {
             "group": "Referencia",
-            "pages": ["whitelist/commands", "whitelist/permissions"]
+            "pages": [
+              "whitelist/commands",
+              "whitelist/permissions"
+            ]
           },
           {
             "group": "Ayuda",
@@ -80,7 +128,10 @@
           },
           {
             "group": "Referencia",
-            "pages": ["blacklist/commands", "blacklist/permissions"]
+            "pages": [
+              "blacklist/commands",
+              "blacklist/permissions"
+            ]
           },
           {
             "group": "Ayuda",

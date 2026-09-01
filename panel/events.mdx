@@ -1,0 +1,64 @@
+---
+title: "Eventos y calendario"
+description: "Publicar eventos en el calendario público y en la pestaña Explorar del launcher"
+---
+
+Un **evento** es una convocatoria con fecha. Aparece en el calendario web público y en la
+pestaña **Explorar** del launcher, y puede apuntar a una instancia para que entrar sea un solo
+clic.
+
+## Las dos vistas
+
+<CardGroup cols={2}>
+  <Card title="Mes" icon="calendar">
+    La rejilla del mes con cada evento pintado en **su propio color**, con su hora y su nombre,
+    más una columna con lo que viene a continuación.
+  </Card>
+  <Card title="Lista" icon="grid-2">
+    Fichas con portada, agrupadas en series y eventos sueltos. Es la vista para editar en tanda.
+  </Card>
+</CardGroup>
+
+Un evento que dura varios días se pinta en **todos** los días que ocupa, no solo en el primero.
+
+## Tipos
+
+| Tipo | Cuándo usarlo |
+| --- | --- |
+| **Evento** | Tiene una hora concreta. Puede durar varios días. |
+| **Serie** | Ocupa un rango de fechas, sin hora de inicio. |
+
+## Zonas horarias
+
+La hora se guarda como un **instante exacto**, no como «las 20:00». Un studio en Madrid y un
+jugador en Bogotá ven cada uno la hora que es verdad para ellos, a partir del mismo registro.
+
+El panel indica siempre en qué zona estás escribiendo la hora.
+
+## Dónde se publica
+
+| Opción | Quién lo ve |
+| --- | --- |
+| **Calendario web y launcher** | Todo el mundo, y además tus jugadores. |
+| **Solo en el calendario web** | Cualquiera que abra el calendario público. |
+| **Solo en el launcher** | Únicamente los jugadores. |
+
+Aparte está **Visibilidad**, que oculta el evento de los dos sitios sin borrarlo.
+
+## Código de acceso
+
+Si un evento apunta a una instancia y rellenas su código, el botón **Entrar** del launcher añade
+la instancia sin pedirle nada al jugador. Sin código, tendrá que escribirlo a mano.
+
+## Color
+
+El color del evento es el que se usa para pintarlo en el calendario. Sirve para distinguir
+varias series o categorías de un vistazo.
+
+## Quién puede publicar
+
+- Un **administrador del studio** o un **editor** publican los eventos de su studio.
+- El rol **Solo calendario** existe exactamente para esto: publica y edita los eventos de su
+  studio y no ve nada más — ni instancias, ni archivos, ni jugadores, ni cuentas.
+- Solo un **administrador de Events** puede marcar un evento como patrocinado o cambiar qué
+  studio figura como organizador.

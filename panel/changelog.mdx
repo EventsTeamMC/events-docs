@@ -1,0 +1,107 @@
+---
+title: "Novedades del panel"
+description: "Qué ha cambiado en el panel de control de Events"
+---
+
+## Rediseño completo
+
+El panel se reescribió de cero. Lo que cambia, por orden de lo que más se nota:
+
+### Organización
+
+- La barra lateral **agrupa** las secciones por lo que son: Launcher, Bots de Discord, Hosting,
+  Plataforma y Sistema. Antes eran once entradas seguidas, con las instancias del launcher al
+  lado del registro de seguridad de la plataforma.
+- Una instancia pasa de **diez pestañas a siete**. Whitelist, códigos, aceptados, baneados y
+  staff eran cinco pestañas para una sola pregunta —quién puede entrar—, así que ahora son una:
+  **Acceso**.
+- **Ajustes** deja de ser un scroll de siete secciones apiladas y pasa a tener pestañas.
+
+### Crear una instancia
+
+- Un **asistente de seis pasos** sustituye la rejilla de treinta campos que salía de golpe.
+- Incluye un **diagrama** de qué es una instancia y una **vista previa en vivo** de la portada.
+- El editor completo sigue estando, pero repartido en seis grupos con nombre en vez de una
+  lista plana.
+
+### Los textos
+
+- Las explicaciones largas salen de debajo de cada campo y pasan a un botón **`?`**.
+- Dentro, en vez de un párrafo, hay una ficha: **qué hace**, **qué pasa si no se toca**,
+  **cuándo cambiarlo** y, solo si equivocarse rompe algo, un **aviso**.
+- Sin segunda persona, sin opiniones y sin anécdotas. Es un servicio, no una explicación de su
+  autor.
+
+### Aspecto
+
+- Los colores, radios, sombras y curvas de animación son **exactamente** los del launcher.
+- **Tema claro** además del oscuro, y la opción de seguir al sistema.
+- Casillas, interruptores y desplegables propios en lugar de los del navegador.
+- **Responsive de verdad**: menú lateral, tablas que se desplazan y formularios de una columna
+  en el móvil.
+
+### Idiomas
+
+- **Español, inglés, catalán y francés**, los mismos cuatro del launcher.
+
+### Calendario
+
+- Cada evento se pinta en **su propio color**, con su hora y su nombre, en vez de un punto de
+  seis píxeles sin información.
+- Un evento de varios días ocupa todos sus días.
+- Columna de **próximos eventos** al lado del mes.
+
+### Rendimiento
+
+- El panel era **un solo archivo de 293 KB** que se descargaba y analizaba entero en cada
+  apertura. Ahora son módulos y cada pantalla se carga la primera vez que se entra en ella.
+- Las portadas se cargan de forma diferida y las tarjetas fuera de pantalla no se dibujan.
+- Las pantallas se repintan por partes, así que ya no se pierde el scroll ni lo que se está
+  escribiendo cuando llegan datos nuevos.
+
+## Funciones nuevas
+
+<CardGroup cols={2}>
+  <Card title="Mantener la sesión abierta" icon="clock" href="/panel/session">
+    30 días en lugar de 12 horas. Una sesión que caduca en mitad de un evento es el peor momento
+    posible.
+  </Card>
+  <Card title="Servicios por studio" icon="toggle-on" href="/panel/team">
+    Qué puede usar cada studio, encendido a mano y al margen de cualquier plan.
+  </Card>
+  <Card title="Gestión de accesos" icon="user-plus" href="/panel/team">
+    Decidir por studio si su equipo puede dar acceso a más gente, en vez de depender solo del rol.
+  </Card>
+  <Card title="Avisos de studio" icon="bell" href="/panel/webhooks">
+    Un webhook para todo el studio, no solo para una instancia. Hasta cinco destinos.
+  </Card>
+  <Card title="Archivos públicos" icon="folder-open" href="/panel/files">
+    Alojar cualquier archivo con URL pública, y ver y limpiar lo que ya no usa nadie.
+  </Card>
+  <Card title="Bots desde el panel" icon="robot" href="/panel/bots">
+    Ver y exportar las whitelists de Events Whitelist sin salir del panel.
+  </Card>
+</CardGroup>
+
+## Correcciones
+
+- **No se podía guardar un studio.** El diálogo leía al guardar un campo que nunca dibujaba, así
+  que fallaba siempre — y el error que salía era «error de conexión con el backend», que no era
+  verdad.
+- **La whitelist y la lista de staff no guardaban.** El panel enviaba los datos con un nombre que
+  el servidor no leía: la petición respondía correctamente y no cambiaba nada.
+- **Expulsar, banear y cerrar sesión** tenían el mismo problema y tampoco hacían nada.
+- La música de prueba **seguía sonando** después de cerrar el diálogo.
+- El botón de parar la música salía **vacío**.
+- Un error de programación del panel se mostraba como «error de conexión con el backend»,
+  disfrazando de caída del servidor lo que era un fallo del propio panel.
+- Un ajuste desactivado podía **seguir viéndose** (el límite fijo de la cola aparecía con la cola
+  en automático).
+
+## Almacenamiento
+
+Tres fugas de disco corregidas — ver [Archivos públicos](/panel/files):
+
+- La carpeta de archivos **solo crecía**: no existía ninguna forma de borrar de ella.
+- Borrar definitivamente una instancia se llevaba sus archivos pero **no** sus imágenes.
+- Los trozos de una subida abandonada se quedaban en disco **para siempre**.

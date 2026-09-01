@@ -1,0 +1,81 @@
+---
+title: "Archivos públicos"
+description: "Alojar imágenes, audio y documentos en Events con una URL pública, y limpiar lo que ya no se usa"
+---
+
+**Sistema → Archivos públicos** es el almacén de todo lo que el panel sube por URL: fondos,
+logos, vídeos, música, portadas de evento y cualquier archivo que haga falta enlazar desde
+fuera del panel.
+
+Es una sección **solo para administradores de Events**.
+
+<Note>
+Todo lo que se sube aquí queda en una **URL pública permanente**. Sirve igual para una portada
+de instancia que para un audio, un PDF o cualquier recurso que necesite un enlace estable.
+</Note>
+
+## Subir
+
+Arrastra los archivos sobre la lista, o usa **Subir archivos**. Un archivo grande se sube en
+trozos, con reintentos y una tarjeta de progreso que sobrevive a cambiar de sección.
+
+Cada archivo de la lista tiene:
+
+- **Copiar la URL** — la dirección pública, lista para pegar.
+- **Abrir** — para comprobarlo.
+- **Eliminar** — con un aviso si algo lo está usando.
+
+## En uso y sin usar
+
+Cada archivo se marca según si algo apunta a él:
+
+<CardGroup cols={2}>
+  <Card title="En uso" icon="link">
+    Alguna instancia o algún evento lo referencia. Dice cuántos.
+  </Card>
+  <Card title="Sin usar" icon="link-slash">
+    Nada apunta a él. Es candidato a borrarse.
+  </Card>
+</CardGroup>
+
+Para saberlo, el servidor recorre **todos** los datos buscando la dirección del archivo, en vez
+de mirar una lista de campos conocidos. Una lista de campos se queda coja en cuanto se añade uno
+nuevo — y aquí quedarse coja significa borrar un archivo que sí se estaba usando.
+
+## Limpieza
+
+Cuando hay archivos sin usar aparece un panel de **Limpieza** que dice cuántos son y cuánto
+espacio se recupera. Seleccionarlos todos es un botón.
+
+<Warning>
+Un archivo eliminado deja de servirse al instante. Antes de borrar, el servidor **vuelve a
+comprobar las referencias**: si alguno ha empezado a usarse entre que se pintó la lista y se
+confirmó, se omite en lugar de destruirse.
+</Warning>
+
+## Por qué existe esto
+
+Hasta ahora la carpeta de archivos **solo crecía**. No había ninguna forma de borrar de ella, así
+que:
+
+- cambiar el fondo de una instancia diez veces dejaba nueve vídeos inalcanzables en el disco;
+- borrar una instancia definitivamente se llevaba sus archivos pero **no** sus imágenes;
+- borrar un evento dejaba su portada.
+
+Un vídeo de fondo son cientos de megas, así que eso llena un disco sin que nadie sepa de qué.
+Además de esta sección, se corrigieron dos fugas más:
+
+<CardGroup cols={2}>
+  <Card title="Papelera" icon="trash">
+    Al borrar definitivamente una instancia, ahora también se liberan sus imágenes — pero solo
+    las que no use nadie más. Dos instancias pueden compartir una portada.
+  </Card>
+  <Card title="Subidas a medias" icon="upload">
+    Los trozos de una subida que nunca llegó a terminar se limpian solos. Cerrar el navegador a
+    mitad de un `.mrpack` de 500 MB dejaba esos 500 MB ahí para siempre.
+  </Card>
+</CardGroup>
+
+La limpieza automática de subidas abandonadas se ejecuta al arrancar el servidor y cada seis
+horas, y solo toca lo que lleva **más de doce horas** parado: nunca puede llevarse por delante
+una subida en curso.

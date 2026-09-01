@@ -1,0 +1,69 @@
+---
+title: "Bots desde el panel"
+description: "Gestionar Events Whitelist y Events Blacklist desde el panel de control"
+---
+
+El panel tiene un grupo **Bots de Discord** con una sección por bot. Es la primera versión de
+esta integración: hace lo que la API de cada bot permite hoy, y lo dice claramente cuando algo
+todavía se configura desde Discord.
+
+## Events Whitelist
+
+Events Whitelist tiene su propia base de datos y su propia API, autenticada **por servidor de
+Discord** con una clave. El panel habla con él exactamente igual que lo haría un plugin de
+Minecraft.
+
+### Vincular el servidor
+
+<Steps>
+  <Step title="Generar la clave en Discord">
+    En tu servidor, con el bot ya configurado: `/whitelist api`. La clave se muestra **una sola
+    vez**.
+  </Step>
+  <Step title="Pegarla en el panel">
+    **Bots de Discord → Events Whitelist → Vincular un servidor de Discord**. Hacen falta la URL
+    del bot, el ID del servidor y la clave.
+  </Step>
+  <Step title="Comprobación">
+    El panel prueba la clave **antes** de guardarla, así que un error se ve en el momento y no
+    como una pantalla vacía diez minutos después.
+  </Step>
+</Steps>
+
+<Note>
+La clave se guarda **en tu navegador**, no en los servidores de Events. Es la credencial de tu
+studio para un servicio que Events no aloja, y mandarla a nuestro servidor nos haría
+responsables de guardar el secreto de otra persona.
+</Note>
+
+### Qué se puede hacer
+
+| Acción | Estado |
+| --- | --- |
+| Ver las whitelists del servidor | Disponible |
+| Ver sus registros, con nick, tipo de cuenta y UUID | Disponible |
+| Exportar a CSV o JSON | Disponible |
+| Quitar un nick de una whitelist | Disponible |
+| Crear una whitelist, cambiar roles o modo de registro | Desde Discord |
+
+Quitar un nick desde el panel hace lo mismo que hacerlo desde Discord: lo saca de la whitelist,
+le retira los roles de verificación y lo registra en el canal de logs.
+
+La configuración de una whitelist —canal, tipo de cuenta, roles, límite de nicks— se sigue
+haciendo con los [comandos del bot](/whitelist/commands), porque su API aún no expone esa parte.
+El panel lo dice en vez de fingir lo contrario.
+
+## Events Blacklist
+
+Events Blacklist es una red de baneos compartida entre comunidades y es **gratis para todo el
+mundo, en todos los planes, siempre**. Una red de baneos solo vale algo si las comunidades
+pequeñas también están dentro.
+
+Su gestión desde el panel está en preparación. De momento se configura con los
+[comandos del bot](/blacklist/commands).
+
+## Servicios
+
+Las dos secciones dependen de que el studio tenga el servicio correspondiente activado — ver
+[Equipo y studios](/panel/team). **Events Blacklist** viene activado por defecto para todos;
+**Events Whitelist** lo enciende un administrador de Events.
