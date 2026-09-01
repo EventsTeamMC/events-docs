@@ -3,6 +3,47 @@ title: "Novedades del panel"
 description: "Qué ha cambiado en el panel de control de Events"
 ---
 
+## Segunda tanda
+
+### Los diálogos que se abrían doce veces
+
+`patch()` conserva a propósito los nodos que no cambian, para no perder el
+scroll ni el foco. Pero cada vista reejecuta su `wire()` tras cada repintado
+—incluida la actualización automática cada diez segundos— y un
+`addEventListener` sobre un nodo que sobrevivió **se acumula**. De ahí los
+diálogos repetidos, lo que costaba cerrarlos, y que un botón enviara una
+petición por cada listener acumulado hasta chocar con el límite del servidor.
+
+Ahora enlazar sustituye en vez de sumar: un manejador por elemento y evento.
+
+<Note>
+El panel es una aplicación de una sola página: una pestaña abierta durante un
+despliegue sigue ejecutando el código que cargó. Ahora lo detecta y ofrece
+recargar, en vez de arrastrar un fallo ya corregido.
+</Note>
+
+### Registro de actividad
+
+Páginas, filtro por tipo, por rango de fechas y por texto, y 4000 entradas en
+vez de 200. Cada línea se clasifica sola, así que las antiguas también se pueden
+filtrar. Ver [Actividad](/panel/introduction).
+
+### Menos peticiones
+
+- Cada navegación hacía el trabajo dos veces: el guardián que debía evitar el
+  segundo aviso del navegador se apagaba antes de que ese aviso llegara.
+- Una sección leída hace menos de ocho segundos se reutiliza. Cualquier
+  escritura tira esa caché, así que un guardado siempre se ve.
+
+### Servicios abiertos
+
+**Servidores de juego**, **Events Whitelist** y **Events Blacklist** quedan
+disponibles para todos los studios: ninguno es una capacidad de pago.
+
+### Events Whitelist, entero desde el panel
+
+Con tu cuenta de Discord, sin claves. Ver [Bots desde el panel](/panel/bots).
+
 ## Rediseño completo
 
 El panel se reescribió de cero. Lo que cambia, por orden de lo que más se nota:

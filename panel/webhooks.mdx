@@ -6,7 +6,7 @@ description: "Webhooks de instancia y de studio: qué avisa cada uno y cómo se 
 El panel puede enviar lo que pasa a un canal de Discord. Hay **dos niveles**, y son
 independientes: los dos pueden estar activos a la vez.
 
-<CardGroup cols={2}>
+<CardGroup cols={3}>
   <Card title="Por instancia" icon="cube">
     Lo que pasa **dentro** de una instancia: entradas, salidas, cierres inesperados y códigos
     canjeados.
@@ -14,6 +14,10 @@ independientes: los dos pueden estar activos a la vez.
   <Card title="Por studio" icon="store">
     Lo que pasa **a nivel de studio**: instancias creadas o bloqueadas, eventos publicados y
     accesos concedidos o retirados.
+  </Card>
+  <Card title="De Events" icon="shield">
+    Solo para administradores: los canales del propio equipo de Events. Ver
+    [más abajo](#avisos-de-events).
   </Card>
 </CardGroup>
 
@@ -73,3 +77,42 @@ todo y un canal público con solo los eventos publicados.
 Un studio admite hasta **5** destinos. Cada uno tiene su nombre, su URL, su interruptor de
 encendido y su propia selección de avisos, y se puede probar con un botón antes de dejarlo
 funcionando.
+
+
+## Avisos de Events
+
+**Seguridad → Avisos de Events** (solo administradores) configura los cinco
+canales del propio equipo:
+
+| Canal | Qué recibe |
+| --- | --- |
+| **Cuentas** | Inicios de sesión, cierres y baneos del launcher. |
+| **Instancias** | Entradas, salidas, cierres inesperados y códigos canjeados. |
+| **Panel** | Todo lo que se hace desde el panel de control. |
+| **Informes de error** | Lo que envían los jugadores con F1. |
+| **Calendario** | Recordatorios de los eventos. |
+
+Cada canal tiene un botón de prueba, y debajo hay un interruptor por tipo de
+aviso para los dos primeros.
+
+<Warning>
+La URL de un webhook es una **credencial**: quien la tenga puede publicar en ese
+canal. El panel nunca la muestra — solo dice si está puesta y el identificador
+del webhook. Dejar el campo vacío conserva la que hay; no la borra.
+</Warning>
+
+### Por qué llevaban meses en silencio
+
+Dos fallos a la vez, y cada uno tapaba el otro:
+
+1. Las URLs de **Cuentas** e **Instancias** estaban vacías en la configuración
+   del servidor, así que no había a dónde enviar nada.
+2. Ninguna parte del código emitía a esos dos canales: las 84 llamadas usaban el
+   canal del panel.
+
+Arreglar solo uno de los dos no habría cambiado nada visible. Ahora las URLs se
+editan desde el panel —el entorno solo las siembra la primera vez— y los eventos
+de jugador emiten de verdad.
+
+Esos avisos **no** entran en el registro de actividad del panel: un registro con
+cada inicio de sesión dentro no se puede leer para lo que existe.

@@ -3,55 +3,72 @@ title: "Bots desde el panel"
 description: "Gestionar Events Whitelist y Events Blacklist desde el panel de control"
 ---
 
-El panel tiene un grupo **Bots de Discord** con una sección por bot. Es la primera versión de
-esta integración: hace lo que la API de cada bot permite hoy, y lo dice claramente cuando algo
-todavía se configura desde Discord.
+El panel tiene un grupo **Bots de Discord** con una sección por bot. **Events
+Whitelist se gestiona entero desde aquí**; Events Blacklist todavía se configura
+con sus comandos en Discord y la sección lo dice.
 
 ## Events Whitelist
 
-Events Whitelist tiene su propia base de datos y su propia API, autenticada **por servidor de
-Discord** con una clave. El panel habla con él exactamente igual que lo haría un plugin de
-Minecraft.
+Se gestiona **con tu cuenta de Discord**, no con una clave. No hay nada que
+copiar ni pegar.
 
-### Vincular el servidor
+### Cómo se decide quién puede
 
-<Steps>
-  <Step title="Generar la clave en Discord">
-    En tu servidor, con el bot ya configurado: `/whitelist api`. La clave se muestra **una sola
-    vez**.
-  </Step>
-  <Step title="Pegarla en el panel">
-    **Bots de Discord → Events Whitelist → Vincular un servidor de Discord**. Hacen falta la URL
-    del bot, el ID del servidor y la clave.
-  </Step>
-  <Step title="Comprobación">
-    El panel prueba la clave **antes** de guardarla, así que un error se ve en el momento y no
-    como una pantalla vacía diez minutos después.
-  </Step>
-</Steps>
+El panel no habla con el bot desde el navegador. Llama al backend de Events, el
+backend llama al bot con un secreto de servidor a servidor **más tu ID de
+Discord**, y el bot resuelve el permiso contra Discord en ese momento:
+
+- eres **dueño** del servidor, o
+- tienes **Administrador** o **Gestionar servidor**, o
+- tienes uno de los **roles marcados como staff** del bot.
+
+Los servidores que aparecen en el panel son exactamente esos. Si pierdes el rol,
+pierdes el acceso en la siguiente acción — no hay ninguna clave que revocar.
 
 <Note>
-La clave se guarda **en tu navegador**, no en los servidores de Events. Es la credencial de tu
-studio para un servicio que Events no aloja, y mandarla a nuestro servidor nos haría
-responsables de guardar el secreto de otra persona.
+La clave anterior identificaba un **servidor**, no a una persona, así que no se
+podía comprobar si quien la pegaba mandaba algo en ese Discord. Por eso aquella
+integración solo podía ser de lectura.
 </Note>
 
-### Qué se puede hacer
+### Qué puedes hacer
 
-| Acción | Estado |
+| Acción | |
 | --- | --- |
-| Ver las whitelists del servidor | Disponible |
-| Ver sus registros, con nick, tipo de cuenta y UUID | Disponible |
-| Exportar a CSV o JSON | Disponible |
-| Quitar un nick de una whitelist | Disponible |
-| Crear una whitelist, cambiar roles o modo de registro | Desde Discord |
+| Ver los servidores que administras | Sí |
+| Crear una whitelist | Sí |
+| Cambiar canal, modo de registro, tipo de cuenta y nicks por persona | Sí |
+| Configurar los cuatro juegos de roles | Sí |
+| Activar o desactivar una whitelist | Sí |
+| Borrar una whitelist | Sí |
+| Ver los registros, buscarlos y exportarlos a CSV/JSON | Sí |
+| Añadir un nick a mano | Sí |
+| Quitar un nick | Sí |
+| Ajustes del servidor: roles de staff y canal de logs | Sí |
 
-Quitar un nick desde el panel hace lo mismo que hacerlo desde Discord: lo saca de la whitelist,
-le retira los roles de verificación y lo registra en el canal de logs.
+### Los roles
 
-La configuración de una whitelist —canal, tipo de cuenta, roles, límite de nicks— se sigue
-haciendo con los [comandos del bot](/whitelist/commands), porque su API aún no expone esa parte.
-El panel lo dice en vez de fingir lo contrario.
+Cada whitelist tiene cuatro listas de roles, con un selector que muestra sus
+colores:
+
+| Lista | Qué hace |
+| --- | --- |
+| **Necesarios** | Hay que tener al menos uno para poder registrarse. |
+| **Bloqueados** | Quien tenga uno no puede registrarse, aunque cumpla el resto. |
+| **Que se conceden** | Se dan al registrarse correctamente. |
+| **Que se retiran** | Se quitan al registrarse correctamente. |
+
+Los dos últimos juntos son el patrón habitual: pasar de «sin verificar» a
+«verificado» en un solo paso.
+
+### Añadir un nick a mano
+
+Hace exactamente lo mismo que `/whitelist add` en Discord: se comprueba contra
+Mojang —así que el UUID y la marca de premium son reales—, se respeta el tipo de
+cuenta que admita la whitelist, y queda en el canal de logs y en la auditoría.
+
+Todo lo hecho desde el panel se marca en los registros con la fuente
+**🖥️ Panel de Events**, para distinguirlo de lo hecho desde Discord.
 
 ## Events Blacklist
 
@@ -64,6 +81,6 @@ Su gestión desde el panel está en preparación. De momento se configura con lo
 
 ## Servicios
 
-Las dos secciones dependen de que el studio tenga el servicio correspondiente activado — ver
-[Equipo y studios](/panel/team). **Events Blacklist** viene activado por defecto para todos;
-**Events Whitelist** lo enciende un administrador de Events.
+Las dos secciones están **abiertas a todos los studios**: ninguna es una
+capacidad de pago. Lo que decide lo que puedes tocar en Events Whitelist son tus
+permisos en Discord, no tu plan.
