@@ -8,13 +8,40 @@ abierto: alguien con permiso da de alta un ID de Discord y esa persona ya puede 
 
 ## Roles
 
+Son **tres**:
+
 | Rol | Qué puede hacer | ¿Da acceso a otros? |
 | --- | --- | --- |
 | **Administrador de Events** | Todo: la plataforma entera, todos los studios y todas las cuentas. | Sí |
-| **Administrador del studio** | Las instancias y los eventos de su studio. | Sí |
+| **Administrador del studio** | Las instancias y los eventos de su studio, incluido borrarlas. | Sí |
 | **Editor** | Trabaja en las instancias y los eventos de su studio. | Según el studio |
-| **Creador de contenido** | Como un editor, pensado para creadores con instancias propias. | Según el studio |
-| **Solo calendario** | Únicamente publica y edita los eventos de su studio. | No |
+
+Lo que un Editor **ve** no lo decide su rol: lo decide qué servicios tiene el studio. Si el
+studio no tiene calendario, no hay calendario; si no tiene launcher, no hay instancias.
+
+### Se han retirado dos roles
+
+**Solo calendario** y **Creador de contenido** ya no existen.
+
+*Solo calendario* encerraba una cuenta en una sola pantalla. Tenía sentido cuando no había forma
+de decirle a un studio qué podía usar; ahora los servicios del studio hacen ese trabajo mejor,
+porque valen para todo el equipo a la vez y no hay que recordar qué rol lleva cada persona.
+*Creador de contenido* era el administrador de un studio pequeño con otro nombre, y nunca se
+comportó de forma distinta.
+
+Las cuentas existentes se movieron solas al arrancar el backend:
+
+| Antes | Ahora |
+| --- | --- |
+| Solo calendario | **Editor** |
+| Creador de contenido | **Administrador del studio** |
+| Studio de tipo «creador» | **Studio** |
+
+<Warning>
+Una cuenta que era **Solo calendario** pasa a ser Editor, y un Editor llega a las instancias de
+su studio. Si alguien de tu equipo debía quedarse únicamente en el calendario, ahora eso se
+consigue apagando los servicios que no le correspondan al studio, o quitándole el acceso.
+</Warning>
 
 ## Quién puede dar acceso
 
@@ -26,7 +53,7 @@ Ahora un administrador de Events lo puede fijar **a mano por studio**, desde la 
     El comportamiento de siempre: solo el administrador del studio añade cuentas.
   </Card>
   <Card title="Permitida" icon="user-plus">
-    Los editores y creadores también pueden añadir cuentas a su studio.
+    Los editores también pueden añadir cuentas a su studio.
   </Card>
   <Card title="Bloqueada" icon="user-lock">
     Nadie del studio añade cuentas; solo un administrador de Events.
@@ -47,7 +74,7 @@ Cada studio tiene una lista de servicios que un administrador de Events enciende
 | **Calendario** | Publicar eventos en el calendario y en el launcher. |
 | **Events Whitelist** | Gestionar las whitelists del bot desde el panel. |
 | **Events Blacklist** | La red de baneos compartida. Gratis para todo el mundo. |
-| **Servidores de juego** | El panel de hosting en hosting.eventsmc.xyz. |
+| **Servidores de juego** | El acceso al panel aparte de hosting.eventsmc.xyz. |
 | **Estadísticas** | Historial de jugadores y de actividad. |
 | **Avisos en Discord** | Webhooks de instancia y de studio. |
 

@@ -51,7 +51,8 @@
           {
             "group": "Integraciones",
             "pages": [
-              "panel/bots"
+              "panel/bots",
+              "panel/hosting"
             ]
           },
           {

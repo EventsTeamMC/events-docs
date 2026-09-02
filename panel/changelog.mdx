@@ -3,6 +3,64 @@ title: "Novedades del panel"
 description: "Qué ha cambiado en el panel de control de Events"
 ---
 
+## Tercera tanda
+
+### Confirmar una acción no hacía nada
+
+El fallo detrás de «le doy a eliminar y no pasa nada, ni se envía una
+petición».
+
+El diálogo de confirmación **cerraba antes de responder**. Cerrar emite un
+evento cuyo manejador contesta «no» —para cubrir Esc, la X y el clic fuera— y
+una promesa solo se resuelve una vez, así que el «sí» que llegaba justo
+después no contaba. Las **21** acciones destructivas del panel comprobaban esa
+respuesta y salían sin llegar a la red: borrar una instancia, borrar archivos,
+la limpieza de archivos, vaciar la papelera, desbanear, quitar una entrada de
+una whitelist, publicar en el canal de pruebas. Sin error y sin petición, que
+es justo lo que se veía.
+
+Detrás había un segundo fallo, tapado por el primero: borrar **un** archivo
+llamaba a una ruta que no existe en el backend (`DELETE .../files/<ruta>`;
+solo existe el borrado múltiple). Ahora los dos comparten camino, así que
+también comparten el trato de las referencias externas y del canal de pruebas.
+
+<Note>
+Los dos fallos eran silenciosos por separado y se tapaban entre ellos: la
+confirmación nunca dejaba llegar a la petición, así que la ruta inexistente no
+podía notarse.
+</Note>
+
+### Cambiar de sección: de medio segundo a instantáneo
+
+Cada clic **esperaba una petición antes de dibujar nada**, aunque los datos ya
+estuvieran cargados desde el arranque. Ahora se pinta con lo que hay y se
+refresca por detrás; los módulos de cada pantalla se descargan en tiempo
+muerto en vez de al primer clic. Medido: **5-16 ms** donde antes había ~500.
+
+Se añade un fundido corto al cambiar de sección y una barra fina de progreso
+que solo aparece si la espera pasa de 120 ms.
+
+### Roles: quedan tres
+
+**Solo calendario** y **Creador de contenido** se retiran. Las cuentas se
+migran solas. Ver [Equipo y studios](/panel/team) — incluye qué cambia para
+quien era *Solo calendario*.
+
+### Servidores de juego
+
+La sección **no controla nada**. Todo —consola, archivos, copias y
+facturación— vive en hosting.eventsmc.xyz, que está en desarrollo.
+
+### Detalles
+
+- El número de la papelera vuelve a ser un círculo de 18 px. Salía como una
+  barra ancha porque `.nav-item span` también casaba con él y su `flex: 1`
+  ganaba por especificidad al `flex: none` propio del badge.
+- Las categorías de instancias y eventos sugieren **Evento**, **Squid Game**,
+  **Torneo** y **Serie**, con *Evento* por defecto. Siguen siendo texto libre:
+  una lista cerrada habría reescrito las categorías que ya existen.
+- El panel pasa a llamarse **Events Panel**.
+
 ## Segunda tanda
 
 ### Los diálogos que se abrían doce veces
