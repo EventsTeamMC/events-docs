@@ -1,0 +1,40 @@
+---
+title: "Preguntas frecuentes"
+description: "Problemas habituales y cómo resolverlos"
+---
+
+<AccordionGroup>
+  <Accordion title="La consola dice «Faltan DISCORD_TOKEN o CLIENT_ID»">
+    Rellena **Token del bot** e **ID de la aplicación** en **Startup** y reinicia. Ver
+    [Primeros pasos](/bot/quickstart#3-pon-el-token-en-el-hosting).
+  </Accordion>
+  <Accordion title="El bot no se conecta: «Used disallowed intents»">
+    Falta un intent privilegiado en el Developer Portal → **Bot**: Server Members o
+    Message Content, según los módulos. Ver la tabla de
+    [Primeros pasos](/bot/quickstart).
+  </Accordion>
+  <Accordion title="Los comandos no aparecen">
+    Sin **ID del servidor de Discord** en Startup, Discord tarda hasta una hora en mostrarlos.
+    Con él, aparecen al reiniciar.
+  </Accordion>
+  <Accordion title="He encendido un módulo y no hace nada">
+    Los módulos se cargan al arrancar: `/configurar` → **Módulos** → **Reiniciar para aplicar**.
+    Después, su asistente en **Configurar un módulo**.
+  </Accordion>
+  <Accordion title="Quiero un módulo que no tengo">
+    Amplía la licencia en [clientes.eventsmc.xyz](https://clientes.eventsmc.xyz). El módulo
+    aparece en el bot al reiniciar.
+  </Accordion>
+  <Accordion title="El panel de Events dice que el bot no está conectado">
+    Comprueba en **Console** que el bot esté encendido. Si se reinstaló, pide un
+    **Nuevo código** y vuelve a vincularlo.
+  </Accordion>
+  <Accordion title="Dejé de pagar el hosting y quiero volver">
+    Abre un ticket. Para el mismo studio no se repaga la licencia; el bot nuevo empieza sin
+    los datos del anterior.
+  </Accordion>
+  <Accordion title="¿Puedo descargar el bot o sus copias?">
+    No. El bot se ofrece solo con hosting de Events; las copias se crean y se restauran
+    desde el panel.
+  </Accordion>
+</AccordionGroup>

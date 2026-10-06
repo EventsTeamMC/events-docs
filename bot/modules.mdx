@@ -1,0 +1,91 @@
+---
+title: "Módulos"
+description: "Qué hace cada módulo y sus comandos"
+---
+
+Cada módulo se configura con su asistente en `/configurar` → **Configurar un módulo**,
+y sus textos en `/configurar` → **Textos**.
+
+## General
+
+Incluido en todas las licencias.
+
+| Comando | |
+| --- | --- |
+| `/configurar` | Apariencia, presencia, módulos, textos y asistentes. |
+| `/ping` | Latencia del bot. |
+| `/info` | Versión, módulos activos y recursos. |
+
+## Tickets
+
+Panel con un menú de categorías; cada categoría abre un canal privado con su formulario.
+Al cerrar se genera la transcripción, que se guarda y se puede ver en el
+[panel de Events](/bot/panel).
+
+| Comando | |
+| --- | --- |
+| `/tickets setup` | Asistente: roles de staff, canales, categorías y panel. |
+| `/tickets panel` | Publica o actualiza el panel. |
+| `/tickets categorias` | Crea en Discord las categorías nuevas y refresca el panel. |
+| `/tickets abrir` · `reabrir` | Abre un ticket por otra persona · reabre uno cerrado. |
+| `/tickets reclamar` · `transferir` | Atender el ticket · cederlo a otro miembro del staff. |
+| `/tickets cerrar` | Cierra con transcripción. |
+| `/tickets prioridad` · `categoria` · `renombrar` | Cambios sobre el ticket actual. |
+| `/tickets agregar` · `quitar` | Acceso de otros usuarios al ticket. |
+| `/tickets avisos` | Para o reanuda los avisos de inactividad. |
+| `/tickets responsable` | Quién se encarga siempre de una categoría. |
+| `/tickets funciones` | Activa o desactiva reclamar, prioridades, reabrir… |
+| `/tickets numeracion` | Por qué número siguen los tickets. |
+| `/tickets importar` | Trae un ticket de otro bot (Ticket King, etc.). |
+| `/tickets stats` · `perfil` · `ranking` | Tiempos de respuesta, volumen y valoraciones. |
+
+## Logging
+
+Mensajes editados y borrados, entradas y salidas, canales, roles, voz y auditoría.
+
+| Comando | |
+| --- | --- |
+| `/logs estado` | Qué se registra y dónde. |
+| `/logs canal` | Canal de cada grupo de registros. |
+| `/logs evento` | Activa o desactiva un evento concreto. |
+| `/logs ignorar` | Canales o roles que no se registran. |
+| `/logs ruido` | Agrupa los cambios de roles. |
+
+## Niveles
+
+| Comando | |
+| --- | --- |
+| `/nivel` · `/top` | Nivel de alguien · ranking del servidor. |
+| `/niveles activar` · `estado` | Encender el sistema · ver la configuración. |
+| `/niveles aviso` | Dónde se anuncian las subidas de nivel. |
+| `/niveles xp` | XP por mensaje y enfriamiento. |
+| `/niveles recompensa` · `acumular` | Roles por nivel · quedarse con todos o solo el más alto. |
+| `/niveles multiplicador` · `exento` | Más XP para un rol · canales o roles sin XP. |
+| `/niveles dar` · `reiniciar` | XP a mano · borrar la de alguien o la de todos. |
+
+## Sorteos
+
+| Comando | |
+| --- | --- |
+| `/sorteo crear` | Premio, duración, ganadores, canal, requisitos e imagen. |
+| `/sorteo editar` · `pausar` · `reanudar` | Cambios sobre un sorteo en marcha. |
+| `/sorteo terminar` · `cancelar` | Sacar ganadores ya · cancelar sin repartir. |
+| `/sorteo repescar` | Otro ganador de un sorteo terminado. |
+| `/sorteo participantes` · `quitar` | Quién se ha apuntado · sacar a alguien. |
+| `/sorteo info` · `lista` · `ajustes` | Ficha, sorteos en marcha y comportamiento. |
+
+## Counting
+
+| Comando | |
+| --- | --- |
+| `/counting canal` | Canal donde se cuenta. |
+| `/counting estado` | Número actual y récord. |
+| `/counting ajustes` | Reglas: repetir usuario, reinicio al fallar… |
+| `/counting reiniciar` | Vuelve a cero o a un número. |
+
+## Autoreacciones
+
+| Comando | |
+| --- | --- |
+| `/autoreacciones añadir` | Regla: canal, emojis y filtro (imagen, enlace o palabras). |
+| `/autoreacciones quitar` · `lista` | Borrar una regla · ver las activas. |

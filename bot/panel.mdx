@@ -1,0 +1,42 @@
+---
+title: "Panel de Events"
+description: "Tickets, transcripciones, mensajes y textos del bot desde panel.eventsmc.xyz"
+---
+
+En [panel.eventsmc.xyz](https://panel.eventsmc.xyz) → **Bots de Discord** → **Events BOT**
+están los bots de tu studio. Cada uno tiene:
+
+| Pestaña | |
+| --- | --- |
+| **Resumen** | Módulos encendidos y servidores donde está el bot. |
+| **Tickets** | Abiertos y cerrados, con el formulario de cada uno y su transcripción. |
+| **Mensajes** | Enviar un mensaje o un embed a un canal, y editar los que ya envió el bot. |
+| **Textos** | Los mismos textos que en `/configurar`. |
+| **Apariencia** | Nombre, color, pie, imágenes y presencia. |
+
+Arriba, **Reiniciar** reinicia el bot y **Nuevo código** sirve para vincularlo otra vez.
+
+## Vincular un bot
+
+1. **Añadir bot**, con el nombre que quieras ver en el panel. Sale un código.
+2. En Discord: `/configurar` → **Panel de Events** → **Escribir código**.
+
+El código caduca en 15 minutos y sirve una vez. El bot guarda su propia clave; si lo
+reinstalas, pide un **Nuevo código**.
+
+## Quién puede hacer qué
+
+El panel no decide los permisos: lo hace el bot contra Discord en cada acción. Hace falta
+**Gestionar servidor** en el servidor de Discord del que se trate (o ser su dueño). Lo que
+no gestionas en Discord tampoco lo gestionas aquí.
+
+## Editar un mensaje
+
+Copia el enlace del mensaje (clic derecho → **Copiar enlace del mensaje**), pégalo en
+**Mensajes** y pulsa **Cargar mensaje**. Solo se pueden editar mensajes del propio bot;
+los botones que tenga se conservan.
+
+<Note>
+  Las transcripciones salen de la copia que guarda el bot al cerrar el ticket. Los tickets
+  cerrados antes de activar esa copia no tienen transcripción en el panel.
+</Note>

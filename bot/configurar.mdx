@@ -1,0 +1,61 @@
+---
+title: "Configurar el bot"
+description: "/configurar: apariencia, presencia, módulos, textos y categorías de tickets"
+---
+
+`/configurar` reúne toda la configuración. Lo pueden usar quienes tengan
+**Gestionar servidor**. No hace falta tocar ningún archivo.
+
+## Apariencia
+
+| Ajuste | |
+| --- | --- |
+| Nombre | El de tu comunidad. Sustituye a `{name}` en todos los textos. |
+| Pie de los mensajes | Admite `{name}` y `{year}`. |
+| Color | Uno de la lista u **Otro color** en `#RRGGBB`. |
+| Imágenes | Logo, banner del panel de tickets e imagen inferior (URL). |
+| Emojis | Cada emoji de los mensajes del bot. Admite emojis del servidor: `<:nombre:id>`. |
+
+**Restablecer** vuelve a los valores de fábrica.
+
+## Presencia
+
+El texto bajo el nombre del bot, su tipo (solo el texto, *Jugando a…*, *Viendo…*) y
+el estado. **No puede quedar vacía.**
+
+## Módulos
+
+Enciende o apaga los módulos de tu licencia. Los cambios se aplican al reiniciar
+(botón **Reiniciar para aplicar**). Los que no tienes salen como *No incluidos*, con
+el enlace para ampliar la licencia.
+
+## Textos
+
+Cualquier texto de un módulo: el panel de tickets, el mensaje de bienvenida del
+ticket, las etiquetas de prioridad, el aviso de subida de nivel… Elige el módulo y el
+texto, y escribe el nuevo. Los que son listas (las normas del panel de tickets) van
+una línea por elemento.
+
+## Categorías de tickets
+
+Nombre, emoji, descripción y formulario de cada categoría. El formulario son hasta
+5 preguntas, una por línea:
+
+```
+Tu usuario
+¿Qué ha pasado? | larga
+Pruebas | opcional
+```
+
+`larga` da una caja de varias líneas; `opcional` deja la pregunta sin obligar.
+Una categoría nueva crea su categoría de Discord con los permisos de las que ya hay.
+El panel de tickets se actualiza solo.
+
+## Configurar un módulo
+
+El asistente de cada módulo: canales, roles y opciones. Tickets tiene el suyo propio
+(crea las categorías, los permisos y publica el panel).
+
+## Asistente inicial
+
+Repite el asistente del primer arranque: color, presencia y módulos.

@@ -143,6 +143,38 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "Events BOT",
+        "groups": [
+          {
+            "group": "Empezar",
+            "pages": [
+              "bot/introduction",
+              "bot/quickstart"
+            ]
+          },
+          {
+            "group": "Configuración",
+            "pages": [
+              "bot/configurar",
+              "bot/modules"
+            ]
+          },
+          {
+            "group": "Gestión",
+            "pages": [
+              "bot/panel",
+              "bot/hosting"
+            ]
+          },
+          {
+            "group": "Ayuda",
+            "pages": [
+              "bot/faq"
+            ]
+          }
+        ]
       }
     ]
   },
