@@ -20,8 +20,8 @@ El usuario y la contraseña del panel están en tu servicio, en el área de clie
 
 | Intent | Lo necesitan |
 | --- | --- |
-| **Server Members Intent** | Tickets, Logging, Niveles, Sorteos |
-| **Message Content Intent** | Tickets, Logging, Niveles, Counting, Autoreacciones |
+| **Server Members Intent** | Tickets, Moderación, Logging, Niveles, Sorteos, Bienvenidas, Verificación, Cumpleaños |
+| **Message Content Intent** | Tickets, Moderación, Logging, Niveles, Counting, Autoreacciones, Sugerencias, Autorespuestas, Destacados |
 
 <Warning>
   Sin el intent que pide un módulo, el bot no llega a conectarse.
@@ -37,13 +37,14 @@ El usuario y la contraseña del panel están en tu servicio, en el área de clie
 | Variable | Valor |
 | --- | --- |
 | Token del bot | El token del paso 2 |
-| ID de la aplicación | Developer Portal → General Information → Application ID |
 | ID del servidor de Discord | Clic derecho en tu servidor → Copiar ID del servidor |
 
-Con el ID del servidor, los comandos aparecen al momento. Sin él, tardan hasta una hora.
+El ID de la aplicación se lee del token: no hace falta ponerlo.
 
 Vuelve a **Console** y pulsa **Restart**. Cuando la consola diga `Conectado como …`,
-el bot está en línea.
+el bot está en línea. Si falla el token o falta un intent, la consola dice cuál y qué hacer.
+Escribe `invitar` en la consola para obtener el enlace de invitación con los permisos justos,
+y `permisos` para ver si le falta alguno.
 
 ## 4. Configúralo en Discord
 

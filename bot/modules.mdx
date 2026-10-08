@@ -16,6 +16,86 @@ Incluido en todas las licencias.
 | `/ping` | Latencia del bot. |
 | `/info` | Versión, módulos activos y recursos. |
 
+## Moderación
+
+Sanciones con historial, escalado por warns, apelaciones, reportes, automod y antirraid.
+Todo queda en el canal de logs; lo que se hace a mano desde Discord (banear, aislar, expulsar)
+también se guarda en el historial.
+
+| Comando | |
+| --- | --- |
+| `/mod warn` · `aislar` · `hablar` | Warn (con caducidad propia o permanente) · timeout · quitarlo. |
+| `/mod expulsar` · `banear` · `softban` · `desbanear` | Baneos temporales o permanentes; softban borra sus mensajes. |
+| `/mod nota` | Nota interna sobre un usuario, sin avisarle. |
+| `/mod historial` · `caso` | Antecedentes de alguien · detalle de un caso. |
+| `/mod revocar` · `motivo` | Anular un caso (y levantar la sanción) · cambiar su motivo. |
+| `/mod limpiar` | Borrar hasta 500 mensajes, por usuario, tipo o texto. |
+| `/mod lentitud` · `cerrar` · `abrir` | Modo lento y bloqueo de un canal. |
+| `/mod escalado` | Sanción automática al llegar a N warns. |
+| `/mod stats` · `config` | Cifras de moderación · ajustes rápidos. |
+| `/automod panel` | Las 13 reglas: activar, acción (borrar, warn, aislar, expulsar, banear) y umbrales. |
+| `/automod palabra` · `dominio` · `exento` · `probar` | Palabras prohibidas · enlaces permitidos · excepciones · probar un texto. |
+| `/antiraid estado` · `ajustes` | Detección de entradas en masa y de cuentas nuevas. |
+| `/antiraid bloquear` · `desbloquear` · `limpiar` · `fin` | Cerrar todos los canales · expulsar o banear a quien acaba de entrar. |
+
+**Clic derecho en un usuario → Apps → Moderar**: ficha con antecedentes y botones de sanción.
+**Clic derecho en un mensaje → Apps → Reportar mensaje**: cualquiera puede reportarlo; el staff
+lo gestiona con botones desde el canal de reportes.
+
+El sancionado recibe un privado con el motivo, el caso y un botón **Apelar**. La apelación
+llega al canal de apelaciones, y aceptarla anula la sanción.
+
+Reglas del automod: estafas y phishing, palabras prohibidas, invitaciones, enlaces,
+`@everyone` sin permiso, menciones masivas, mayúsculas, emojis, líneas, texto zalgo, spam,
+mensajes repetidos y spam de archivos. Las palabras se comparan enteras (`ase` no salta con
+`clase`); `palabra*` busca lo que empiece así.
+
+## Verificación
+
+Panel con un botón que da el rol de verificado. Con captcha, antes hay que resolver una suma.
+
+| Comando | |
+| --- | --- |
+| `/verificacion panel` | Publica o mueve el panel. |
+| `/verificacion estado` | Rol, captcha, edad mínima y verificados. |
+
+## Bienvenidas
+
+Mensaje al entrar y al salir, y otro por privado. Variables: `{user}`, `{username}`,
+`{server}`, `{count}`.
+
+| Comando | |
+| --- | --- |
+| `/bienvenida probar` | Cómo queda cada mensaje, contigo de ejemplo. |
+
+## Sugerencias
+
+`/sugerir` o escribir en el canal de sugerencias. Cada una lleva votos, un hilo de debate y un
+botón para que el staff la apruebe, la rechace, la deje en estudio o la marque como implementada.
+El autor recibe la decisión por privado.
+
+## Autorespuestas
+
+Respuestas a palabras o comandos como `!ip`. Cada una es una línea `disparador => respuesta`:
+`ip` exacto, `ip*` empieza por, `*ip*` contiene.
+
+| Comando | |
+| --- | --- |
+| `/autorespuesta añadir` · `quitar` · `lista` | Gestionar las respuestas. |
+
+## Destacados
+
+Los mensajes que llegan a N reacciones con ⭐ (u otro emoji) se copian a un canal.
+
+## Cumpleaños
+
+| Comando | |
+| --- | --- |
+| `/cumple poner` · `quitar` | Guardar o borrar tu fecha. |
+| `/cumple ver` · `proximos` | El de alguien · los siguientes. |
+
+Ese día el bot lo felicita en el canal y le da el rol del día durante 24 h.
+
 ## Tickets
 
 Panel con un menú de categorías; cada categoría abre un canal privado con su formulario.

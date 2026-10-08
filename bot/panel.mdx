@@ -1,6 +1,6 @@
 ---
 title: "Panel de Events"
-description: "Tickets, transcripciones, mensajes y textos del bot desde panel.eventsmc.xyz"
+description: "Ajustes, moderación, tickets, mensajes y textos del bot desde panel.eventsmc.xyz"
 ---
 
 En [panel.eventsmc.xyz](https://panel.eventsmc.xyz) → **Bots de Discord** → **Events BOT**
@@ -9,6 +9,8 @@ están los bots de tu studio. Cada uno tiene:
 | Pestaña | |
 | --- | --- |
 | **Resumen** | Tickets abiertos, cerrados en 30 días, primera respuesta y valoración; módulos y servidor. |
+| **Ajustes** | Los ajustes de cada módulo: canales, roles, reglas del automod, antirraid, listas… |
+| **Moderación** | Sanciones de 30 días, aislados, baneados y apelaciones; buscar casos, anularlos y sancionar. |
 | **Tickets** | Abiertos y cerrados: formulario, transcripción, **contestar** y **cerrar** desde el panel. |
 | **Mensajes** | Enviar un mensaje o un embed con vista previa, y editar los que ya envió el bot. |
 | **Textos** | Los mismos textos que en `/configurar`. |
@@ -27,11 +29,14 @@ El panel lo detecta al momento. El bot aparece con su nombre y su avatar de Disc
 El código caduca en 15 minutos y sirve una vez. Si reinstalas el bot, vuelve a vincularlo
 igual: el panel reconoce que es el mismo y conserva su ficha.
 
+Las pestañas **Moderación** y **Tickets** solo aparecen si el bot tiene ese módulo.
+
 ## Quién puede hacer qué
 
 El panel no decide los permisos: lo hace el bot contra Discord en cada acción. Hace falta
 **Gestionar servidor** en el servidor de Discord del que se trate (o ser su dueño). Lo que
-no gestionas en Discord tampoco lo gestionas aquí.
+no gestionas en Discord tampoco lo gestionas aquí. Sancionar desde el panel pide los mismos
+permisos que en Discord: banear exige **Banear miembros**, y así con cada sanción.
 
 ## Editar un mensaje
 
