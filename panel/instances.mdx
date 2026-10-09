@@ -50,8 +50,51 @@ valores por defecto son la opción segura.
 | **Archivos** | Mods, configuración y mundos que recibe el jugador. |
 | **Jugadores** | Quién está conectado ahora mismo, y expulsarlo o banearlo. |
 | **Canales** | La copia de ensayo, separada de la que se está jugando. |
+| **Feed** | Noticias del studio y contenido de los jugadores. |
+| **Rachas** | Días seguidos jugando y su clasificación. |
+| **Reportes** | Los fallos que envían los jugadores desde la partida. |
 | **Términos** | Lo que el jugador acepta antes de jugar. |
 | **Avisos** | El webhook de Discord de esta instancia. |
+
+Canales, Feed, Rachas, Términos y Avisos solo aparecen si están activados en
+[Componentes](#componentes).
+
+## Componentes
+
+En la configuración de la instancia, **Componentes** reúne las partes que se activan por
+separado: Rachas, Feed, Canales, Términos y Notificaciones. Cada una tiene su interruptor y
+su pestaña solo aparece mientras está activada.
+
+- **Términos** desactivados: el launcher deja de pedirlos, aunque el texto siga guardado.
+- **Canales** no se puede desactivar mientras existan canales; primero hay que borrarlos.
+- **Feed** forma parte de Events+.
+- **EVAC** se configura en Protección; desde Componentes se llega con «Configurar».
+
+## Reportes de fallos
+
+Con el juego abierto, el jugador pulsa **Ctrl+F8** (o el botón de la barra de partida) y
+describe el fallo. El reporte llega a la pestaña **Reportes** con:
+
+- la captura de la ventana del juego;
+- la versión del launcher y el canal;
+- la lista de mods de la instancia;
+- el final del log del juego.
+
+Cada reporte se puede marcar como resuelto o eliminar. Se borran solos a los 30 días. Un
+jugador puede enviar 5 por hora. Para recibirlos también en Discord, activa el evento
+«Un jugador envía un reporte de fallo» en los webhooks del studio.
+
+## Skins de Events Connect
+
+**Skins de Events Connect** (en Conexión, dentro de la configuración) hace que en la partida
+se vean las skins y capas de Events Connect, también las de cuentas no premium. Añade
+CustomSkinLoader desde Modrinth y lo mantiene al día con la versión y el loader de la
+instancia.
+
+<Note>
+Funciona en Fabric, Forge, NeoForge y Quilt, en las versiones que admite el mod. Si cambias
+a una versión sin soporte, se desactiva solo y queda anotado en la actividad.
+</Note>
 
 ## Quién puede entrar
 
