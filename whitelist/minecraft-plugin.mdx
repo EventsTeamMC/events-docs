@@ -47,149 +47,115 @@ En Discord, con permisos de staff:
 
 <Steps>
   <Step title="Copia el .jar">
-    Deja `EventsWhitelist.jar` en la carpeta `plugins/` de tu servidor.
+    Deja `EventsWhitelist.jar` en la carpeta `plugins/` de tu servidor y arráncalo. Se crean
+    `config.yml` y la carpeta `whitelists/` con dos listas de ejemplo (`publica` y `staff`).
   </Step>
-  <Step title="Arranca el servidor una vez">
-    Se genera `plugins/EventsWhitelist/config.yml`. Sin clave el plugin arranca igualmente (no
-    da error ni se desactiva): simplemente no sincroniza todavía.
+  <Step title="Activa la whitelist">
+    ```
+    /wl on
+    ```
   </Step>
-  <Step title="Introduce tu clave en el juego">
+  <Step title="Vincula tu Discord">
     ```
-    /eventswhitelist apikey TU_CLAVE_AQUI
+    /ewl server-link setup TU_CLAVE
     ```
-    El plugin se recarga solo y empieza a sincronizar al momento.
+    Solo la clave: la dirección de la API ya viene en `config.yml`. El plugin se recarga y
+    prueba la conexión.
   </Step>
   <Step title="Comprueba el estado">
     ```
-    /eventswhitelist status
+    /ewl server-link status
     ```
-    Debe decir api-key **configurada** y WebSocket **conectado**.
+    Debe decir WebSocket **conectado** y listar las whitelists sincronizadas.
   </Step>
 </Steps>
 
-## 3. Elige cómo gestiona la whitelist
-
-### Modo de operación
-
-| Modo | Qué hace |
-|---|---|
-| `custom` (por defecto) | El plugin **es** la whitelist: mantiene su propia lista (`custom-whitelist.yml`) y decide quién entra. Desactiva la whitelist nativa de Minecraft automáticamente. |
-| `vanilla` | El plugin solo sincroniza el bot contra la whitelist nativa (`whitelist.json`). El `/whitelist` de siempre sigue funcionando igual. |
-
-```
-/eventswhitelist mode custom
-/eventswhitelist mode vanilla
-```
-
-<Tip>
-  **Modo `custom` si tienes jugadores No Premium.** El `whitelist.json` de Minecraft funciona por
-  UUID de Mojang, así que en modo `vanilla` las cuentas No Premium no encajan bien. En `custom`
-  el plugin resuelve él mismo el UUID (offline incluido) y funcionan las dos.
-</Tip>
-
-### Modo de fusión (`sync.mode` en `config.yml`)
-
-| Modo | Qué hace |
-|---|---|
-| `additive` (por defecto, recomendado) | El plugin lleva registro de a quién ha añadido él, y solo toca eso. Las entradas puestas a mano con `/whitelist add` (staff, builders, youtubers) **no se tocan**. |
-| `mirror` (destructivo) | La whitelist local refleja **exactamente** el estado del bot: en cada sincronización se elimina todo lo que no venga de Discord. |
-
-<Warning>
-  Usa `mirror` solo si el bot es la única fuente de verdad. Si tienes gente añadida a mano en el
-  servidor, `mirror` la borrará en la siguiente sincronización.
-</Warning>
-
-## Comandos del plugin (en el juego)
-
 <Note>
-  Requieren el permiso `eventswhitelist.admin` (por defecto, solo operadores). Alias del comando:
-  `/ewl` y `/ewhitelist`.
+  **Actualizar desde 1.3.x.** La clave se conserva y el servidor sigue vinculado. Los nicks
+  añadidos a mano en modo `custom` (`custom-whitelist.yml`) no se migran: vuelve a añadirlos con
+  `/wl add`.
 </Note>
+
+## 3. Varias whitelists
+
+Cada whitelist es un archivo en `plugins/EventsWhitelist/whitelists/<id>.json`. Puedes tener
+varias activas a la vez (staff, pública, evento…): un jugador entra si está en **cualquiera** de
+las activas.
+
+| | Locales | De Discord |
+|---|---|---|
+| Se crean con | `/wl create` | Automáticamente al vincular, o `/ewl server-link import` |
+| Añadir y quitar gente | `/wl add` / `/wl remove` | Desde Discord |
+| Activar, desactivar, renombrar | Sí | Sí |
+
+Para editar en el juego una lista de Discord, haz una copia local con `/wl clone`.
+
+### Modo de fusión (`sync.mode`)
+
+| Modo | Qué hace |
+|---|---|
+| `additive` (por defecto) | Solo añade y quita a los jugadores que gestiona el plugin. Lo añadido con `/minecraft:whitelist add` **no se toca**. |
+| `mirror` | La whitelist del servidor refleja **exactamente** las listas activas. Borra todo lo demás. |
+
+## `/wl`: whitelists
+
+Sustituye al `/whitelist` de vanilla (el original sigue en `/minecraft:whitelist`).
 
 | Comando | Qué hace |
 |---|---|
-| `/eventswhitelist apikey <clave>` | Configura tu clave de conexión (alias `token`). Recarga al instante. |
-| `/eventswhitelist status` | Estado completo: clave, WebSocket, última sincronización, modo, jugadores gestionados, versión. |
-| `/eventswhitelist sync` | Fuerza una resincronización completa inmediata. |
-| `/eventswhitelist mode <custom\|vanilla>` | Cambia el modo de operación. |
-| `/eventswhitelist whitelist <all\|id>` | Qué whitelist del bot sincronizar. `all` = todas las que vea la clave. |
-| `/eventswhitelist kick <true\|false>` | Expulsar o no a un jugador cuando lo quitan de la whitelist estando conectado. |
-| `/eventswhitelist autosync <true\|false> [segundos]` | Resincronización periódica de seguridad (desactivada por defecto; mínimo 5 s). |
-| `/eventswhitelist checkupdate` | Comprueba ahora si hay una versión más reciente. |
-| `/eventswhitelist updatenotify <true\|false>` | Activa o desactiva el aviso de nuevas versiones. |
-| `/eventswhitelist reload` | Recarga `config.yml` y reconecta. |
+| `/wl status` | Whitelists, cuáles están activas y cuánta gente tiene cada una |
+| `/wl list [whitelist] [página]` | Lista las whitelists o los miembros de una |
+| `/wl check <jugador>` | En qué whitelists está y si puede entrar |
+| `/wl add <jugador\|selector> [whitelist]` | Añade. Acepta `@a`, `@a[team=Jugador]`, `@p`, `*`… |
+| `/wl remove <jugador\|selector> [whitelist]` | Quita de una whitelist, o de todas si no indicas ninguna |
+| `/wl create <id> [nombre]` | Crea una whitelist |
+| `/wl set <whitelist>` | Whitelist por defecto de `/wl add` |
+| `/wl clone <origen> <id-nuevo>` | Copia local y editable |
+| `/wl enable\|disable <whitelist>` | Activa o desactiva una whitelist |
+| `/wl lock\|unlock <whitelist\|all>` | Cierra a altas nuevas; quitar gente sigue funcionando |
+| `/wl clear <whitelist> confirm` | Vacía una whitelist |
+| `/wl delete <whitelist> confirm` | Borra una whitelist |
+| `/wl on` / `/wl off` | Activa o desactiva la whitelist del servidor |
 
-Todos los ajustes se pueden tocar desde el juego: **no hace falta editar `config.yml` a mano** ni
-reiniciar el servidor.
+## `/ewl server-link`: vínculo con Discord
 
-## Comando `/whitelist` (en el juego)
+| Comando | Qué hace |
+|---|---|
+| `/ewl server-link setup <clave>` | Vincula el servidor |
+| `/ewl server-link status` | Estado del vínculo y listas sincronizadas |
+| `/ewl server-link test` | Prueba la conexión |
+| `/ewl server-link sync` | Sincroniza ahora |
+| `/ewl server-link list` | Whitelists de Discord que ve la clave |
+| `/ewl server-link import <id\|all>` | Trae una whitelist de Discord |
+| `/ewl server-link filter <id\|none>` | Sincroniza solo una whitelist, o todas |
+| `/ewl server-link autosync <on\|off>` | Sincronización automática |
+| `/ewl server-link key <clave>` | Cambia la clave |
+| `/ewl server-link unlink confirm` | Desvincula (las listas locales se quedan) |
 
-Con el plugin instalado, `/whitelist` gestiona la lista que corresponda según el modo. Permiso:
-`eventswhitelist.whitelist` (por defecto, solo operadores).
+Otros: `/ewl status`, `/ewl reload`, `/ewl update [check\|download]`.
 
-```
-/whitelist on|off|add|remove|list|reload
-```
-
-- En modo `custom` opera sobre la lista propia del plugin.
-- En modo `vanilla` opera sobre la whitelist nativa, como sin el plugin.
-
-<Info>
-  `/whitelist remove <jugador>` **también avisa al bot** para dar de baja ese nick en Discord, de
-  modo que las dos listas no se desincronicen. `/whitelist add` no toca el bot: solo añade en
-  local (para quien deba entrar por Discord, que se apunte ahí).
-</Info>
-
-## Varias whitelists a la vez
-
-Si la clave da acceso a varias whitelists y dejas el filtro en `all`, el plugin las sincroniza
-todas y **deduplica por UUID**: un jugador que esté en dos whitelists del bot solo se procesa una
-vez y nunca entra dos veces.
+<Note>
+  Permisos: `eventswhitelist.admin` para todo, `eventswhitelist.manage` para editar listas y
+  `eventswhitelist.view` para verlas. Por defecto, solo operadores.
+</Note>
 
 ## Qué pasa si el servidor pierde la conexión
 
-El plugin reconecta solo, con reintentos espaciados (backoff exponencial, hasta 60 s por
-defecto). Al reconectar lanza una resincronización completa para recuperar todo lo que se
-perdiera mientras estuvo caído. Por eso el `autosync` periódico no suele hacer falta: es solo una
-red de seguridad extra.
+El plugin reconecta solo (hasta 60 s entre intentos) y al reconectar sincroniza todo lo que se
+perdió.
 
-## `config.yml` de referencia
+## `config.yml` del vínculo
 
 ```yaml
-mode: "custom"                    # custom | vanilla
-
 api:
-  api-key: ""                     # /whitelist server-link create
-  whitelist-id: ""                # vacío = todas las visibles para la clave
-
-sync:
-  mode: "additive"                # additive | mirror
-  whitelist-enabled: true         # equivalente a /whitelist on|off
-  kick-on-removal: true
-  kick-message: "&cHas sido eliminado de la whitelist de este servidor."
-  not-whitelisted-message: "&cNo estás en la whitelist de este servidor.&r&7 Apúntate desde Discord."
-  auto-sync-enabled: false
-  auto-sync-interval-seconds: 10  # mínimo seguro: 5
-
-reconnect:
-  initial-delay-seconds: 5
-  max-delay-seconds: 60
-
-update-checker:
-  enabled: true
+  base-url: "https://whitelist-api.eventsmc.xyz"   # vacío = la oficial
+  api-key: ""                 # /ewl server-link setup <clave>
+  whitelist-id: ""            # vacío = todas las que vea la clave
+  auto-import: true
+  auto-sync: true
 ```
 
-<Note>
-  La URL del bot **no es configurable**: siempre es `https://whitelist-api.eventsmc.xyz`, fijada
-  en el código. La clave viaja siempre por HTTPS/WSS, en la cabecera `Authorization`, nunca en la
-  URL.
-</Note>
-
-## Bajas desde el propio servidor
-
-La sincronización funciona en los dos sentidos: si quitas a alguien con `/whitelist remove` en el
-juego, desaparece también de la whitelist de Discord y queda reflejado en el
-[canal de logs](/whitelist/logs) con origen 🔌 API/plugin.
+La clave viaja siempre por HTTPS/WSS en la cabecera `Authorization`, nunca en la URL.
 
 ## Desconectar un servidor
 
