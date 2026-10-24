@@ -2,22 +2,45 @@
 
 Documentación pública de las herramientas de [EventsMC](https://eventsmc.xyz), en un único sitio:
 
+- **Panel de control** — instancias, eventos, equipo, Events+ y launchers de marca.
 - **Events Whitelist** — gestiona la whitelist de tu servidor de Minecraft desde Discord.
 - **Events Blacklist** — baneos compartidos y anónimos entre comunidades de Discord.
+- **Events BOT** — un bot de Discord propio, con tu nombre y tus colores, alojado por Events.
 
 Está escrita para [Mintlify](https://mintlify.com): `docs.json` define la navegación (una pestaña
-por bot) y cada página es un `.mdx`.
+por producto) y cada página es un `.mdx`.
 
 ## Estructura
 
 ```
 docs.json           navegación, tema y colores
-favicon.svg
-index.mdx           portada: elige bot
-afiliados.mdx       programa de afiliados (común a los dos bots)
-whitelist/          documentación de Events Whitelist
-blacklist/          documentación de Events Blacklist
+favicon.png
+images/
+index.mdx           portada
+afiliados.mdx       programa de afiliados
+panel/              panel de control
+whitelist/          Events Whitelist
+blacklist/          Events Blacklist
+bot/                Events BOT
 ```
+
+### Panel de control
+
+| Página | Contenido |
+|---|---|
+| `introduction` | Qué es el panel y cómo se entra |
+| `session` | Sesión e idiomas |
+| `instances` | Instancias del launcher |
+| `events` | Eventos y calendario |
+| `team` | Equipo y studios |
+| `webhooks` | Webhooks |
+| `files` | Archivos públicos |
+| `bots` | Bots de Discord desde el panel |
+| `hosting` | Servidores de juego |
+| `ultra` | Events+ Ultra |
+| `launchers` | Launchers de marca y dominio propio |
+| `evac-plus` | EVAC+ en directo |
+| `changelog` | Novedades |
 
 ### Events Whitelist
 
@@ -48,12 +71,24 @@ blacklist/          documentación de Events Blacklist
 | `how-it-works` | El ciclo de vida de un baneo, de punta a punta |
 | `alerts` | Cuándo avisa el bot, y cómo ajustarlo |
 | `auto-ban` | Baneo automático: cuándo activarlo y con qué umbral |
-| `privacy` | Cómo se protege el origen de cada baneo |
+| `privacy` | Cómo se protege el origen de cada baneo y Events Database |
 | `commands` | Referencia de todos los comandos |
 | `permissions` | Quién puede usar qué, y permisos que necesita el bot |
 | `faq` | Preguntas frecuentes |
 | `troubleshooting` | Problemas habituales y cómo resolverlos |
 | `changelog` | Novedades |
+
+### Events BOT
+
+| Página | Contenido |
+|---|---|
+| `introduction` | Qué es |
+| `quickstart` | De la compra al bot en línea |
+| `configurar` | `/configurar`: apariencia, presencia, módulos, textos y tickets |
+| `modules` | Los módulos |
+| `panel` | Gestión desde el panel |
+| `hosting` | Lo que se hace desde hosting.eventsmc.xyz |
+| `faq` | Preguntas frecuentes |
 
 ## Desarrollo local
 

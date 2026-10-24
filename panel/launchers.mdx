@@ -1,0 +1,80 @@
+---
+title: "Launchers de marca"
+description: "Events Client con el nombre, el logo y los colores de tu studio"
+---
+
+Un launcher de marca es Events Client compilado con el nombre de tu studio: su propio
+instalador, su icono, su logo, sus colores y solo tus instancias. Se incluye en
+[Events+ Ultra](/panel/ultra).
+
+Se gestionan en **Launchers**, en el grupo Launcher de la barra lateral. Puede crearlos el
+propietario de un studio con Ultra.
+
+## Qué se configura
+
+| Sección | Qué hay |
+| --- | --- |
+| **Resumen** | Estado, descargas por versión e instaladores publicados |
+| **Apariencia** | Tema, temas permitidos, modo claro u oscuro, color de acento, logo y fondos |
+| **Instancias** | Todas las del studio o solo las que elijas |
+| **Enlaces y Discord** | Botones de Inicio (Instagram, X, Discord, TikTok, YouTube, Twitch, Kick, web) y el Application ID para la actividad de Discord |
+| **Creadores** | La pestaña Creadores, con las personas y sus redes |
+| **Onboarding** | El paso de referido y un código predefinido |
+| **Página de descarga** | Subdominio y dominio propio |
+| **Compilaciones** | Compilar y el historial de builds |
+
+Lo de **Apariencia**, **Instancias** y **Enlaces** se aplica al momento en los launchers ya
+instalados. El nombre, el icono y las plataformas necesitan compilar de nuevo.
+
+## Compilar
+
+**Compilar** genera los instaladores de Windows, macOS y Linux (las plataformas que elijas) y los
+publica en el repo de releases de la marca. Tarda unos 15 minutos. Un studio puede compilar 3
+veces al día.
+
+Cuando sale una versión nueva de Events Client, el panel lo avisa en el launcher de marca.
+
+## Página de descarga
+
+Cada marca tiene una página en `<subdominio>.eventsmc.xyz` con sus colores, el instalador del
+sistema de quien la visita y los demás como enlaces. Los enlaces para jugar van en
+`<subdominio>.eventsmc.xyz/play/…`. El subdominio lo asigna Events.
+
+### Dominio propio
+
+La página también puede ir en un dominio tuyo, por ejemplo `launcher.tumarca.com`.
+
+<Steps>
+  <Step title="Escribe el dominio">
+    En **Página de descarga → Dominio propio**.
+  </Step>
+  <Step title="Crea los dos registros en tu DNS">
+    | Tipo | Nombre | Valor |
+    | --- | --- | --- |
+    | CNAME | `launcher.tumarca.com` | `custom.eventsmc.xyz` |
+    | TXT | el que indica el panel | el que indica el panel |
+
+    Si el dominio está en Cloudflare, el CNAME va con la nube gris (solo DNS).
+  </Step>
+  <Step title="Comprobar">
+    Pulsa **Comprobar** hasta que el estado sea **Activo**. El certificado se emite solo. Si pone
+    **Pendiente de activar por Events**, el dominio está guardado y falta un paso de Events.
+  </Step>
+</Steps>
+
+## Estado
+
+Lo cambia Events.
+
+| Estado | Qué ve el jugador |
+| --- | --- |
+| Activo | El launcher normal |
+| Mantenimiento | Pantalla de bloqueo con un mensaje |
+| Desactivado | Pantalla de bloqueo |
+| Suscripción caducada | Pantalla de bloqueo |
+
+## Para el jugador
+
+- Ve solo las instancias de tu studio, salvo que Events permita también las de otros.
+- Los códigos de otros studios no funcionan en tu launcher.
+- Las cuentas no premium entran con Discord en el navegador, sin códigos.

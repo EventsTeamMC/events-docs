@@ -70,6 +70,26 @@ otro; el bot lo revisa cada 6 horas.
   independientemente del número de miembros.
 </Note>
 
+## Events Database
+
+Events Database es el registro de seguridad de Events para que nadie esquive una sanción en sus
+servicios. Cuando alguien autorizado por Events abre la ficha de un jugador, consulta al bot los
+baneos de las cuentas de Discord vinculadas a ese jugador en Events:
+
+| Baneos | Qué recibe |
+|---|---|
+| Activos | Motivo, fecha y si es sospechoso |
+| Retirados | Solo la fecha en que se retiraron |
+
+- **Nunca** recibe el servidor ni el staff que baneó. Si el motivo nombra un servidor o lleva un
+  enlace, llega vacío.
+- Los baneos no se copian: se consultan en el momento.
+- Solo entran personas autorizadas por Events, y cada consulta queda registrada. Los servidores de
+  la red no tienen acceso.
+
+Detalle en la [política de privacidad de Events Blacklist](https://eventsmc.xyz/blacklist/privacy)
+(versión 1.1) y en la [de Events Client](https://eventsmc.xyz/client/privacy) (versión 1.14).
+
 ## Sincronización obligatoria
 
 <Warning>

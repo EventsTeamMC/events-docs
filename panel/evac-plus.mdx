@@ -1,0 +1,59 @@
+---
+title: "EVAC+"
+description: "Ver en directo la ventana del juego de un jugador durante un evento"
+---
+
+Con EVAC+, el staff de una instancia ve en directo la ventana del juego de un jugador mientras
+juega. Se incluye en [Events+ Ultra](/panel/ultra).
+
+## Activarlo
+
+<Steps>
+  <Step title="EVAC y Events Loader">
+    La instancia necesita los dos activados.
+  </Step>
+  <Step title="EVAC+ (directo)">
+    En el editor de la instancia, enciende **EVAC+ (directo)**.
+  </Step>
+  <Step title="Quién puede mirar">
+    Marca las cuentas del studio con permiso **EVAC+**. Ser staff de la instancia no basta. Los
+    administradores de Events siempre pueden.
+  </Step>
+</Steps>
+
+## Ver un directo
+
+- **Instancia → Jugadores en línea → Ver en directo**, en la fila del jugador.
+- **EVAC+**, en la barra lateral: todos los jugadores en partida que puedes ver, con **Ver todos** y **Parar todos**.
+
+**Cortar** termina el directo.
+
+## Límites
+
+| | |
+| --- | --- |
+| Duración | 15 minutos |
+| Personas mirando a la vez | 2 |
+| Directos por jugador y día | 4 |
+
+## Qué ve el jugador
+
+- Al entrar en una instancia con EVAC+, Events Client lo indica.
+- Mientras alguien mira, el juego y el launcher muestran **En directo**.
+
+## Qué se retransmite
+
+Solo la ventana del juego: nunca el escritorio, otras ventanas, el sonido ni el micrófono. No se
+graba. La imagen pasa por un servidor de retransmisión de Cloudflare; el staff no recibe la
+IP del jugador. Queda registrado quién miró, a quién y cuándo, en **Actividad**.
+
+## Por qué termina
+
+- **Cortado por el staff**
+- **Tiempo agotado**: 15 minutos.
+- **Juego cerrado** o **El jugador salió**
+- **Sin indicador en el juego**: Events Loader no pudo mostrar **En directo**.
+- **Ventana del juego no encontrada**
+- **El launcher no respondió**
+- **Nadie mirando**: 60 segundos sin nadie.
+- **EVAC+ desactivado**
